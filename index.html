@@ -9,7 +9,33 @@
   </head>
   <body>
     <header></header>
-    <main></main>
+    <main>
+      <!-- denna döljs vid lyckad inloggning -->
+      <article id="userDetails">
+        <div class="flex">
+          <label for="username">Username:</label>
+          <input type="text" name="username" id="username" />
+        </div>
+        <div class="flex">
+          <label for="password">Password:</label>
+          <input type="password" name="password" id="password" />
+        </div>
+        <div class="flex flex-column">
+          <button id="register">Register</button>
+          <button id="logIn">Log In</button>
+        </div>
+        <div id="statusMsg"></div>
+      </article>
+
+      <!-- hälsning + citat -->
+      <article id="greeting"></article>
+
+      <!-- streak "highscore" -->
+      <article id="highlights"></article>
+
+      <!-- todo-lista + habits-lista i denna -->
+      <article id="content" class="flex"></article>
+    </main>
     <footer></footer>
   </body>
 </html>
