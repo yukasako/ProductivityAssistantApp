@@ -67,43 +67,7 @@ createTodoBtn.addEventListener("click", () => {
 
     // Save updated users array back to local storage
     localStorage.setItem('users', JSON.stringify(users));
-    
+
     todoInput.innerHTML = ""
   });
 });
-
-// この４つだけ使うよ
-// localStorage.setItem("data", "My local Data");
-// localStorage.getItem("data");
-// sessionStorage.setItem("data", "My local Data");
-// sessionStorage.getItem("data");
-
-// exempeldata
-// let user = {
-//   id: 1,
-//   username: "test",
-//   password: "test123",
-//   loggedIn: true,
-//   habits: [
-//     {
-//       userId: 1,
-//       title: "title",
-//       streak: 6,
-//       priority: "high",
-//     },
-//   ],
-//   todos: [
-//     {
-//       userId: 1,
-//       title: "title",
-//       description: "loremloremlorem",
-//       completed: true,
-//       deadline: "2024-04-04",
-//       timeEstimate: {
-//         hours: 0,
-//         minutes: 40,
-//       },
-//       category: "pleasure",
-//     },
-//   ],
-// };
