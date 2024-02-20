@@ -11,3 +11,7 @@
 .flex-column {
   flex-direction: column;
 }
+
+#greeting h2 {
+  text-align: center;
+}

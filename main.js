@@ -29,6 +29,7 @@
 
 import("/login-register.js");
 import("/loggedin.js");
+import("/quote.js");
 
 // globala variabler i main
 
@@ -39,5 +40,9 @@ let registerBtn = document.querySelector("#register");
 let loginBtn = document.querySelector("#logIn");
 
 let statusMsg = document.querySelector("#statusMsg");
+
+const greeting = document.querySelector("#greeting");
+
+
 
 let users = [];
