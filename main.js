@@ -30,6 +30,7 @@
 
 import("/login-register.js");
 import("/loggedin.js");
+import("/quote.js");
 import("/logout.js");
 import("/todo.js");
 
@@ -47,6 +48,10 @@ let content = document.querySelector("#content")
 let createTodoBtn = document.querySelector("#createTask");
 
 let statusMsg = document.querySelector("#statusMsg");
+
+const greeting = document.querySelector("#greeting");
+
+
 
 let users = [];
 
