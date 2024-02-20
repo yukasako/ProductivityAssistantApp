@@ -30,6 +30,7 @@
 
 import("/login-register.js");
 import("/loggedin.js");
+import("/todo.js");
 
 // globala variabler i main
 
@@ -38,6 +39,7 @@ let passwordInput = document.querySelector("#password");
 
 let registerBtn = document.querySelector("#register");
 let loginBtn = document.querySelector("#logIn");
+let createTodoBtn = document.querySelector("#createTask");
 
 let statusMsg = document.querySelector("#statusMsg");
 
