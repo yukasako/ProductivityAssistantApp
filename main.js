@@ -30,6 +30,7 @@
 
 import("/login-register.js");
 import("/loggedin.js");
+import("/logout.js");
 import("/todo.js");
 
 // globala variabler i main
@@ -39,8 +40,24 @@ let passwordInput = document.querySelector("#password");
 
 let registerBtn = document.querySelector("#register");
 let loginBtn = document.querySelector("#logIn");
+let logOutBtn = document.querySelector("#logOut");
+let logInRegisterContent = document.querySelector("#userDetails");
 let createTodoBtn = document.querySelector("#createTask");
 
 let statusMsg = document.querySelector("#statusMsg");
 
 let users = [];
+
+const toggleUserActions = (ms = 0, msg = "") => {
+  if (localStorage.getItem("loggedInUser")) {
+    logOutBtn.style.display = "block";
+    logInRegisterContent.style.display = "none";
+  } else {
+    logOutBtn.style.display = "none";
+    statusMsg.innerText = msg;
+    setTimeout(() => {
+      statusMsg.innerText = "";
+      logInRegisterContent.style.display = "block";
+    }, ms);
+  }
+};

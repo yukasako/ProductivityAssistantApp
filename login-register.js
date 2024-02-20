@@ -71,6 +71,12 @@ loginBtn.addEventListener("click", () => {
             // updating the list in local storage
             let newUserList = [...users];
             localStorage.setItem("users", JSON.stringify(newUserList));
+
+            localStorage.setItem("loggedInUser", matchingUser.id);
+
+            logOutBtn.dataset.id = matchingUser.id;
+            // appending the log out button
+            toggleUserActions();
           }
         });
       } else {
@@ -86,3 +92,5 @@ loginBtn.addEventListener("click", () => {
   usernameInput.value = "";
   passwordInput.value = "";
 });
+
+toggleUserActions();
