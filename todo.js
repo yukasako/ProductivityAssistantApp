@@ -28,12 +28,11 @@ createTodoBtn.addEventListener("click", () => {
     <button id="saveTodoBtn">Save</button>
   </div>
     `;
-  document.body.append(todoInput);
+  content.append(todoInput);
 
   // Save the input data to local storage.
   let saveTodoBtn = document.querySelector("#saveTodoBtn");
   saveTodoBtn.addEventListener("click", () => {
-    let todos = [];
 
     let inputTitle = document.querySelector("#title").value;
     let inputDescription = document.querySelector("#description").value;
@@ -60,23 +59,16 @@ createTodoBtn.addEventListener("click", () => {
       category: inputCategory,
     };
 
-    // Push the todo object into the todos array
-    todos.push(todo);
-
     // Retrieve users array from local storage
     let users = JSON.parse(localStorage.getItem('users'));
 
-    // Update the todos array inside the users array
-    if (users) {
-        // Assuming there's only one user for simplicity, otherwise, you would need to identify the user
-        users[0].todos = todos;
-    }
+    // Push todo input to the user array.
+    users[0].todos.push(todo);
 
     // Save updated users array back to local storage
     localStorage.setItem('users', JSON.stringify(users));
-
-    // Output the todos array for testing
-    console.log(todos);
+    
+    todoInput.innerHTML = ""
   });
 });
 
