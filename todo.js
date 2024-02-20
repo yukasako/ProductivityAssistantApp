@@ -1,4 +1,5 @@
 createTodoBtn.addEventListener("click", () => {
+  // Create input form
   let todoInput = document.createElement("div");
   todoInput.innerHTML = `
     <div>
@@ -24,8 +25,93 @@ createTodoBtn.addEventListener("click", () => {
       <option value="training">Training</option>
     </select>
     <br>
-    <button id="saveTodo">Save</button>
+    <button id="saveTodoBtn">Save</button>
   </div>
     `;
   document.body.append(todoInput);
+
+  // Save the input data to local storage.
+  let saveTodoBtn = document.querySelector("#saveTodoBtn");
+  saveTodoBtn.addEventListener("click", () => {
+    let todos = [];
+
+    let inputTitle = document.querySelector("#title").value;
+    let inputDescription = document.querySelector("#description").value;
+    let inputStatus = document.querySelector("#status").value;
+    let inputDeadline = document.querySelector("#deadline").value;
+    let inputTimeEstimate = document.querySelector("#timeEstimate").value;
+    let inputCategory = document.querySelector("#category").value;
+
+    // Extract hours and minutes from inputTimeEstimate
+    let [hours, minutes] = inputTimeEstimate
+      .split(":")
+      .map((num) => parseInt(num));
+
+    // Create todo object
+    let todo = {
+      title: inputTitle,
+      description: inputDescription,
+      completed: inputStatus,
+      deadline: inputDeadline,
+      timeEstimate: {
+        hours: hours,
+        minutes: minutes,
+      },
+      category: inputCategory,
+    };
+
+    // Push the todo object into the todos array
+    todos.push(todo);
+
+    // Retrieve users array from local storage
+    let users = JSON.parse(localStorage.getItem('users'));
+
+    // Update the todos array inside the users array
+    if (users) {
+        // Assuming there's only one user for simplicity, otherwise, you would need to identify the user
+        users[0].todos = todos;
+    }
+
+    // Save updated users array back to local storage
+    localStorage.setItem('users', JSON.stringify(users));
+
+    // Output the todos array for testing
+    console.log(todos);
+  });
 });
+
+// この４つだけ使うよ
+// localStorage.setItem("data", "My local Data");
+// localStorage.getItem("data");
+// sessionStorage.setItem("data", "My local Data");
+// sessionStorage.getItem("data");
+
+// exempeldata
+// let user = {
+//   id: 1,
+//   username: "test",
+//   password: "test123",
+//   loggedIn: true,
+//   habits: [
+//     {
+//       userId: 1,
+//       title: "title",
+//       streak: 6,
+//       priority: "high",
+//     },
+//   ],
+//   todos: [
+//     {
+//       userId: 1,
+//       title: "title",
+//       description: "loremloremlorem",
+//       completed: true,
+//       deadline: "2024-04-04",
+//       timeEstimate: {
+//         hours: 0,
+//         minutes: 40,
+//       },
+//       category: "pleasure",
+//     },
+//   ],
+// };
