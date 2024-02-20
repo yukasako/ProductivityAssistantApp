@@ -42,6 +42,8 @@ let registerBtn = document.querySelector("#register");
 let loginBtn = document.querySelector("#logIn");
 let logOutBtn = document.querySelector("#logOut");
 let logInRegisterContent = document.querySelector("#userDetails");
+
+let content = document.querySelector("#content")
 let createTodoBtn = document.querySelector("#createTask");
 
 let statusMsg = document.querySelector("#statusMsg");
