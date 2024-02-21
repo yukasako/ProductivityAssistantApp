@@ -30,9 +30,9 @@ createTodoBtn.addEventListener("click", () => {
     `;
   content.append(todoInput);
 
-  // Save the input data to local storage.
   let saveTodoBtn = document.querySelector("#saveTodoBtn");
   saveTodoBtn.addEventListener("click", () => {
+    // 1, Save the input data to local storage.
     let inputTitle = document.querySelector("#title").value;
     let inputDescription = document.querySelector("#description").value;
     let inputStatus = document.querySelector("#status").value;
@@ -73,7 +73,19 @@ createTodoBtn.addEventListener("click", () => {
 
     // Save updated users array back to local storage
     localStorage.setItem("users", JSON.stringify(users));
-
     todoInput.innerHTML = "";
+
+    // 2, Generate a todo card.
+    let todoCard = document.createElement("div");
+    todoCard.style.border = "2px solid lightblue";
+    todoCard.innerHTML = `
+    <p>Title: ${inputTitle}</p>
+    <p>Description: ${inputDescription}</p>
+    <p>Status: ${inputStatus}</p>
+    <p>Deadline: ${inputDeadline}</p>
+    <p>Time Estimate: ${inputTimeEstimate}</p>
+    <p>Caregory: ${inputCategory}</p>
+    `;
+    content.append(todoCard);
   });
 });
