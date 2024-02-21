@@ -70,8 +70,6 @@ const toggleUserActions = (ms = 0, msg = "") => {
     logInRegisterContent.style.display = "none";
   } else {
     logOutBtn.style.display = "none";
-    // greeting.innerHTML = "";
-    // content.innerHTML = "";
     statusMsg.innerText = msg;
     setTimeout(() => {
       statusMsg.innerText = "";
