@@ -1,6 +1,6 @@
+let todoInput = document.createElement("div");
 createTodoBtn.addEventListener("click", () => {
   // Create input form
-  let todoInput = document.createElement("div");
   todoInput.innerHTML = `
     <div>
     <label for="title">Title</label>

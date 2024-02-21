@@ -44,16 +44,25 @@ let loginBtn = document.querySelector("#logIn");
 let logOutBtn = document.querySelector("#logOut");
 let logInRegisterContent = document.querySelector("#userDetails");
 
-let content = document.querySelector("#content")
-let createTodoBtn = document.querySelector("#createTask");
+let container = document.querySelector("#container");
+// let content = document.querySelector("#content");
+// let createTodoBtn = document.querySelector("#createTask");
 
 let statusMsg = document.querySelector("#statusMsg");
 
-const greeting = document.querySelector("#greeting");
-
-
+// const greeting = document.querySelector("#greeting");
 
 let users = [];
+
+// creating articles
+let greeting = document.createElement("article");
+greeting.id = "greeting";
+let highlights = document.createElement("article");
+highlights.id = "highlights";
+let content = document.createElement("article");
+content.id = "content";
+let createTodoBtn = document.createElement("button");
+createTodoBtn.innerText = "New Todo";
 
 const toggleUserActions = (ms = 0, msg = "") => {
   if (localStorage.getItem("loggedInUser")) {
@@ -66,5 +75,16 @@ const toggleUserActions = (ms = 0, msg = "") => {
       statusMsg.innerText = "";
       logInRegisterContent.style.display = "block";
     }, ms);
+  }
+};
+
+// hiding / showing locked content based on log in status
+const toggleContent = () => {
+  if (localStorage.getItem("loggedInUser")) {
+    content.append(createTodoBtn);
+    container.append(greeting, highlights, content);
+  } else {
+    content.innerHTML = "";
+    container.innerHTML = "";
   }
 };
