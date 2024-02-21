@@ -1,4 +1,4 @@
-fixa boxar för todo och habits, fixa display on off, fixa modal
+fixa boxar för todo och habits, fixa modal
 
 appenda content till habits och todos till 2 olika platser.
 
@@ -9,5 +9,3 @@ kan inte skapa click events på login knappen
 varför kör du funktionerna längst ner och i click eventet?
 
 fixa så att enter loggar in user
-
-vad gör createContent?
