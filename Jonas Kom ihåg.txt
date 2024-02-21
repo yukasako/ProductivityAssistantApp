@@ -7,3 +7,7 @@ problem med ordningen saker körs separata filer
 kan inte skapa click events på login knappen
 
 varför kör du funktionerna längst ner och i click eventet?
+
+fixa så att enter loggar in user
+
+vad gör createContent?

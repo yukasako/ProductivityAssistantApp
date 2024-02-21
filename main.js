@@ -71,7 +71,7 @@ const toggleUserActions = (ms = 0, msg = "") => {
     logOutBtn.style.display = "block";
     logInRegisterContent.style.display = "none";
   } else {
-    logOutBtn.style.display = "none";
+    logOutBtn.style.display = "none"; //ändra till classList.add?
     statusMsg.innerText = msg;
     setTimeout(() => {
       statusMsg.innerText = "";
@@ -121,5 +121,11 @@ const toggleContent = () => {
   } else {
     content.innerHTML = "";
     container.innerHTML = "";
+
+    //Cycle back to login screen
+    setTimeout(()=>{
+      appScreen.classList.add("displayNone");
+      loginScreen.classList.remove("displayNone");
+    }, 2000)
   }
 };
