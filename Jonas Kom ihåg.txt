@@ -1,0 +1,9 @@
+fixa boxar för todo och habits, fixa display on off, fixa modal
+
+appenda content till habits och todos till 2 olika platser.
+
+problem med ordningen saker körs separata filer
+
+kan inte skapa click events på login knappen
+
+varför kör du funktionerna längst ner och i click eventet?
