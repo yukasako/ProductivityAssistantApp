@@ -58,11 +58,19 @@ createTodoBtn.addEventListener("click", () => {
       category: inputCategory,
     };
 
-    // Retrieve users array from local storage
+    // Get users array from local storage
     let users = JSON.parse(localStorage.getItem("users"));
 
-    // Push todo input to the user array.
-    users[0].todos.push(todo);
+    // Get logged users ID
+    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+    console.log(loggedInUser);
+
+    // Find the logged-in user by ID and push todo to their todos array
+    users.forEach((user) => {
+      if (user.id === loggedInUser) {
+        user.todos.push(todo);
+      }
+    });
 
     // Save updated users array back to local storage
     localStorage.setItem("users", JSON.stringify(users));
