@@ -12,4 +12,5 @@ logOutBtn.addEventListener("click", () => {
   localStorage.setItem("users", JSON.stringify(newUserList));
   localStorage.removeItem("loggedInUser");
   toggleUserActions(1500, "Bye for now!");
+  toggleContent();
 });
