@@ -33,6 +33,7 @@ import("/loggedin.js");
 import("/quote.js");
 import("/logout.js");
 import("/todo.js");
+import("/filtertodos.js");
 
 // globala variabler i main
 let loginScreen = document.querySelector("#loginScreen");
@@ -49,12 +50,18 @@ let logOutBtn = document.querySelector("#logOut");
 let logInRegisterContent = document.querySelector("#userDetails");
 
 let container = document.querySelector("#container");
-// let content = document.querySelector("#content");
-// let createTodoBtn = document.querySelector("#createTask");
 
 let statusMsg = document.querySelector("#statusMsg");
 
 let users = [];
+let todoCategories = [
+  "Pleasure",
+  "Work",
+  "Workout",
+  "Health",
+  "Studying",
+  "Home",
+];
 
 // creating articles
 let greeting = document.createElement("article");
@@ -65,6 +72,26 @@ let content = document.createElement("article");
 content.id = "content";
 let createTodoBtn = document.createElement("button");
 createTodoBtn.innerText = "New Todo";
+
+// creating other elements
+
+// todo-filtering
+let todosFilterSection = document.createElement("div"); //append this to top of todo list
+
+todosFilterSection.classList.add("flex", "flex-column");
+let filterTodosBtn = document.createElement("button");
+filterTodosBtn.id = "filterTodos";
+filterTodosBtn.innerText = "Filter";
+let todosFilterSelect = document.createElement("select");
+todosFilterSelect.innerHTML =
+  '<option value="" selected>All</option><option value="false">Not Completed</option><option value="true">Completed</option>';
+let todoCheckboxes = document.createElement("div");
+todoCheckboxes.classList.add("flex");
+todoCategories.forEach((cat) => {
+  todoCheckboxes.innerHTML += `<div><input type="checkbox" name="category" value="${cat}"/>
+    <label>${cat}</label></div>`;
+});
+todosFilterSection.append(todoCheckboxes, todosFilterSelect, filterTodosBtn);
 
 const toggleUserActions = (ms = 0, msg = "") => {
   if (localStorage.getItem("loggedInUser")) {
