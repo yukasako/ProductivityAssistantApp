@@ -35,6 +35,10 @@ import("/logout.js");
 import("/todo.js");
 
 // globala variabler i main
+let loginScreen = document.querySelector("#loginScreen");
+let loadingScreen = document.querySelector("#loadingScreen");
+let appScreen = document.querySelector("#appScreen");
+
 
 let usernameInput = document.querySelector("#username");
 let passwordInput = document.querySelector("#password");
@@ -49,8 +53,6 @@ let container = document.querySelector("#container");
 // let createTodoBtn = document.querySelector("#createTask");
 
 let statusMsg = document.querySelector("#statusMsg");
-
-// const greeting = document.querySelector("#greeting");
 
 let users = [];
 
@@ -82,7 +84,9 @@ const toggleUserActions = (ms = 0, msg = "") => {
 const toggleContent = () => {
   if (localStorage.getItem("loggedInUser")) {
     content.append(createTodoBtn);
-    container.append(greeting, highlights, content);
+    container.append(highlights, content);
+    loadingScreen.append(greeting);
+    
   } else {
     content.innerHTML = "";
     container.innerHTML = "";
