@@ -77,6 +77,7 @@ loginBtn.addEventListener("click", () => {
             logOutBtn.dataset.id = matchingUser.id;
             // appending the log out button
             toggleUserActions();
+            toggleContent();
           }
         });
       } else {
@@ -94,3 +95,4 @@ loginBtn.addEventListener("click", () => {
 });
 
 toggleUserActions();
+toggleContent();
