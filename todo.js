@@ -63,7 +63,6 @@ createTodoBtn.addEventListener("click", () => {
 
     // Get logged users ID
     let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-    console.log(loggedInUser);
 
     // Find the logged-in user by ID and push todo to their todos array
     users.forEach((user) => {
