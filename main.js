@@ -33,7 +33,6 @@ import("/loggedin.js");
 // import("/quote.js");
 import("/logout.js");
 import("/todo.js");
-import("/filtertodos.js");
 
 // globala variabler i main
 let loginScreen = document.querySelector("#loginScreen");
@@ -54,7 +53,7 @@ let statusMsg = document.querySelector("#statusMsg");
 
 let users = [];
 let todoCategories = [
-  "Pleasure",
+  "Leasure",
   "Work",
   "Workout",
   "Health",
@@ -68,18 +67,29 @@ let highlights = document.createElement("article");
 highlights.id = "highlights";
 let content = document.createElement("article");
 content.id = "content";
+
+// todo filters and sorting + all todos here¨
+let todoContent = document.createElement("section");
+todoContent.classList.add("todoContent");
+// habit filters and sorting + all habits here
+let habitsContent = document.createElement("section");
+habitsContent.classList.add("habitsContent");
+
+content.append(todoContent, habitsContent);
+
+let createNewTodoDiv = document.createElement("div");
 let createTodoBtn = document.createElement("button");
 createTodoBtn.innerText = "New Todo";
+createNewTodoDiv.append(createTodoBtn);
 let todoContainer = document.createElement("article");
-let todoListCompleted = document.createElement("ul");
-let todoListUncompleted = document.createElement("ul");
+let todoList = document.createElement("ul");
 
 // creating other elements
 
 // todo-filtering
 let todosFilterSection = document.createElement("div"); //append this to top of todo list
 
-todosFilterSection.classList.add("flex", "flex-column");
+todosFilterSection.classList.add("flex", "flex-column", "todosFilters");
 let filterTodosBtn = document.createElement("button");
 filterTodosBtn.id = "filterTodos";
 filterTodosBtn.innerText = "Filter";
@@ -94,12 +104,13 @@ todoCategories.forEach((cat) => {
 });
 todosFilterSection.append(todoCheckboxes, todosFilterSelect, filterTodosBtn);
 todoContainer.append(todosFilterSection);
+
 const toggleUserActions = (ms = 0, msg = "") => {
   if (localStorage.getItem("loggedInUser")) {
-    logOutBtn.style.display = "block";
+    logOutBtn.classList.remove("displayNone");
     logInRegisterContent.style.display = "none";
   } else {
-    logOutBtn.style.display = "none"; //ändra till classList.add?
+    logOutBtn.classList.add("displayNone");
     statusMsg.innerText = msg;
     setTimeout(() => {
       statusMsg.innerText = "";
@@ -128,7 +139,7 @@ const getQuote = async () => {
 // hiding / showing locked content based on log in status
 const toggleContent = () => {
   if (localStorage.getItem("loggedInUser")) {
-    content.append(createTodoBtn, todoContainer);
+    todoContent.append(createNewTodoDiv, todoContainer);
     container.append(highlights, content);
     loadingScreen.append(greeting);
 
@@ -142,6 +153,8 @@ const toggleContent = () => {
       loadingScreen.classList.add("displayNone");
       appScreen.classList.remove("displayNone");
     }, 4000);
+
+    // renderTodoCards();
   } else {
     content.innerHTML = "";
     container.innerHTML = "";
@@ -153,3 +166,6 @@ const toggleContent = () => {
     }, 2000);
   }
 };
+
+toggleUserActions();
+toggleContent();
