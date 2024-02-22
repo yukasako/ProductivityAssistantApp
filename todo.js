@@ -131,3 +131,26 @@ const setIcon = (cat) => {
   }
   return icon;
 };
+
+// Generate Todo-cards based on localStorage
+const renderTodoCards = () => {
+  // Get users array from local storage
+  let users = JSON.parse(localStorage.getItem("users"));
+  // Get logged users ID
+  let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+  // Find the logged-in user by ID and push todo to their todos array
+  let user = users.find((user) => user.id === loggedInUser);
+
+  user.todos.forEach((todo, i) => {
+    if(todo.completed){
+      todoListCompleted.append(createTodoCard(todo, i))
+    }else{
+      todoListUncompleted.append(createTodoCard(todo, i))
+
+    }
+  })
+
+  todoContainer.append(todoListUncompleted, todoListCompleted)
+};
+
+renderTodoCards();
