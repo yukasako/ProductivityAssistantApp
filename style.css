@@ -20,6 +20,10 @@
   display:none;
 }
 
+body{
+  overflow:hidden;
+}
+
 main{
   height:100vh;
   width:100vw;
@@ -75,6 +79,8 @@ nav .wrapper{
   font-size:3rem;
   width:100%;
   text-align: center;
+	-webkit-animation: fade-in-fwd 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+	        animation: fade-in-fwd 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
 
 #userDetails{
@@ -104,3 +110,49 @@ nav .wrapper{
   align-items: center;
   justify-content: center;
 }
+
+#modalScreen{
+  z-index:2;
+  background-color: hsla(0, 0%, 0%, 0.800);
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0;
+  left:0;
+  align-items: center;
+  justify-content: center;
+}
+
+#modal{
+  width:33%;
+  height:50%;
+  background-color: white;  
+}
+
+/* Animation for Welcome Quote */
+@-webkit-keyframes fade-in-fwd {
+  0% {
+    -webkit-transform: translateZ(-80px);
+            transform: translateZ(-80px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+    opacity: 1;
+  }
+}
+@keyframes fade-in-fwd {
+  0% {
+    -webkit-transform: translateZ(-80px);
+            transform: translateZ(-80px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+    opacity: 1;
+  }
+}
+
+
