@@ -33,8 +33,6 @@ createTodoBtn.addEventListener("click", () => {
     <label for="timeEstimate">Time Estimate</label>
     <input type="time" name="timeEstimate" id="timeEstimate">
     <br>
-    <label for="category">Category</label>
-    <br>
     `;
 
   let saveTodoBtn = document.createElement("button");
@@ -101,7 +99,7 @@ const createTodoCard = (todo, index) => {
   let completedCheckbox = document.createElement("input");
   completedCheckbox.type = "checkbox";
 
-  completedCheckbox.addEventListener("click", () => {});
+  completedCheckbox.addEventListener("click", (e) => {});
 
   li.append(icon, todo.title, completedCheckbox);
 
