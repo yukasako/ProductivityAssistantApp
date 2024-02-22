@@ -70,19 +70,17 @@ createTodoBtn.addEventListener("click", () => {
 
     // Get users array from local storage
     let users = JSON.parse(localStorage.getItem("users"));
-
     // Get logged users ID
     let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-
     // Find the logged-in user by ID and push todo to their todos array
     let user = users.find((user) => user.id === loggedInUser);
-
     user.todos.push(todo);
 
     // Save updated users array back to local storage
     localStorage.setItem("users", JSON.stringify(users));
     todoInput.innerHTML = "";
 
+    // 2, Generate a todo card to DOM.
     let todoCard = createTodoCard(todo, user.todos.length - 1);
     todoListUncompleted.append(todoCard);
   });
@@ -92,6 +90,7 @@ createTodoBtn.addEventListener("click", () => {
 // called upon in both renderTodoList function and createTodoBtn event listener
 const createTodoCard = (todo, index) => {
   let li = document.createElement("li");
+  li.style.border = "1px solid lightpink";
   li.dataset.index = index;
 
   let icon = setIcon(todo.category);
@@ -140,15 +139,10 @@ const renderTodoCards = () => {
   let user = users.find((user) => user.id === loggedInUser);
 
   user.todos.forEach((todo, i) => {
-    if(todo.completed){
-      todoListCompleted.append(createTodoCard(todo, i))
-    }else{
-      todoListUncompleted.append(createTodoCard(todo, i))
-
-    }
+      todoList.append(createTodoCard(todo, i))
   })
 
-  todoContainer.append(todoListUncompleted, todoListCompleted)
+  todoContainer.append(todoList);
 };
 
 renderTodoCards();

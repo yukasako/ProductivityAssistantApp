@@ -33,7 +33,8 @@ import("/loggedin.js");
 // import("/quote.js");
 import("/logout.js");
 import("/todo.js");
-import("/filtertodos.js");
+import("/filtertodos.js")
+import("/habit.js");
 
 // globala variabler i main
 let loginScreen = document.querySelector("#loginScreen");
@@ -68,11 +69,20 @@ let highlights = document.createElement("article");
 highlights.id = "highlights";
 let content = document.createElement("article");
 content.id = "content";
+
 let createTodoBtn = document.createElement("button");
 createTodoBtn.innerText = "New Todo";
 let todoContainer = document.createElement("article");
-let todoListCompleted = document.createElement("ul");
-let todoListUncompleted = document.createElement("ul");
+todoContainer.id = "todoContainer";
+let todoList = document.createElement("ul");
+todoList.classList.add("todoList")
+
+let createHabitBtn = document.createElement("button");
+createHabitBtn.innerText = "New Habit";
+let habitContainer = document.createElement("article");
+habitContainer.id = "habitContainer";
+let habitList = document.createElement("ul");
+habitList.classList.add("habitList");
 
 // creating other elements
 
@@ -128,7 +138,7 @@ const getQuote = async () => {
 // hiding / showing locked content based on log in status
 const toggleContent = () => {
   if (localStorage.getItem("loggedInUser")) {
-    content.append(createTodoBtn, todoContainer);
+    content.append(createTodoBtn, todoContainer, createHabitBtn, habitContainer,);
     container.append(highlights, content);
     loadingScreen.append(greeting);
 
