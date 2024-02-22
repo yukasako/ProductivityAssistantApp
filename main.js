@@ -70,7 +70,6 @@ highlights.id = "highlights";
 let content = document.createElement("article");
 content.id = "content";
 
-=======
 // todo filters and sorting + all todos here¨
 let todoContent = document.createElement("section");
 todoContent.classList.add("todoContent");
@@ -156,7 +155,7 @@ const getQuote = async () => {
 const toggleContent = () => {
   if (localStorage.getItem("loggedInUser")) {
     todoContent.append(createNewTodoDiv, todoContainer);
-    habitContent.append(createHabitDiv, habitContainer);
+    habitsContent.append(createHabitDiv, habitContainer);
 
     container.append(highlights, content);
     loadingScreen.append(greeting);
