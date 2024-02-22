@@ -1,4 +1,6 @@
 let todoInput = document.createElement("div");
+todoInput.classList.add("todoInputs");
+
 createTodoBtn.addEventListener("click", () => {
   // Create input form
 
@@ -24,7 +26,7 @@ createTodoBtn.addEventListener("click", () => {
     <input type="text" name="description" id="description"><br>
     <label for="status">Status</label>
     <select name="status" id="status">
-      <option value="false">Uncompleted</option>
+      <option value="false" selected>Uncompleted</option>
       <option value="true">Completed</option>
     </select>
     <br>
@@ -40,7 +42,7 @@ createTodoBtn.addEventListener("click", () => {
   saveTodoBtn.innerText = "Save";
 
   todoInput.append(categoryDiv, saveTodoBtn);
-  content.append(todoInput);
+  createNewTodoDiv.append(todoInput);
 
   saveTodoBtn.addEventListener("click", () => {
     // 1, Save the input data to local storage.
@@ -50,6 +52,10 @@ createTodoBtn.addEventListener("click", () => {
     let inputDeadline = document.querySelector("#deadline").value;
     let inputTimeEstimate = document.querySelector("#timeEstimate").value;
     let inputCategory = document.querySelector("#categorySelect").value;
+
+    if (!inputCategory) {
+      inputCategory = document.querySelector("#categorySelect option").value;
+    }
 
     // Extract hours and minutes from inputTimeEstimate
     let [hours, minutes] = inputTimeEstimate
@@ -84,6 +90,38 @@ createTodoBtn.addEventListener("click", () => {
     // 2, Generate a todo card to DOM.
     let todoCard = createTodoCard(todo, user.todos.length - 1);
     todoList.append(todoCard);
+    if (inputTitle) {
+      // Create todo object
+      let todo = {
+        title: inputTitle,
+        description: inputDescription,
+        completed: inputStatus,
+        deadline: inputDeadline,
+        timeEstimate: {
+          hours: hours,
+          minutes: minutes,
+        },
+        category: inputCategory,
+      };
+
+      // Get users array from local storage
+      let users = JSON.parse(localStorage.getItem("users"));
+
+      // Get logged users ID
+      let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+
+      // Find the logged-in user by ID and push todo to their todos array
+      let user = users.find((user) => user.id === loggedInUser);
+
+      user.todos.push(todo);
+
+      // Save updated users array back to local storage
+      localStorage.setItem("users", JSON.stringify(users));
+      todoInput.innerHTML = "";
+
+      let todoCard = createTodoCard(todo, user.todos.length - 1);
+      todoList.append(todoCard);
+    }
   });
 });
 
@@ -93,6 +131,7 @@ const createTodoCard = (todo, index) => {
   let li = document.createElement("li");
   li.style.border = "1px solid lightpink";
   li.dataset.index = index;
+  li.classList.add("todo");
 
   let icon = setIcon(todo.category);
 
@@ -126,12 +165,15 @@ const setIcon = (cat) => {
     case "home":
       icon.classList.add("fa-solid", "fa-house-chimney");
       break;
+    case "leasure":
+      icon.classList.add("fa-solid", "fa-icons");
+      break;
   }
   return icon;
 };
 
 // Generate Todo-cards based on localStorage
-const renderTodoCards = () => {
+const renderTodoCards = (todoArr = []) => {
   // Get users array from local storage
   let users = JSON.parse(localStorage.getItem("users"));
   // Get logged users ID
@@ -139,11 +181,50 @@ const renderTodoCards = () => {
   // Find the logged-in user by ID and push todo to their todos array
   let user = users.find((user) => user.id === loggedInUser);
 
-  user.todos.forEach((todo, i) => {
-    todoList.append(createTodoCard(todo, i));
-  });
+  if (todoArr.length === 0) {
+    user.todos.forEach((todo, i) => {
+      todoList.append(createTodoCard(todo, i));
+    });
+  } else {
+    todoArr.forEach((todo, i) => {
+      todoList.append(createTodoCard(todo, i));
+    });
+  }
 
   todoContainer.append(todoList);
 };
 
 renderTodoCards();
+
+filterTodosBtn.addEventListener("click", () => {
+  let status = todosFilterSelect.value;
+  let checkedCategories = document.querySelectorAll(
+    "[name='category']:checked"
+  );
+  let chosenCategories = [];
+
+  checkedCategories.forEach((checkbox) =>
+    chosenCategories.push(checkbox.value.toLowerCase())
+  );
+
+  let currentUserId = localStorage.getItem("loggedInUser");
+
+  users = JSON.parse(localStorage.getItem("users"));
+
+  let chosenTodos = [];
+
+  let currentUser = users.find((user) => +user.id === +currentUserId);
+
+  currentUser.todos.forEach((todo) => {
+    if (
+      (chosenCategories.includes(todo.category) ||
+        chosenCategories.length === 0) &&
+      (status === "" || status === todo.completed)
+    ) {
+      chosenTodos.push(todo);
+    }
+  });
+
+  todoList.innerHTML = "";
+  renderTodoCards(chosenTodos);
+});

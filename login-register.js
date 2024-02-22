@@ -75,7 +75,9 @@ loginBtn.addEventListener("click", () => {
             localStorage.setItem("loggedInUser", matchingUser.id);
 
             logOutBtn.dataset.id = matchingUser.id;
+
             // appending the log out button
+            // getQuote();
             toggleUserActions();
             toggleContent();
           }
@@ -93,6 +95,3 @@ loginBtn.addEventListener("click", () => {
   usernameInput.value = "";
   passwordInput.value = "";
 });
-
-toggleUserActions();
-toggleContent();
