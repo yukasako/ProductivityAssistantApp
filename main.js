@@ -70,6 +70,7 @@ let content = document.createElement("article");
 content.id = "content";
 let createTodoBtn = document.createElement("button");
 createTodoBtn.innerText = "New Todo";
+let todoContainer = document.createElement("article");
 let todoListCompleted = document.createElement("ul");
 let todoListUncompleted = document.createElement("ul");
 
@@ -92,7 +93,7 @@ todoCategories.forEach((cat) => {
     <label>${cat}</label></div>`;
 });
 todosFilterSection.append(todoCheckboxes, todosFilterSelect, filterTodosBtn);
-
+todoContainer.append(todosFilterSection);
 const toggleUserActions = (ms = 0, msg = "") => {
   if (localStorage.getItem("loggedInUser")) {
     logOutBtn.style.display = "block";
@@ -127,7 +128,7 @@ const getQuote = async () => {
 // hiding / showing locked content based on log in status
 const toggleContent = () => {
   if (localStorage.getItem("loggedInUser")) {
-    content.append(createTodoBtn);
+    content.append(createTodoBtn, todoContainer);
     container.append(highlights, content);
     loadingScreen.append(greeting);
 
