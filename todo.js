@@ -1,8 +1,22 @@
 let todoInput = document.createElement("div");
 createTodoBtn.addEventListener("click", () => {
   // Create input form
+
+  let categoryDiv = document.createElement("div");
+  let categoryLabel = document.createElement("label");
+  categoryLabel.innerText = "Category";
+  categoryLabel.setAttribute("for", "category");
+  let categorySelect = document.createElement("select");
+  categorySelect.name = "category";
+  categorySelect.id = "categorySelect";
+
+  todoCategories.forEach((cat) => {
+    categorySelect.innerHTML += `<option value="${cat.toLowerCase()}">${cat}</option>`;
+  });
+
+  categorySelect.append(todoCategories);
+  categoryDiv.append(categoryLabel, categorySelect);
   todoInput.innerHTML = `
-    <div>
     <label for="title">Title</label>
     <input type="text" name="title" id="title"><br>
     <label for="description">Description</label>
@@ -20,17 +34,15 @@ createTodoBtn.addEventListener("click", () => {
     <input type="time" name="timeEstimate" id="timeEstimate">
     <br>
     <label for="category">Category</label>
-    <select name="category" id="category">
-      <option value="study">Stydy</option>
-      <option value="training">Training</option>
-    </select>
     <br>
-    <button id="saveTodoBtn">Save</button>
-  </div>
     `;
+
+  let saveTodoBtn = document.createElement("button");
+  saveTodoBtn.innerText = "Save";
+
+  todoInput.append(categoryDiv, saveTodoBtn);
   content.append(todoInput);
 
-  let saveTodoBtn = document.querySelector("#saveTodoBtn");
   saveTodoBtn.addEventListener("click", () => {
     // 1, Save the input data to local storage.
     let inputTitle = document.querySelector("#title").value;
@@ -38,7 +50,7 @@ createTodoBtn.addEventListener("click", () => {
     let inputStatus = document.querySelector("#status").value;
     let inputDeadline = document.querySelector("#deadline").value;
     let inputTimeEstimate = document.querySelector("#timeEstimate").value;
-    let inputCategory = document.querySelector("#category").value;
+    let inputCategory = document.querySelector("#categorySelect").value;
 
     // Extract hours and minutes from inputTimeEstimate
     let [hours, minutes] = inputTimeEstimate
@@ -65,27 +77,57 @@ createTodoBtn.addEventListener("click", () => {
     let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
 
     // Find the logged-in user by ID and push todo to their todos array
-    users.forEach((user) => {
-      if (user.id === loggedInUser) {
-        user.todos.push(todo);
-      }
-    });
+    let user = users.find((user) => user.id === loggedInUser);
+
+    user.todos.push(todo);
 
     // Save updated users array back to local storage
     localStorage.setItem("users", JSON.stringify(users));
     todoInput.innerHTML = "";
 
-    // 2, Generate a todo card.
-    let todoCard = document.createElement("div");
-    todoCard.style.border = "2px solid lightblue";
-    todoCard.innerHTML = `
-    <p>Title: ${inputTitle}</p>
-    <p>Description: ${inputDescription}</p>
-    <p>Status: ${inputStatus}</p>
-    <p>Deadline: ${inputDeadline}</p>
-    <p>Time Estimate: ${inputTimeEstimate}</p>
-    <p>Caregory: ${inputCategory}</p>
-    `;
-    content.append(todoCard);
+    let todoCard = createTodoCard(todo, user.todos.length - 1);
+    todoListUncompleted.append(todoCard);
   });
 });
+
+// function that creates todo card
+// called upon in both renderTodoList function and createTodoBtn event listener
+const createTodoCard = (todo, index) => {
+  let li = document.createElement("li");
+  li.dataset.index = index;
+
+  let icon = setIcon(todo.category);
+
+  let completedCheckbox = document.createElement("input");
+  completedCheckbox.type = "checkbox";
+
+  completedCheckbox.addEventListener("click", () => {});
+
+  li.append(icon, todo.title, completedCheckbox);
+
+  return li;
+};
+
+// function that assigns icon based on category
+const setIcon = (cat) => {
+  let icon = document.createElement("i");
+
+  switch (cat.toLowerCase()) {
+    case "work":
+      icon.classList.add("fa-solid", "fa-briefcase");
+      break;
+    case "workout":
+      icon.classList.add("fa-solid", "fa-dumbbell");
+      break;
+    case "health":
+      icon.classList.add("fa-solid", "fa-heart-pulse");
+      break;
+    case "studying":
+      icon.classList.add("fa-solid", "fa-graduation-cap");
+      break;
+    case "home":
+      icon.classList.add("fa-solid", "fa-house-chimney");
+      break;
+  }
+  return icon;
+};
