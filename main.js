@@ -36,6 +36,8 @@ import("/todo.js");
 import("/habit.js");
 
 // globala variabler i main
+const main = document.querySelector('main');
+
 let loginScreen = document.querySelector("#loginScreen");
 let loadingScreen = document.querySelector("#loadingScreen");
 let appScreen = document.querySelector("#appScreen");
@@ -169,7 +171,7 @@ const toggleContent = () => {
     setTimeout(() => {
       loadingScreen.classList.add("displayNone");
       appScreen.classList.remove("displayNone");
-    }, 4000);
+    }, 5000);
 
     // renderTodoCards();
   } else {
@@ -186,3 +188,21 @@ const toggleContent = () => {
 
 toggleUserActions();
 toggleContent();
+
+//Create a Modal or Destroy Modal Functions
+const createModal = () => {
+  const modalScreen = document.createElement('section');
+  modalScreen.setAttribute('id', 'modalScreen');
+  modalScreen.classList.add('flex');
+
+  const modal = document.createElement('article');
+  modal.setAttribute('id', 'modal');
+
+  modalScreen.appendChild(modal);
+
+  main.appendChild(modalScreen);
+}
+const destroyModal = () => {
+  document.getElementById("modalScreen").remove();
+}
+
