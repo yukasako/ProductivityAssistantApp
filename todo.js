@@ -17,8 +17,9 @@ createTodoBtn.addEventListener("click", () => {
   categorySelect.append(todoCategories);
   categoryDiv.append(categoryLabel, categorySelect);
   todoInput.innerHTML = `
+    <h2>Input New Todo</h2>
     <label for="title">Title</label>
-    <input type="text" name="title" id="title"><br>
+    <input type="text" name="todoTitle" id="todoTitle"><br>
     <label for="description">Description</label>
     <input type="text" name="description" id="description"><br>
     <label for="status">Status</label>
@@ -43,7 +44,7 @@ createTodoBtn.addEventListener("click", () => {
 
   saveTodoBtn.addEventListener("click", () => {
     // 1, Save the input data to local storage.
-    let inputTitle = document.querySelector("#title").value;
+    let inputTitle = document.querySelector("#todoTitle").value;
     let inputDescription = document.querySelector("#description").value;
     let inputStatus = document.querySelector("#status").value;
     let inputDeadline = document.querySelector("#deadline").value;
@@ -82,7 +83,7 @@ createTodoBtn.addEventListener("click", () => {
 
     // 2, Generate a todo card to DOM.
     let todoCard = createTodoCard(todo, user.todos.length - 1);
-    todoListUncompleted.append(todoCard);
+    todoList.append(todoCard);
   });
 });
 
@@ -139,8 +140,8 @@ const renderTodoCards = () => {
   let user = users.find((user) => user.id === loggedInUser);
 
   user.todos.forEach((todo, i) => {
-      todoList.append(createTodoCard(todo, i))
-  })
+    todoList.append(createTodoCard(todo, i));
+  });
 
   todoContainer.append(todoList);
 };

@@ -12,9 +12,9 @@ const createHabitCard = (habit, index) => {
 
   li.append(
     completedCheckbox,
-    "Title: " + habit.title,
-    "/ Priority: " + habit.priority,
-    "/ Streak: " + habit.streak
+    habit.title,
+    ", Priority: " + habit.priority,
+    ", Streak: " + habit.streak
   );
 
   return li;
@@ -24,10 +24,9 @@ let habitInput = document.createElement("div");
 createHabitBtn.addEventListener("click", () => {
   // Create input form
   habitInput.innerHTML = `
+    <h2>Input New Habit</h2>
     <label for="habitTitle">Title</label>
     <input type="text" name="habitTitle" id="habitTitle"><br>
-    <label for="streak">Streak</label>
-    <input type="number" min="0" name="streak" id="streak"><br>
     <label for="priority">Priority</label>
     <input type="number" min="0" name="priority" id="priority"><br>
     `;
@@ -41,13 +40,12 @@ createHabitBtn.addEventListener("click", () => {
   saveHabitBtn.addEventListener("click", () => {
     // 1, Save the input data to local storage.
     let inputHabitTitle = document.querySelector("#habitTitle").value;
-    let inputStreak = document.querySelector("#streak").value;
     let inputPriority = document.querySelector("#priority").value;
 
     // Create todo object
     let habit = {
       title: inputHabitTitle,
-      streak: inputStreak,
+      streak: 0,
       priority: inputPriority,
     };
 
