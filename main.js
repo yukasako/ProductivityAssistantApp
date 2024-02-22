@@ -33,6 +33,7 @@ import("/loggedin.js");
 // import("/quote.js");
 import("/logout.js");
 import("/todo.js");
+import("/habit.js");
 
 // globala variabler i main
 let loginScreen = document.querySelector("#loginScreen");
@@ -68,6 +69,7 @@ highlights.id = "highlights";
 let content = document.createElement("article");
 content.id = "content";
 
+=======
 // todo filters and sorting + all todos here¨
 let todoContent = document.createElement("section");
 todoContent.classList.add("todoContent");
@@ -81,8 +83,21 @@ let createNewTodoDiv = document.createElement("div");
 let createTodoBtn = document.createElement("button");
 createTodoBtn.innerText = "New Todo";
 createNewTodoDiv.append(createTodoBtn);
+
 let todoContainer = document.createElement("article");
+todoContainer.id = "todoContainer";
 let todoList = document.createElement("ul");
+todoList.classList.add("todoList");
+
+let createHabitDiv = document.createElement("div");
+let createHabitBtn = document.createElement("button");
+createHabitBtn.innerText = "New Habit";
+createHabitDiv.append(createHabitBtn);
+
+let habitContainer = document.createElement("article");
+habitContainer.id = "habitContainer";
+let habitList = document.createElement("ul");
+habitList.classList.add("habitList");
 
 // creating other elements
 
@@ -140,6 +155,8 @@ const getQuote = async () => {
 const toggleContent = () => {
   if (localStorage.getItem("loggedInUser")) {
     todoContent.append(createNewTodoDiv, todoContainer);
+    habitContent.append(createHabitDiv, habitContainer);
+
     container.append(highlights, content);
     loadingScreen.append(greeting);
 

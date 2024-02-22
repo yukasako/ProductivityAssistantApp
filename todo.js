@@ -19,8 +19,9 @@ createTodoBtn.addEventListener("click", () => {
   categorySelect.append(todoCategories);
   categoryDiv.append(categoryLabel, categorySelect);
   todoInput.innerHTML = `
+    <h2>Input New Todo</h2>
     <label for="title">Title</label>
-    <input type="text" name="title" id="title" required><br>
+    <input type="text" name="todoTitle" id="todoTitle"><br>
     <label for="description">Description</label>
     <input type="text" name="description" id="description"><br>
     <label for="status">Status</label>
@@ -45,7 +46,7 @@ createTodoBtn.addEventListener("click", () => {
 
   saveTodoBtn.addEventListener("click", () => {
     // 1, Save the input data to local storage.
-    let inputTitle = document.querySelector("#title").value;
+    let inputTitle = document.querySelector("#todoTitle").value;
     let inputDescription = document.querySelector("#description").value;
     let inputStatus = document.querySelector("#status").value;
     let inputDeadline = document.querySelector("#deadline").value;
@@ -61,6 +62,34 @@ createTodoBtn.addEventListener("click", () => {
       .split(":")
       .map((num) => parseInt(num));
 
+    // Create todo object
+    let todo = {
+      title: inputTitle,
+      description: inputDescription,
+      completed: inputStatus,
+      deadline: inputDeadline,
+      timeEstimate: {
+        hours: hours,
+        minutes: minutes,
+      },
+      category: inputCategory,
+    };
+
+    // Get users array from local storage
+    let users = JSON.parse(localStorage.getItem("users"));
+    // Get logged users ID
+    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+    // Find the logged-in user by ID and push todo to their todos array
+    let user = users.find((user) => user.id === loggedInUser);
+    user.todos.push(todo);
+
+    // Save updated users array back to local storage
+    localStorage.setItem("users", JSON.stringify(users));
+    todoInput.innerHTML = "";
+
+    // 2, Generate a todo card to DOM.
+    let todoCard = createTodoCard(todo, user.todos.length - 1);
+    todoList.append(todoCard);
     if (inputTitle) {
       // Create todo object
       let todo = {
@@ -100,6 +129,7 @@ createTodoBtn.addEventListener("click", () => {
 // called upon in both renderTodoList function and createTodoBtn event listener
 const createTodoCard = (todo, index) => {
   let li = document.createElement("li");
+  li.style.border = "1px solid lightpink";
   li.dataset.index = index;
   li.classList.add("todo");
 
