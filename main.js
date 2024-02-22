@@ -62,6 +62,7 @@ let todoCategories = [
   "Home",
 ];
 
+console.log("hejhej");
 let greeting = document.createElement("article");
 greeting.id = "greeting";
 let highlights = document.createElement("article");
