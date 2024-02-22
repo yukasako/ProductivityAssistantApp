@@ -30,7 +30,7 @@
 
 import("/login-register.js");
 import("/loggedin.js");
-import("/quote.js");
+// import("/quote.js");
 import("/logout.js");
 import("/todo.js");
 import("/filtertodos.js");
@@ -39,7 +39,6 @@ import("/filtertodos.js");
 let loginScreen = document.querySelector("#loginScreen");
 let loadingScreen = document.querySelector("#loadingScreen");
 let appScreen = document.querySelector("#appScreen");
-
 
 let usernameInput = document.querySelector("#username");
 let passwordInput = document.querySelector("#password");
@@ -63,7 +62,6 @@ let todoCategories = [
   "Home",
 ];
 
-// creating articles
 let greeting = document.createElement("article");
 greeting.id = "greeting";
 let highlights = document.createElement("article");
@@ -72,6 +70,8 @@ let content = document.createElement("article");
 content.id = "content";
 let createTodoBtn = document.createElement("button");
 createTodoBtn.innerText = "New Todo";
+let todoListCompleted = document.createElement("ul");
+let todoListUncompleted = document.createElement("ul");
 
 // creating other elements
 
@@ -107,24 +107,22 @@ const toggleUserActions = (ms = 0, msg = "") => {
   }
 };
 
-
 const getQuote = async () => {
   try {
-      const res = await fetch("https://api.quotable.io/random?maxLength=75?");
-      const data = await res.json();
-      if (!data || !data.content) {
-          throw new Error("Could not retrieve data.");
-      }
-      const quote = data.content;
+    const res = await fetch("https://api.quotable.io/random?maxLength=75?");
+    const data = await res.json();
+    if (!data || !data.content) {
+      throw new Error("Could not retrieve data.");
+    }
+    const quote = data.content;
 
-      let quoteH2 = document.createElement("h2");
-      quoteH2.innerText = quote;
-      greeting.appendChild(quoteH2);
-
+    let quoteH2 = document.createElement("h2");
+    quoteH2.innerText = quote;
+    greeting.appendChild(quoteH2);
   } catch (error) {
-      console.error("Error fetching quote:", error);
+    console.error("Error fetching quote:", error);
   }
-}
+};
 
 // hiding / showing locked content based on log in status
 const toggleContent = () => {
@@ -132,27 +130,25 @@ const toggleContent = () => {
     content.append(createTodoBtn);
     container.append(highlights, content);
     loadingScreen.append(greeting);
-    
+
     //create a quote
     getQuote();
 
     //cycle from login screen -> loadin screen -> app screen
     loginScreen.classList.add("displayNone");
     loadingScreen.classList.remove("displayNone");
-    setTimeout(()=>{
+    setTimeout(() => {
       loadingScreen.classList.add("displayNone");
       appScreen.classList.remove("displayNone");
-    }, 4000)
-    
-    
+    }, 4000);
   } else {
     content.innerHTML = "";
     container.innerHTML = "";
 
     //Cycle back to login screen
-    setTimeout(()=>{
+    setTimeout(() => {
       appScreen.classList.add("displayNone");
       loginScreen.classList.remove("displayNone");
-    }, 2000)
+    }, 2000);
   }
 };
