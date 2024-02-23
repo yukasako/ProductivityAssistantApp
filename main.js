@@ -62,6 +62,7 @@ let todoCategories = [
 
 let emptyArr = [];
 
+
 //Quote Functionality
 let quote;
 
@@ -90,10 +91,6 @@ const getQuote = async () => {
   }
 };
 getQuote();
-
-
-
-
 
 let highlights = document.createElement("article");
 highlights.id = "highlights";
@@ -269,7 +266,6 @@ const logInUser = async () => {
             logOutBtn.dataset.id = matchingUser.id;
 
             // appending the log out button
-            getQuote();
             toggleUserActions();
             toggleContent();
           }
@@ -337,6 +333,7 @@ const toggleContent = async () => {
     appScreen.append(highlights, content);
 
     //cycle from login screen -> loadin screen -> app screen
+
       loginScreen.classList.add("displayNone");
       setTimeout(()=>{
         loadingScreen.classList.remove("displayNone");
@@ -380,6 +377,7 @@ const destroyModal = () => {
   document.getElementById("modalScreen").remove();
 };
 
+
 loginBtn.addEventListener("click", () => {
   logInUser();
 });
@@ -391,3 +389,4 @@ const getCurrentUser = () => {
 
   return currentUser;
 };
+
