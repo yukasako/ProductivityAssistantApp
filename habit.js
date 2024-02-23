@@ -38,71 +38,69 @@ const createHabitCard = (habit, id) => {
     if (e.target === completedBtn) {
       console.log("clicked checkbox");
     } else {
-      editHabit(id);
+      editHabit(id, li);
     }
-    
-  // Edit habit
-  let editHabitField = document.createElement("div");
-  let editHabitBtn = document.createElement("button");
-  editHabitBtn.innerText = "Edit";
-  editHabitBtn.addEventListener("click", () => {
-    // Empty the card
-    li.innerText = "";
-    // Get current habit from local storage
-    let users = JSON.parse(localStorage.getItem("users"));
-    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-    let user = users.find((user) => user.id === loggedInUser);
-    let currentHabit = user.habits[index];
-    // Make edit-input-field.
-    editHabitField.innerHTML = `<h2>Edit Habit</h2>
-    <label for="habitTitle">Title</label>
-    <input type="text" name="habitTitle" id="habitTitle" value=${currentHabit.title}><br>
-    <label for="priority">Priority</label>
-    <input type="number" min="0" name="priority" id="priority" value=${currentHabit.priority}><br>
-    <label for="streak">Streak</label>
-    <input type="number" min="0" name="streak" id="streak" value=${currentHabit.streak}>`;
-
-    // SaveBtn to edit update.
-    let saveEditBtn = document.createElement("button");
-    saveEditBtn.innerText = "Save edit";
-    li.append(editHabitField, saveEditBtn);
-    saveEditBtn.addEventListener("click", () => {
-      // 1, Save the input data to local storage.
-      let inputHabitTitle = document.querySelector("#habitTitle").value;
-      let inputPriority = document.querySelector("#priority").value;
-      let inputStreak = document.querySelector("#streak").value;
-      // Create habit object
-      let habit = {
-        title: inputHabitTitle,
-        streak: inputStreak,
-        priority: inputPriority,
-      };
-      // Get users array from local storage
-      let users = JSON.parse(localStorage.getItem("users"));
-      // Get logged users ID
-      let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-      // Find the logged-in user by ID and push habit to their habits array
-      let user = users.find((user) => user.id === loggedInUser);
-      user.habits[index] = habit;
-      // Save updated users array back to local storage
-      localStorage.setItem("users", JSON.stringify(users));
-
-      // 2, Updated info to DOM.
-      li.innerHTML = "";
-      editHabitField.innerHTML = "";
-      streak.innerText = `Streak: ${habit.streak}`;
-      li.append(
-        habit.title,
-        ", Priority: " + habit.priority,
-        completedBtn,
-        editHabitBtn,
-        streak,
-        editHabitField
-      );
-
-      return li;
-    });
   });
+
+  // Edit habit
+  // let editHabitField = document.createElement("div");
+
+  // editHabitBtn.addEventListener("click", () => {
+  // Empty the card
+  // li.innerText = "";
+  // // Get current habit from local storage
+  // let users = JSON.parse(localStorage.getItem("users"));
+  // let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+  // let user = users.find((user) => user.id === loggedInUser);
+  // let currentHabit = user.habits[index];
+  // Make edit-input-field.
+  // editHabitField.innerHTML = `<h2>Edit Habit</h2>
+  // <label for="habitTitle">Title</label>
+  // <input type="text" name="habitTitle" id="habitTitle" value=${currentHabit.title}><br>
+  // <label for="priority">Priority</label>
+  // <input type="number" min="0" name="priority" id="priority" value=${currentHabit.priority}><br>
+  // <label for="streak">Streak</label>
+  // <input type="number" min="0" name="streak" id="streak" value=${currentHabit.streak}>`;
+
+  // SaveBtn to edit update.
+  // let saveEditBtn = document.createElement("button");
+  // saveEditBtn.innerText = "Save edit";
+  // li.append(editHabitField, saveEditBtn);
+  // saveEditBtn.addEventListener("click", () => {
+  // 1, Save the input data to local storage.
+  // let inputHabitTitle = document.querySelector("#habitTitle").value;
+  // let inputPriority = document.querySelector("#priority").value;
+  // let inputStreak = document.querySelector("#streak").value;
+  // Create habit object
+  // let habit = {
+  //   title: inputHabitTitle,
+  //   streak: inputStreak,
+  //   priority: inputPriority,
+  // };
+  // Get users array from local storage
+  // let users = JSON.parse(localStorage.getItem("users"));
+  // // Get logged users ID
+  // let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+  // // Find the logged-in user by ID and push habit to their habits array
+  // let user = users.find((user) => user.id === loggedInUser);
+  // user.habits[index] = habit;
+  // Save updated users array back to local storage
+  // localStorage.setItem("users", JSON.stringify(users));
+
+  // 2, Updated info to DOM.
+  // li.innerHTML = "";
+  // editHabitField.innerHTML = "";
+  // streak.innerText = `Streak: ${habit.streak}`;
+  // li.append(
+  //   habit.title,
+  //   ", Priority: " + habit.priority,
+  //   completedBtn,
+  //   streak,
+  // );
+
+  // return li;
+  // });
+  // });
 
   li.append(habit.title, ", Priority: " + habit.priority, completedBtn, streak);
 
@@ -219,15 +217,14 @@ filterHabitsBtn.addEventListener("click", () => {
   filterHabits();
 });
 
-const editHabit = (i) => {
-  modal.innerText = i;
-
+const editHabit = (i, li) => {
   // getting current user
   let users = JSON.parse(localStorage.getItem("users"));
   let currentLoggedInId = localStorage.getItem("loggedInUser");
   let user = users.find((user) => +user.id === +currentLoggedInId);
 
   let habit = user.habits.find((habit) => habit.id === i);
+  li = createHabitCard(habit);
 
   let modalContent = document.createElement("div");
   modalContent.classList.add("modalContent");
@@ -235,14 +232,26 @@ const editHabit = (i) => {
 
   let editForm = document.createElement("div");
   editForm.classList.add("editForm", "flex", "flex-column");
-  editForm.innerHTML =
-    `<div class="flex flex-column"><label for="editHabitTitle">Title</label><input id="editHabitTitle" type="text"/></div>` +
-    `<div class="flex"><label for="editHabitPrio">Priority</label><select id="editHabitPrio"><option value="0">0</option>` +
-    `<option value="1">1</option><option value="2">2</option>` +
-    `<option value="3">3</option><option value="4">4</option><option value="5">5</option>` +
-    `</select></div>` +
-    `<div class="flex><<label for="editHabitStreak">Streak</label><input type="number" min="0" id="editHabitStreak"/></div>`;
+  editForm.innerHTML = `<div class="flex flex-column"><label for="editHabitTitle">Title</label><input id="editHabitTitle" value="${habit.title}"type="text"/></div>`;
 
+  let prioDiv = document.createElement("div");
+  prioDiv.classList.add("flex");
+  prioDiv.innerHTML = "<label for='editHabitPrio'>Priority</label>";
+  let prioSelect = document.createElement("select");
+  prioSelect.id = "editHabitPrio";
+  for (let x = 0; x < 6; x++) {
+    if (+habit.priority === x) {
+      prioSelect.innerHTML += `<option value="${habit.priority}" selected="selected">${habit.priority}</option>`;
+    } else {
+      prioSelect.innerHTML += `<option value="${x}">${x}</option>`;
+    }
+  }
+
+  prioDiv.append(prioSelect);
+
+  editForm.append(prioDiv);
+
+  editForm.innerHTML += `<div class="flex><label for="editHabitStreak">Streak</label><input type="number" min="0" id="editHabitStreak" value="${habit.streak}"/></div>`;
   // buttons
   let actionButtons = document.createElement("div");
   actionButtons.classList.add("actionButtons", "flex");
@@ -254,6 +263,7 @@ const editHabit = (i) => {
   saveEditsBtn.innerText = "Save";
   saveEditsBtn.addEventListener("click", () => {
     // save changes
+    saveHabitEdits(habit);
   });
 
   // delete habit button
@@ -272,6 +282,33 @@ const editHabit = (i) => {
   modalContent.append(editForm);
 
   createModal();
+};
+
+const saveHabitEdits = (habit) => {
+  // 1, Save the input data to local storage.
+  let inputHabitTitle = document.querySelector("#editHabitTitle").value;
+  let inputPriority = document.querySelector("#editHabitPrio").value;
+  let inputStreak = document.querySelector("#editHabitStreak").value;
+  // Create habit object
+  let editedHabit = {
+    id: habit.id,
+    title: inputHabitTitle,
+    streak: inputStreak,
+    priority: inputPriority,
+  };
+
+  // Get users array from local storage
+  let users = JSON.parse(localStorage.getItem("users"));
+  // Get logged users ID
+  let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+  // Find the logged-in user by ID and push habit to their habits array
+  let user = users.find((user) => user.id === loggedInUser);
+  let activeHabit = user.habits.find((item) => +item.id === +habit.id);
+  let index = user.habits.indexOf(activeHabit);
+  user.habits[index] = editedHabit;
+  console.log(JSON.stringify(users));
+  // Save updated users array back to local storage
+  localStorage.setItem("users", JSON.stringify(users));
 };
 
 renderHabitCards(emptyArr, true);
