@@ -2,3 +2,11 @@
 fixa så att enter loggar in user
 
 semantik för habits/todos - kolla om container behovs
+
+skapas dubbla todos
+
+
+delete container
+ändra semantik
+
+fixa quote();
