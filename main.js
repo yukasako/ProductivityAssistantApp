@@ -48,8 +48,6 @@ let loginBtn = document.querySelector("#logIn");
 let logOutBtn = document.querySelector("#logOut");
 let logInRegisterContent = document.querySelector("#userDetails");
 
-let container = document.querySelector("#container");
-
 let statusMsg = document.querySelector("#statusMsg");
 
 let users = [];
