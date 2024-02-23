@@ -145,12 +145,26 @@ habitsPrioSelect.innerHTML =
 habitsFilterSection.append(habitsPrioSelect, filterHabitsBtn);
 habitContainer.append(habitsFilterSection);
 
+// generating random id:s
+const generateId = (arr) => {
+  // generate random id
+  let id = Math.floor(Math.random() * 1000);
+
+  let idExists = arr.find((item) => item.id === id);
+
+  //   check if id already exists
+  while (idExists) {
+    id = Math.floor(Math.random() * 1000);
+  }
+
+  return id;
+};
+
 // register and log in user logic
 const registerUser = () => {
   statusMsg.innerText = "";
   let username = usernameInput.value;
   let password = passwordInput.value;
-  let id;
 
   // checking if user entered values
   if (username && password) {
@@ -160,9 +174,8 @@ const registerUser = () => {
       let existingUser = users.find((user) => user.username === username);
 
       if (!existingUser) {
-        id = users.length + 1;
         let newUser = {
-          id,
+          id: generateId(users),
           username,
           password,
           loggedIn: false,
@@ -179,7 +192,7 @@ const registerUser = () => {
       }
     } else {
       let newUser = {
-        id: 1,
+        id: Math.floor(Math.random() * 1000),
         username,
         password,
         loggedIn: false,
@@ -315,7 +328,10 @@ const toggleContent = () => {
     loadingScreen.append(greeting);
 
     //create a quote
-    // getQuote();
+    getQuote();
+
+    // renderTodoCards(emptyArr, false);
+    // renderHabitCards(emptyArr, false);
 
     //cycle from login screen -> loadin screen -> app screen
     loginScreen.classList.add("displayNone");
@@ -340,12 +356,12 @@ toggleUserActions();
 toggleContent();
 
 //Create a Modal or Destroy Modal Functions
+const modal = document.createElement("article");
 const createModal = () => {
   const modalScreen = document.createElement("section");
   modalScreen.setAttribute("id", "modalScreen");
   modalScreen.classList.add("flex");
 
-  const modal = document.createElement("article");
   modal.setAttribute("id", "modal");
 
   modalScreen.appendChild(modal);
@@ -354,4 +370,12 @@ const createModal = () => {
 };
 const destroyModal = () => {
   document.getElementById("modalScreen").remove();
+};
+
+const getCurrentUser = () => {
+  let users = JSON.parse(localStorage.getItem("users"));
+  let currentUserId = localStorage.getItem("loggedInUser");
+  let currentUser = users.find((user) => +user.id === +currentUserId);
+
+  return currentUser;
 };
