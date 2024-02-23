@@ -162,7 +162,7 @@ const toggleContent = () => {
     todoContent.append(createNewTodoDiv, todoContainer);
     habitsContent.append(createHabitDiv, habitContainer);
 
-    container.append(highlights, content);
+    appScreen.append(highlights, content);
     loadingScreen.append(greeting);
 
     //create a quote
@@ -179,7 +179,7 @@ const toggleContent = () => {
     // renderTodoCards();
   } else {
     content.innerHTML = "";
-    container.innerHTML = "";
+    appScreen.innerHTML = "";
 
     //Cycle back to login screen
     setTimeout(() => {
