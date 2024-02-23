@@ -49,7 +49,7 @@ const createNewTodo = () => {
 };
 
 const saveNewTodo = () => {
-  // 1, Save the input data to local storage.
+  // Save the input data to local storage.
   let inputTitle = document.querySelector("#todoTitle").value;
   let inputDescription = document.querySelector("#description").value;
   let inputDeadline = document.querySelector("#deadline").value;
@@ -66,12 +66,31 @@ const saveNewTodo = () => {
     .split(":")
     .map((num) => parseInt(num));
 
-  // 2, Generate a todo card to DOM.
+  // Get users array from local storage
+  let users = JSON.parse(localStorage.getItem("users"));
+
+  // Get logged users ID
+  let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+
+  // Find the logged-in user by ID and push todo to their todos array
+  let user = users.find((user) => user.id === loggedInUser);
+
+  // generate random id
+  let todoId = Math.floor(Math.random() * 1000);
+
+  let idExists = user.todos.find((todo) => todo.id === todoId);
+
+  while (idExists) {
+    todoId = Math.floor(Math.random() * 1000);
+  }
+
+  // Generate a todo card to DOM.
 
   //ensure user entered a title before creating new todo
   if (inputTitle) {
     // Create todo object
     let todo = {
+      id: todoId,
       title: inputTitle,
       description: inputDescription,
       completed: false,
@@ -83,22 +102,13 @@ const saveNewTodo = () => {
       category: inputCategory,
     };
 
-    // Get users array from local storage
-    let users = JSON.parse(localStorage.getItem("users"));
-
-    // Get logged users ID
-    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-
-    // Find the logged-in user by ID and push todo to their todos array
-    let user = users.find((user) => user.id === loggedInUser);
-
     user.todos.push(todo);
 
     // Save updated users array back to local storage
     localStorage.setItem("users", JSON.stringify(users));
     todoInput.innerHTML = "";
 
-    let todoCard = createTodoCard(todo, user.todos.length - 1);
+    let todoCard = createTodoCard(todo, todo.id);
     todoList.append(todoCard);
   }
 };
@@ -109,10 +119,10 @@ createTodoBtn.addEventListener("click", () => {
 
 // function that creates todo card
 // called upon in both renderTodoList function and createTodoBtn event listener
-const createTodoCard = (todo, index) => {
+const createTodoCard = (todo, id) => {
   let li = document.createElement("li");
   li.style.border = "1px solid lightpink";
-  li.dataset.index = index;
+  li.dataset.id = id;
   li.classList.add("todo");
 
   let icon = setIcon(todo.category);
@@ -120,7 +130,13 @@ const createTodoCard = (todo, index) => {
   let completedCheckbox = document.createElement("input");
   completedCheckbox.type = "checkbox";
 
-  completedCheckbox.addEventListener("click", (e) => {});
+  li.addEventListener("click", (e) => {
+    if (e.target === completedCheckbox) {
+      console.log("clicked checkbox");
+    } else {
+      editTodo(id);
+    }
+  });
 
   li.append(icon, todo.title, completedCheckbox);
 
@@ -164,12 +180,12 @@ const renderTodoCards = (todoArr = [], onload = false) => {
   let user = users.find((user) => user.id === loggedInUser);
 
   if (todoArr.length === 0 && onload) {
-    user.todos.forEach((todo, i) => {
-      todoList.append(createTodoCard(todo, i));
+    user.todos.forEach((todo) => {
+      todoList.append(createTodoCard(todo, todo.id));
     });
   } else {
-    todoArr.forEach((todo, i) => {
-      todoList.append(createTodoCard(todo, i));
+    todoArr.forEach((todo) => {
+      todoList.append(createTodoCard(todo, todo.id));
     });
   }
 
@@ -220,5 +236,10 @@ const filterTodos = () => {
 filterTodosBtn.addEventListener("click", () => {
   filterTodos();
 });
+
+const editTodo = (i) => {
+  modal.innerText = i;
+  createModal();
+};
 
 renderTodoCards(emptyArr, true);
