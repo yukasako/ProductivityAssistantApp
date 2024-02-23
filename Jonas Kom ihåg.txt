@@ -1,12 +1,5 @@
 
 fixa så att enter loggar in user
-
-semantik för habits/todos - kolla om container behovs
-
-skapas dubbla todos
+styla habits / todos
 
 
-delete container
-ändra semantik
-
-fixa quote();
