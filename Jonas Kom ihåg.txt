@@ -1,3 +1,6 @@
 
 fixa så att enter loggar in user
 styla habits / todos
+marker hamnar utanför paddingen
+bugg när man klickar på li
+röd ram runt li
