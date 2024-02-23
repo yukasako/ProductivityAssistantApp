@@ -333,7 +333,6 @@ const toggleContent = async () => {
     appScreen.append(highlights, content);
 
     //cycle from login screen -> loadin screen -> app screen
-
       loginScreen.classList.add("displayNone");
       setTimeout(()=>{
         loadingScreen.classList.remove("displayNone");
