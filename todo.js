@@ -2,46 +2,50 @@ let todoInput = document.createElement("div");
 todoInput.classList.add("todoInputs");
 
 const createNewTodo = () => {
-  // Create input form
+  if (todoInput.innerHTML === "") {
+    // Create input form
 
-  let categoryDiv = document.createElement("div");
-  let categoryLabel = document.createElement("label");
-  categoryLabel.innerText = "Category";
-  categoryLabel.setAttribute("for", "categorySelect");
-  let categorySelect = document.createElement("select");
-  categorySelect.name = "category";
-  categorySelect.id = "categorySelect";
+    let categoryDiv = document.createElement("div");
+    let categoryLabel = document.createElement("label");
+    categoryLabel.innerText = "Category";
+    categoryLabel.setAttribute("for", "categorySelect");
+    let categorySelect = document.createElement("select");
+    categorySelect.name = "category";
+    categorySelect.id = "categorySelect";
 
-  todoCategories.forEach((cat) => {
-    categorySelect.innerHTML += `<option value="${cat.toLowerCase()}">${cat}</option>`;
-  });
+    todoCategories.forEach((cat) => {
+      categorySelect.innerHTML += `<option value="${cat.toLowerCase()}">${cat}</option>`;
+    });
 
-  categorySelect.append(todoCategories);
-  categoryDiv.append(categoryLabel, categorySelect);
-  todoInput.innerHTML = `
-  <h2>Input New Todo</h2>
-  <label for="todoTitle">Title</label>
-  <input type="text" name="todoTitle" id="todoTitle"><br>
-  <label for="description">Description</label>
-  <input type="text" name="description" id="description">
-  <br>
-  <label for="deadline">Deadline</label>
-  <input type="date" name="deadline" id="deadline">
-  <br>
-  <label for="timeEstimate">Time Estimate</label>
-  <input type="time" name="timeEstimate" id="timeEstimate">
-  <br>
-  `;
+    categorySelect.append(todoCategories);
+    categoryDiv.append(categoryLabel, categorySelect);
+    todoInput.innerHTML = `
+    <h2>Input New Todo</h2>
+    <label for="todoTitle">Title</label>
+    <input type="text" name="todoTitle" id="todoTitle"><br>
+    <label for="description">Description</label>
+    <input type="text" name="description" id="description">
+    <br>
+    <label for="deadline">Deadline</label>
+    <input type="date" name="deadline" id="deadline">
+    <br>
+    <label for="timeEstimate">Time Estimate</label>
+    <input type="time" name="timeEstimate" id="timeEstimate">
+    <br>
+    `;
 
-  let saveTodoBtn = document.createElement("button");
-  saveTodoBtn.innerText = "Save";
+    let saveTodoBtn = document.createElement("button");
+    saveTodoBtn.innerText = "Save";
 
-  todoInput.append(categoryDiv, saveTodoBtn);
-  createNewTodoDiv.append(todoInput);
+    todoInput.append(categoryDiv, saveTodoBtn);
+    createNewTodoDiv.append(todoInput);
 
-  saveTodoBtn.addEventListener("click", () => {
-    saveNewTodo();
-  });
+    saveTodoBtn.addEventListener("click", () => {
+      saveNewTodo();
+    });
+  } else {
+    todoInput.innerHTML = "";
+  }
 };
 
 const saveNewTodo = () => {

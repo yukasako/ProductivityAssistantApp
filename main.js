@@ -79,6 +79,7 @@ habitsContent.classList.add("habitsContent");
 content.append(todoContent, habitsContent);
 
 let createNewTodoDiv = document.createElement("div");
+createNewTodoDiv.id = "createNewTodoDiv";
 let createTodoBtn = document.createElement("button");
 createTodoBtn.innerText = "New Todo";
 createNewTodoDiv.append(createTodoBtn);
@@ -88,10 +89,10 @@ todoContainer.id = "todoContainer";
 let todoList = document.createElement("ul");
 todoList.classList.add("todoList");
 
-let createHabitDiv = document.createElement("div");
+let createNewHabitDiv = document.createElement("div");
 let createHabitBtn = document.createElement("button");
 createHabitBtn.innerText = "New Habit";
-createHabitDiv.append(createHabitBtn);
+createNewHabitDiv.append(createHabitBtn);
 
 let habitContainer = document.createElement("article");
 habitContainer.id = "habitContainer";
@@ -108,12 +109,11 @@ let filterTodosBtn = document.createElement("button");
 filterTodosBtn.id = "filterTodos";
 filterTodosBtn.innerText = "Filter";
 let todoStatusSelect = document.createElement("div");
-todoStatusSelect.innerHTML = "<label for='todosFilterSelect'>Status:</label>";
 let todosFilterSelect = document.createElement("select");
 todoStatusSelect.append(todosFilterSelect);
 todosFilterSelect.id = "todosFilterSelect";
 todosFilterSelect.innerHTML =
-  "<option value='' selected='selected'>All</option><option value='false'>Not Completed</option><option value='true'>Completed</option>";
+  "<option value='' selected='selected'>Status</option><option value='false'>Not Completed</option><option value='true'>Completed</option>";
 let todoCheckboxes = document.createElement("div");
 todoCheckboxes.classList.add("flex");
 todoCategories.forEach((cat) => {
@@ -122,6 +122,28 @@ todoCategories.forEach((cat) => {
 });
 todosFilterSection.append(todoCheckboxes, todoStatusSelect, filterTodosBtn);
 todoContainer.append(todosFilterSection);
+
+// habits filtering
+let habitsFilterSection = document.createElement("div"); //append this to top of todo list
+
+habitsFilterSection.classList.add("flex", "habitsFilters");
+let filterHabitsBtn = document.createElement("button");
+filterHabitsBtn.id = "filterHabits";
+filterHabitsBtn.innerText = "Filter";
+
+let habitsPrioSelect = document.createElement("select");
+habitsPrioSelect.id = "priorityFilter";
+habitsPrioSelect.innerHTML =
+  "<option value='' selected='selected'>Priority</option>" +
+  "<option value='0'>0</option>" +
+  "<option value='1'>1</option>" +
+  "<option value='2'>2</option>" +
+  "<option value='3'>3</option>" +
+  "<option value='4'>4</option>" +
+  "<option value='5'>5</option>";
+
+habitsFilterSection.append(habitsPrioSelect, filterHabitsBtn);
+habitContainer.append(habitsFilterSection);
 
 // register and log in user logic
 const registerUser = () => {
@@ -287,7 +309,7 @@ const getQuote = async () => {
 const toggleContent = () => {
   if (localStorage.getItem("loggedInUser")) {
     todoContent.append(createNewTodoDiv, todoContainer);
-    habitsContent.append(createHabitDiv, habitContainer);
+    habitsContent.append(createNewHabitDiv, habitContainer);
 
     appScreen.append(highlights, content);
     loadingScreen.append(greeting);
