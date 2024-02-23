@@ -1,3 +1,5 @@
+
+
 // exempeldata
 // let user = {
 //   id: 1,
@@ -63,9 +65,39 @@ let todoCategories = [
 let emptyArr = [];
 let onLoad = true;
 
-console.log("hejhej");
-let greeting = document.createElement("article");
-greeting.id = "greeting";
+//Quote Functionality
+let quote;
+
+//Retrieve quote and create greeting
+const getQuote = async () => {
+  console.log("working");
+  try {
+    const res = await fetch("https://api.quotable.io/random?maxLength=75?");
+    const data = await res.json();
+    if (!data || !data.content) {
+      throw new Error("Could not retrieve data.");
+    }
+
+    else{
+      quote = data.content;
+      let greeting = document.createElement("article");
+      greeting.id = "greeting";
+      let quoteH2 = document.createElement("h2");
+      quoteH2.innerText = quote;
+      loadingScreen.append(greeting);
+      greeting.appendChild(quoteH2);
+    }
+
+  } catch (error) {
+    console.error("Error fetching quote:", error);
+  }
+};
+getQuote();
+
+
+
+
+
 let highlights = document.createElement("article");
 highlights.id = "highlights";
 let content = document.createElement("div");
@@ -172,7 +204,7 @@ const registerUser = () => {
   passwordInput.value = "";
 };
 
-const logInUser = () => {
+const logInUser = async () => {
   statusMsg.innerText = "";
   let username = usernameInput.value;
   let password = passwordInput.value;
@@ -201,7 +233,6 @@ const logInUser = () => {
             logOutBtn.dataset.id = matchingUser.id;
 
             // appending the log out button
-            // getQuote();
             toggleUserActions();
             toggleContent();
           }
@@ -222,10 +253,6 @@ const logInUser = () => {
 
 registerBtn.addEventListener("click", () => {
   registerUser();
-});
-
-loginBtn.addEventListener("click", () => {
-  logInUser();
 });
 
 // log out logic
@@ -264,42 +291,24 @@ const toggleUserActions = (ms = 0, msg = "") => {
   }
 };
 
-const getQuote = async () => {
-  try {
-    const res = await fetch("https://api.quotable.io/random?maxLength=75?");
-    const data = await res.json();
-    if (!data || !data.content) {
-      throw new Error("Could not retrieve data.");
-    }
-    const quote = data.content;
-
-    let quoteH2 = document.createElement("h2");
-    quoteH2.innerText = quote;
-    greeting.appendChild(quoteH2);
-  } catch (error) {
-    console.error("Error fetching quote:", error);
-  }
-};
-
 // hiding / showing locked content based on log in status
-const toggleContent = () => {
+const toggleContent = async () => {
   if (localStorage.getItem("loggedInUser")) {
     todoContent.append(createNewTodoDiv, todoContainer);
     habitsContent.append(createHabitDiv, habitContainer);
 
     appScreen.append(highlights, content);
-    loadingScreen.append(greeting);
-
-    //create a quote
-    getQuote();
 
     //cycle from login screen -> loadin screen -> app screen
-    loginScreen.classList.add("displayNone");
-    loadingScreen.classList.remove("displayNone");
-    setTimeout(() => {
-      loadingScreen.classList.add("displayNone");
-      appScreen.classList.remove("displayNone");
-    }, 5000);
+      loginScreen.classList.add("displayNone");
+      setTimeout(()=>{
+        loadingScreen.classList.remove("displayNone");
+        setTimeout(() => {
+          loadingScreen.classList.add("displayNone");
+          appScreen.classList.remove("displayNone");
+        }, 5000);
+      }, 1000)
+
 
     // renderTodoCards();
   } else {
@@ -333,3 +342,7 @@ const createModal = () => {
 const destroyModal = () => {
   document.getElementById("modalScreen").remove();
 };
+
+loginBtn.addEventListener("click", () => {
+  logInUser();
+});
