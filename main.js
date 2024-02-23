@@ -61,9 +61,7 @@ let todoCategories = [
 ];
 
 let emptyArr = [];
-let onLoad = true;
 
-console.log("hejhej");
 let greeting = document.createElement("article");
 greeting.id = "greeting";
 let highlights = document.createElement("article");
@@ -109,16 +107,20 @@ todosFilterSection.classList.add("flex", "flex-column", "todosFilters");
 let filterTodosBtn = document.createElement("button");
 filterTodosBtn.id = "filterTodos";
 filterTodosBtn.innerText = "Filter";
+let todoStatusSelect = document.createElement("div");
+todoStatusSelect.innerHTML = "<label for='todosFilterSelect'>Status:</label>";
 let todosFilterSelect = document.createElement("select");
+todoStatusSelect.append(todosFilterSelect);
+todosFilterSelect.id = "todosFilterSelect";
 todosFilterSelect.innerHTML =
-  "<option value='' selected>All</option><option value='false'>Not Completed</option><option value='true'>Completed</option>";
+  "<option value='' selected='selected'>All</option><option value='false'>Not Completed</option><option value='true'>Completed</option>";
 let todoCheckboxes = document.createElement("div");
 todoCheckboxes.classList.add("flex");
 todoCategories.forEach((cat) => {
-  todoCheckboxes.innerHTML += `<div><input type="checkbox" name="category" value="${cat}"/>
-    <label>${cat}</label></div>`;
+  todoCheckboxes.innerHTML += `<div><input type="checkbox" id="${cat}Filter" name="category" value="${cat}"/>
+    <label for="${cat}Filter">${cat}</label></div>`;
 });
-todosFilterSection.append(todoCheckboxes, todosFilterSelect, filterTodosBtn);
+todosFilterSection.append(todoCheckboxes, todoStatusSelect, filterTodosBtn);
 todoContainer.append(todosFilterSection);
 
 // register and log in user logic
@@ -201,7 +203,7 @@ const logInUser = () => {
             logOutBtn.dataset.id = matchingUser.id;
 
             // appending the log out button
-            // getQuote();
+            getQuote();
             toggleUserActions();
             toggleContent();
           }
@@ -291,7 +293,7 @@ const toggleContent = () => {
     loadingScreen.append(greeting);
 
     //create a quote
-    getQuote();
+    // getQuote();
 
     //cycle from login screen -> loadin screen -> app screen
     loginScreen.classList.add("displayNone");
@@ -300,8 +302,6 @@ const toggleContent = () => {
       loadingScreen.classList.add("displayNone");
       appScreen.classList.remove("displayNone");
     }, 5000);
-
-    // renderTodoCards();
   } else {
     content.innerHTML = "";
     appScreen.innerHTML = "";
