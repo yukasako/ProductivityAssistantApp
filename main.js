@@ -80,10 +80,10 @@ const getQuote = async () => {
       quote = data.content;
       let greeting = document.createElement("article");
       greeting.id = "greeting";
-      let quoteH2 = document.createElement("h2");
-      quoteH2.innerText = quote;
+      let quoteH1 = document.createElement("h1");
+      quoteH1.innerText = quote;
       loadingScreen.append(greeting);
-      greeting.appendChild(quoteH2);
+      greeting.appendChild(quoteH1);
     }
 
   } catch (error) {
@@ -99,7 +99,7 @@ content.id = "content";
 content.classList.add("flex");
 content.classList.add("flex-column");
 
-// todo filters and sorting + all todos here¨
+// todo filters and sorting + all todos here
 let todoContent = document.createElement("article");
 todoContent.classList.add("todoContent");
 // habit filters and sorting + all habits here
@@ -107,6 +107,14 @@ let habitsContent = document.createElement("article");
 habitsContent.classList.add("habitsContent");
 
 content.append(todoContent, habitsContent);
+
+let todoContentH2 = document.createElement("h2");
+todoContentH2.innerText = "Things To Do";
+todoContent.append(todoContentH2);
+
+let habitsContentH2 = document.createElement("h2");
+habitsContentH2.innerText = "Routine";
+habitsContent.append(habitsContentH2);
 
 let createNewTodoDiv = document.createElement("div");
 createNewTodoDiv.id = "createNewTodoDiv";
