@@ -41,7 +41,7 @@ const createHabitCard = (habit, index) => {
   editHabitBtn.addEventListener("click", () => {
     // Empty the card
     li.innerText = "";
-    // Get users array from local storage and pull current habit
+    // Get current habit from local storage
     let users = JSON.parse(localStorage.getItem("users"));
     let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
     let user = users.find((user) => user.id === loggedInUser);
