@@ -96,6 +96,8 @@ let highlights = document.createElement("article");
 highlights.id = "highlights";
 let content = document.createElement("div");
 content.id = "content";
+content.classList.add("flex");
+content.classList.add("flex-column");
 
 // todo filters and sorting + all todos here¨
 let todoContent = document.createElement("article");
