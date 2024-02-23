@@ -63,10 +63,8 @@ let todoCategories = [
 let emptyArr = [];
 
 
-//Quote Functionality
-let quote;
-
 //Retrieve quote and create greeting
+let quote;
 const getQuote = async () => {
   console.log("working");
   try {
@@ -337,8 +335,8 @@ const toggleUserActions = (ms = 0, msg = "") => {
 // hiding / showing locked content based on log in status
 const toggleContent = async () => {
   if (localStorage.getItem("loggedInUser")) {
-    todoContent.append(createNewTodoDiv, todoContainer);
-    habitsContent.append(createNewHabitDiv, habitContainer);
+    todoContent.append(todoContainer, createNewTodoDiv);
+    habitsContent.append(habitContainer, createNewHabitDiv);
 
     appScreen.append(highlights, content);
 
