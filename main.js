@@ -36,7 +36,7 @@ import("/todo.js");
 import("/habit.js");
 
 // globala variabler i main
-const main = document.querySelector('main');
+const main = document.querySelector("main");
 
 let loginScreen = document.querySelector("#loginScreen");
 let loadingScreen = document.querySelector("#loadingScreen");
@@ -63,6 +63,9 @@ let todoCategories = [
   "Studying",
   "Home",
 ];
+
+let emptyArr = [];
+let onLoad = true;
 
 console.log("hejhej");
 let greeting = document.createElement("article");
@@ -112,7 +115,7 @@ filterTodosBtn.id = "filterTodos";
 filterTodosBtn.innerText = "Filter";
 let todosFilterSelect = document.createElement("select");
 todosFilterSelect.innerHTML =
-  '<option value="" selected>All</option><option value="false">Not Completed</option><option value="true">Completed</option>';
+  "<option value='' selected>All</option><option value='false'>Not Completed</option><option value='true'>Completed</option>";
 let todoCheckboxes = document.createElement("div");
 todoCheckboxes.classList.add("flex");
 todoCategories.forEach((cat) => {
@@ -159,7 +162,7 @@ const toggleContent = () => {
     todoContent.append(createNewTodoDiv, todoContainer);
     habitsContent.append(createHabitDiv, habitContainer);
 
-    container.append(highlights, content);
+    appScreen.append(highlights, content);
     loadingScreen.append(greeting);
 
     //create a quote
@@ -176,7 +179,7 @@ const toggleContent = () => {
     // renderTodoCards();
   } else {
     content.innerHTML = "";
-    container.innerHTML = "";
+    appScreen.innerHTML = "";
 
     //Cycle back to login screen
     setTimeout(() => {
@@ -191,18 +194,17 @@ toggleContent();
 
 //Create a Modal or Destroy Modal Functions
 const createModal = () => {
-  const modalScreen = document.createElement('section');
-  modalScreen.setAttribute('id', 'modalScreen');
-  modalScreen.classList.add('flex');
+  const modalScreen = document.createElement("section");
+  modalScreen.setAttribute("id", "modalScreen");
+  modalScreen.classList.add("flex");
 
-  const modal = document.createElement('article');
-  modal.setAttribute('id', 'modal');
+  const modal = document.createElement("article");
+  modal.setAttribute("id", "modal");
 
   modalScreen.appendChild(modal);
 
   main.appendChild(modalScreen);
-}
+};
 const destroyModal = () => {
   document.getElementById("modalScreen").remove();
-}
-
+};

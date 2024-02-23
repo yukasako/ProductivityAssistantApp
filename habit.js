@@ -6,16 +6,35 @@ const createHabitCard = (habit, index) => {
   li.classList.add("habit");
   li.dataset.index = index;
 
-  let completedCheckbox = document.createElement("input");
-  completedCheckbox.type = "checkbox";
-  completedCheckbox.addEventListener("click", (e) => {});
+  let streak = document.createElement("p");
+  streak.innerText = `Streak: ${habit.streak}`;
 
-  li.append(
-    completedCheckbox,
-    habit.title,
-    ", Priority: " + habit.priority,
-    ", Streak: " + habit.streak
-  );
+  let completedBtn = document.createElement("button");
+  completedBtn.innerText = "Complete";
+  completedBtn.addEventListener("click", (e) => {
+    // (Data)Get current user from local storage
+    let users = JSON.parse(localStorage.getItem("users"));
+    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+    let user = users.find((user) => user.id === loggedInUser);
+    // Get the streak of the habit and +1
+    let streak = parseInt(user.habits[index].streak);
+    user.habits[index].streak = streak + 1;
+    // Save updated users array back to local storage
+    localStorage.setItem("users", JSON.stringify(users));
+
+    //(DOM)Get strakDOM and update to the same as data.
+    let streakElement = li.querySelector("p");
+    streakElement.innerText = `Streak: ${user.habits[index].streak}`;
+
+    // Set timer on completeBtn
+    completedBtn.disabled = true;
+    let timer = 43200000;
+    setTimeout(() => {
+      completedBtn.disabled = false;
+    }, timer);
+  });
+
+  li.append(habit.title, ", Priority: " + habit.priority, completedBtn, streak);
 
   return li;
 };
@@ -42,7 +61,7 @@ createHabitBtn.addEventListener("click", () => {
     let inputHabitTitle = document.querySelector("#habitTitle").value;
     let inputPriority = document.querySelector("#priority").value;
 
-    // Create todo object
+    // Create habit object
     let habit = {
       title: inputHabitTitle,
       streak: 0,
@@ -67,7 +86,7 @@ createHabitBtn.addEventListener("click", () => {
   });
 });
 
-// Generate Todo-cards based on localStorage
+// Generate habit-cards based on localStorage
 const renderHabitCards = () => {
   // Get users array from local storage
   let users = JSON.parse(localStorage.getItem("users"));

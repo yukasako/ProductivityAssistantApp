@@ -23,12 +23,7 @@ createTodoBtn.addEventListener("click", () => {
     <label for="title">Title</label>
     <input type="text" name="todoTitle" id="todoTitle"><br>
     <label for="description">Description</label>
-    <input type="text" name="description" id="description"><br>
-    <label for="status">Status</label>
-    <select name="status" id="status">
-      <option value="false" selected>Uncompleted</option>
-      <option value="true">Completed</option>
-    </select>
+    <input type="text" name="description" id="description">
     <br>
     <label for="deadline">Deadline</label>
     <input type="date" name="deadline" id="deadline">
@@ -48,11 +43,11 @@ createTodoBtn.addEventListener("click", () => {
     // 1, Save the input data to local storage.
     let inputTitle = document.querySelector("#todoTitle").value;
     let inputDescription = document.querySelector("#description").value;
-    let inputStatus = document.querySelector("#status").value;
     let inputDeadline = document.querySelector("#deadline").value;
     let inputTimeEstimate = document.querySelector("#timeEstimate").value;
     let inputCategory = document.querySelector("#categorySelect").value;
 
+    // if user didnt chose a category, set it to the first one
     if (!inputCategory) {
       inputCategory = document.querySelector("#categorySelect option").value;
     }
@@ -62,40 +57,15 @@ createTodoBtn.addEventListener("click", () => {
       .split(":")
       .map((num) => parseInt(num));
 
-    // Create todo object
-    let todo = {
-      title: inputTitle,
-      description: inputDescription,
-      completed: inputStatus,
-      deadline: inputDeadline,
-      timeEstimate: {
-        hours: hours,
-        minutes: minutes,
-      },
-      category: inputCategory,
-    };
-
-    // Get users array from local storage
-    let users = JSON.parse(localStorage.getItem("users"));
-    // Get logged users ID
-    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-    // Find the logged-in user by ID and push todo to their todos array
-    let user = users.find((user) => user.id === loggedInUser);
-    user.todos.push(todo);
-
-    // Save updated users array back to local storage
-    localStorage.setItem("users", JSON.stringify(users));
-    todoInput.innerHTML = "";
-
     // 2, Generate a todo card to DOM.
-    let todoCard = createTodoCard(todo, user.todos.length - 1);
-    todoList.append(todoCard);
+
+    //ensure user entered a title before creating new todo
     if (inputTitle) {
       // Create todo object
       let todo = {
         title: inputTitle,
         description: inputDescription,
-        completed: inputStatus,
+        completed: false,
         deadline: inputDeadline,
         timeEstimate: {
           hours: hours,
@@ -173,7 +143,7 @@ const setIcon = (cat) => {
 };
 
 // Generate Todo-cards based on localStorage
-const renderTodoCards = (todoArr = []) => {
+const renderTodoCards = (todoArr = [], onload = false) => {
   // Get users array from local storage
   let users = JSON.parse(localStorage.getItem("users"));
   // Get logged users ID
@@ -181,7 +151,7 @@ const renderTodoCards = (todoArr = []) => {
   // Find the logged-in user by ID and push todo to their todos array
   let user = users.find((user) => user.id === loggedInUser);
 
-  if (todoArr.length === 0) {
+  if (todoArr.length === 0 && onload) {
     user.todos.forEach((todo, i) => {
       todoList.append(createTodoCard(todo, i));
     });
@@ -193,8 +163,6 @@ const renderTodoCards = (todoArr = []) => {
 
   todoContainer.append(todoList);
 };
-
-renderTodoCards();
 
 filterTodosBtn.addEventListener("click", () => {
   let status = todosFilterSelect.value;
@@ -211,20 +179,29 @@ filterTodosBtn.addEventListener("click", () => {
 
   users = JSON.parse(localStorage.getItem("users"));
 
-  let chosenTodos = [];
-
   let currentUser = users.find((user) => +user.id === +currentUserId);
 
-  currentUser.todos.forEach((todo) => {
+  let categoryMatches = false;
+  let statusMatches = false;
+  let chosenTodos = currentUser.todos.filter((todo) => {
     if (
-      (chosenCategories.includes(todo.category) ||
-        chosenCategories.length === 0) &&
-      (status === "" || status === todo.completed)
+      chosenCategories.includes(todo.category) ||
+      chosenCategories.length === 0
     ) {
-      chosenTodos.push(todo);
+      categoryMatches = true;
     }
+
+    if (todo.completed === status || status === "" || status === null) {
+      statusMatches = true;
+    }
+
+    return categoryMatches && statusMatches;
   });
 
+  console.log(chosenTodos);
+
   todoList.innerHTML = "";
-  renderTodoCards(chosenTodos);
+  renderTodoCards(chosenTodos, false);
 });
+
+renderTodoCards(emptyArr, onLoad);
