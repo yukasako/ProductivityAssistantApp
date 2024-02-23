@@ -47,7 +47,7 @@ const createHabitCard = (habit, index) => {
     <label for="priority">Priority</label>
     <input type="number" min="0" name="priority" id="priority" value=${habit.priority}><br>
     <label for="streak">Streak</label>
-    <input type="number" min="0" name="priority" id="priority" value=${habit.streak}>`;
+    <input type="number" min="0" name="streak" id="streak" value=${habit.streak}>`;
 
     // SaveBtn to edit update.
     let saveEditBtn = document.createElement("button");
@@ -57,10 +57,11 @@ const createHabitCard = (habit, index) => {
       // 1, Save the input data to local storage.
       let inputHabitTitle = document.querySelector("#habitTitle").value;
       let inputPriority = document.querySelector("#priority").value;
+      let inputStreak = document.querySelector("#streak").value;
       // Create habit object
       let habit = {
         title: inputHabitTitle,
-        streak: 0,
+        streak: inputStreak,
         priority: inputPriority,
       };
       // Get users array from local storage
@@ -76,6 +77,7 @@ const createHabitCard = (habit, index) => {
       // 2, Updated info to DOM.
       li.innerHTML = "";
       editHabitField.innerHTML = "";
+      streak.innerText = `Streak: ${habit.streak}`;
       li.append(
         habit.title,
         ", Priority: " + habit.priority,
