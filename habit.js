@@ -67,7 +67,7 @@ const createHabitCard = (habit, index) => {
       let users = JSON.parse(localStorage.getItem("users"));
       // Get logged users ID
       let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-      // Find the logged-in user by ID and push todo to their todos array
+      // Find the logged-in user by ID and push habit to their habits array
       let user = users.find((user) => user.id === loggedInUser);
       user.habits[index] = habit;
       // Save updated users array back to local storage
@@ -134,7 +134,7 @@ createHabitBtn.addEventListener("click", () => {
     let users = JSON.parse(localStorage.getItem("users"));
     // Get logged users ID
     let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-    // Find the logged-in user by ID and push todo to their todos array
+    // Find the logged-in user by ID and push habit to their habits array
     let user = users.find((user) => user.id === loggedInUser);
     user.habits.push(habit);
 
@@ -142,25 +142,62 @@ createHabitBtn.addEventListener("click", () => {
     localStorage.setItem("users", JSON.stringify(users));
     habitInput.innerHTML = "";
 
-    // 2, Generate a todo card to DOM.
+    // 2, Generate a habit card to DOM.
     let habitCard = createHabitCard(habit, user.habits.length - 1);
     habitList.prepend(habitCard);
   });
 });
 
 // Generate habit-cards based on localStorage
-const renderHabitCards = () => {
+const renderHabitCards = (habitArr = [], onload = false) => {
   // Get users array from local storage
   let users = JSON.parse(localStorage.getItem("users"));
   // Get logged users ID
   let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-  // Find the logged-in user by ID and push todo to their todos array
+  // Find the logged-in user by ID and push habit to their habits array
   let user = users.find((user) => user.id === loggedInUser);
 
-  user.habits.forEach((habit, i) => {
-    habitList.append(createHabitCard(habit, i));
-  });
+  if (habitArr.length === 0 && onload) {
+    user.habits.forEach((habit, i) => {
+      habitList.append(createHabitCard(habit, i));
+    });
+  } else {
+    habitArr.forEach((habit, i) => {
+      habitList.append(createHabitCard(habit, i));
+    });
+  }
 
   habitContainer.append(habitList);
 };
-renderHabitCards();
+
+const filterHabits = () => {
+  let chosenPriority = document.querySelector("#priorityFilter").value;
+
+  // getting current logged in user
+  let currentUserId = localStorage.getItem("loggedInUser");
+
+  // getting list of users
+  users = JSON.parse(localStorage.getItem("users"));
+
+  // matching current user
+  let currentUser = users.find((user) => +user.id === +currentUserId);
+
+  // array to hold the habits that match chosen filters
+  let chosenHabits = [];
+
+  // populating the chosenHabits array using filter method
+  chosenHabits = currentUser.habits.filter((habit) => {
+    return habit.priority === chosenPriority || chosenPriority === "";
+  });
+
+  // clearing the current ul
+  habitList.innerHTML = "";
+  // generating new list based on new habit list
+  renderHabitCards(chosenHabits, false);
+};
+
+filterHabitsBtn.addEventListener("click", () => {
+  filterHabits();
+});
+
+renderHabitCards(emptyArr, true);
