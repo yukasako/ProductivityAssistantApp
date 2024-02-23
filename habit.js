@@ -39,15 +39,21 @@ const createHabitCard = (habit, index) => {
   let editHabitBtn = document.createElement("button");
   editHabitBtn.innerText = "Edit";
   editHabitBtn.addEventListener("click", () => {
-    // Empty the card and make edit-input-field.
+    // Empty the card
     li.innerText = "";
+    // Get current habit from local storage
+    let users = JSON.parse(localStorage.getItem("users"));
+    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+    let user = users.find((user) => user.id === loggedInUser);
+    let currentHabit = user.habits[index];
+    // Make edit-input-field.
     editHabitField.innerHTML = `<h2>Edit Habit</h2>
     <label for="habitTitle">Title</label>
-    <input type="text" name="habitTitle" id="habitTitle" value=${habit.title}><br>
+    <input type="text" name="habitTitle" id="habitTitle" value=${currentHabit.title}><br>
     <label for="priority">Priority</label>
-    <input type="number" min="0" name="priority" id="priority" value=${habit.priority}><br>
+    <input type="number" min="0" name="priority" id="priority" value=${currentHabit.priority}><br>
     <label for="streak">Streak</label>
-    <input type="number" min="0" name="priority" id="priority" value=${habit.streak}>`;
+    <input type="number" min="0" name="streak" id="streak" value=${currentHabit.streak}>`;
 
     // SaveBtn to edit update.
     let saveEditBtn = document.createElement("button");
@@ -57,10 +63,11 @@ const createHabitCard = (habit, index) => {
       // 1, Save the input data to local storage.
       let inputHabitTitle = document.querySelector("#habitTitle").value;
       let inputPriority = document.querySelector("#priority").value;
+      let inputStreak = document.querySelector("#streak").value;
       // Create habit object
       let habit = {
         title: inputHabitTitle,
-        streak: 0,
+        streak: inputStreak,
         priority: inputPriority,
       };
       // Get users array from local storage
@@ -76,6 +83,7 @@ const createHabitCard = (habit, index) => {
       // 2, Updated info to DOM.
       li.innerHTML = "";
       editHabitField.innerHTML = "";
+      streak.innerText = `Streak: ${habit.streak}`;
       li.append(
         habit.title,
         ", Priority: " + habit.priority,
