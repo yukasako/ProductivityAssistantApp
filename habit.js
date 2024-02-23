@@ -12,10 +12,7 @@ const createHabitCard = (habit, index) => {
   let completedBtn = document.createElement("button");
   completedBtn.innerText = "Complete";
   completedBtn.addEventListener("click", (e) => {
-    // completedBtn.disabled = true;
-    // https://samehack.com/javascript-prevent-double-click/
-
-    // (Data)Get users array from local storage and update streak +1
+    // (Data)Get current user from local storage
     let users = JSON.parse(localStorage.getItem("users"));
     let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
     let user = users.find((user) => user.id === loggedInUser);
@@ -28,6 +25,13 @@ const createHabitCard = (habit, index) => {
     //(DOM)Get strakDOM and update to the same as data.
     let streakElement = li.querySelector("p");
     streakElement.innerText = `Streak: ${user.habits[index].streak}`;
+
+    // Set timer on completeBtn
+    completedBtn.disabled = true;
+    let timer = 43200000;
+    setTimeout(() => {
+      completedBtn.disabled = false;
+    }, timer);
   });
 
   li.append(habit.title, ", Priority: " + habit.priority, completedBtn, streak);
