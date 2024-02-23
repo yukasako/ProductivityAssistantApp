@@ -72,14 +72,14 @@ let greeting = document.createElement("article");
 greeting.id = "greeting";
 let highlights = document.createElement("article");
 highlights.id = "highlights";
-let content = document.createElement("article");
+let content = document.createElement("div");
 content.id = "content";
 
 // todo filters and sorting + all todos here¨
-let todoContent = document.createElement("section");
+let todoContent = document.createElement("article");
 todoContent.classList.add("todoContent");
 // habit filters and sorting + all habits here
-let habitsContent = document.createElement("section");
+let habitsContent = document.createElement("article");
 habitsContent.classList.add("habitsContent");
 
 content.append(todoContent, habitsContent);
