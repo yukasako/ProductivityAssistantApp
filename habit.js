@@ -22,7 +22,7 @@ const createHabitCard = (habit, index) => {
     // Save updated users array back to local storage
     localStorage.setItem("users", JSON.stringify(users));
 
-    //(DOM)Get strakDOM and update to the same as data.
+    //(DOM)Get streakDOM and update to the same as data.
     let streakElement = li.querySelector("p");
     streakElement.innerText = `Streak: ${user.habits[index].streak}`;
 
@@ -34,7 +34,69 @@ const createHabitCard = (habit, index) => {
     }, timer);
   });
 
-  li.append(habit.title, ", Priority: " + habit.priority, completedBtn, streak);
+  // Edit habit
+  let editHabitField = document.createElement("div");
+  let editHabitBtn = document.createElement("button");
+  editHabitBtn.innerText = "Edit";
+  editHabitBtn.addEventListener("click", () => {
+    // Empty the card and make edit-input-field.
+    li.innerText = "";
+    editHabitField.innerHTML = `<h2>Edit Habit</h2>
+    <label for="habitTitle">Title</label>
+    <input type="text" name="habitTitle" id="habitTitle" value=${habit.title}><br>
+    <label for="priority">Priority</label>
+    <input type="number" min="0" name="priority" id="priority" value=${habit.priority}><br>
+    <label for="streak">Streak</label>
+    <input type="number" min="0" name="priority" id="priority" value=${habit.streak}>`;
+
+    // SaveBtn to edit update.
+    let saveEditBtn = document.createElement("button");
+    saveEditBtn.innerText = "Save edit";
+    li.append(editHabitField, saveEditBtn);
+    saveEditBtn.addEventListener("click", () => {
+      // 1, Save the input data to local storage.
+      let inputHabitTitle = document.querySelector("#habitTitle").value;
+      let inputPriority = document.querySelector("#priority").value;
+      // Create habit object
+      let habit = {
+        title: inputHabitTitle,
+        streak: 0,
+        priority: inputPriority,
+      };
+      // Get users array from local storage
+      let users = JSON.parse(localStorage.getItem("users"));
+      // Get logged users ID
+      let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+      // Find the logged-in user by ID and push todo to their todos array
+      let user = users.find((user) => user.id === loggedInUser);
+      user.habits[index] = habit;
+      // Save updated users array back to local storage
+      localStorage.setItem("users", JSON.stringify(users));
+
+      // 2, Updated info to DOM.
+      li.innerHTML = "";
+      editHabitField.innerHTML = "";
+      li.append(
+        habit.title,
+        ", Priority: " + habit.priority,
+        completedBtn,
+        editHabitBtn,
+        streak,
+        editHabitField
+      );
+
+      return li;
+    });
+  });
+
+  li.append(
+    habit.title,
+    ", Priority: " + habit.priority,
+    completedBtn,
+    editHabitBtn,
+    streak,
+    editHabitField
+  );
 
   return li;
 };
@@ -48,13 +110,13 @@ createHabitBtn.addEventListener("click", () => {
     <input type="text" name="habitTitle" id="habitTitle"><br>
     <label for="priority">Priority</label>
     <input type="number" min="0" name="priority" id="priority"><br>
-    `;
+  `;
 
   let saveHabitBtn = document.createElement("button");
   saveHabitBtn.innerText = "Save";
 
   habitInput.append(saveHabitBtn);
-  content.append(habitInput);
+  createNewHabitDiv.append(habitInput);
 
   saveHabitBtn.addEventListener("click", () => {
     // 1, Save the input data to local storage.
@@ -82,7 +144,7 @@ createHabitBtn.addEventListener("click", () => {
 
     // 2, Generate a todo card to DOM.
     let habitCard = createHabitCard(habit, user.habits.length - 1);
-    habitList.append(habitCard);
+    habitList.prepend(habitCard);
   });
 });
 
