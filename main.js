@@ -165,12 +165,9 @@ let habitsPrioSelect = document.createElement("select");
 habitsPrioSelect.id = "priorityFilter";
 habitsPrioSelect.innerHTML =
   "<option value='' selected='selected'>Priority</option>" +
-  "<option value='0'>0</option>" +
-  "<option value='1'>1</option>" +
-  "<option value='2'>2</option>" +
-  "<option value='3'>3</option>" +
-  "<option value='4'>4</option>" +
-  "<option value='5'>5</option>";
+  "<option value='low'>Low</option>" +
+  "<option value='medium'>Medium</option>" +
+  "<option value='high'>High</option>";
 
 habitsFilterSection.append(habitsPrioSelect, filterHabitsBtn);
 habitContainer.append(habitsFilterSection);

@@ -55,7 +55,11 @@ const createNewHabit = () => {
  <label for="habitTitle">Title</label>
  <input type="text" name="habitTitle" id="habitTitle"><br>
  <label for="priority">Priority</label>
- <input type="number" min="0" name="priority" id="priority"><br>
+ <select id="priority">
+ <option value="low" selected="selected">Low</option>
+ <option value="medium">Medium</option>
+ <option value="high">High</option>
+ </select><br>
 `;
 
     let saveHabitBtn = document.createElement("button");
@@ -65,46 +69,47 @@ const createNewHabit = () => {
     createNewHabitDiv.append(habitInput);
 
     saveHabitBtn.addEventListener("click", () => {
-      // Save the input data to local storage.
-      let inputHabitTitle = document.querySelector("#habitTitle").value;
-      let inputPriority = document.querySelector("#priority").value;
-
-      // Get users array from local storage
-      let users = JSON.parse(localStorage.getItem("users"));
-      // Get logged users ID
-      let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-      // Find the logged-in user by ID and push habit to their habits array
-      let user = users.find((user) => user.id === loggedInUser);
-
-      // generate random id
-      let habitId = Math.floor(Math.random() * 1000);
-
-      let idExists = user.habits.find((habit) => habit.id === habitId);
-
-      while (idExists) {
-        habitId = Math.floor(Math.random() * 1000);
-      }
-
-      // Create habit object
-      let habit = {
-        id: habitId,
-        title: inputHabitTitle,
-        streak: 0,
-        priority: inputPriority,
-      };
-
-      user.habits.push(habit);
-
-      // Save updated users array back to local storage
-      localStorage.setItem("users", JSON.stringify(users));
-      habitInput.innerHTML = "";
-
-      //Generate a habit card to DOM.
-      let habitCard = createHabitCard(habit, habit.id);
-      habitList.prepend(habitCard);
+      saveNewHabit();
     });
   } else {
     habitInput.innerHTML = "";
+  }
+};
+
+const saveNewHabit = () => {
+  // Save the input data to local storage.
+  let inputHabitTitle = document.querySelector("#habitTitle").value;
+  let inputPriority = document.querySelector("#priority").value;
+
+  // check if user entered a title
+  if (inputHabitTitle) {
+    // Get users array from local storage
+    let users = JSON.parse(localStorage.getItem("users"));
+    // Get logged users ID
+    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+    // Find the logged-in user by ID and push habit to their habits array
+    let user = users.find((user) => user.id === loggedInUser);
+
+    // generate random id
+    let habitId = generateId(user.habits);
+
+    // Create habit object
+    let habit = {
+      id: habitId,
+      title: inputHabitTitle,
+      streak: 0,
+      priority: inputPriority,
+    };
+
+    user.habits.push(habit);
+
+    // Save updated users array back to local storage
+    localStorage.setItem("users", JSON.stringify(users));
+    habitInput.innerHTML = "";
+
+    //Generate a habit card to DOM.
+    let habitCard = createHabitCard(habit, habit.id);
+    habitList.prepend(habitCard);
   }
 };
 
@@ -168,6 +173,8 @@ filterHabitsBtn.addEventListener("click", () => {
 });
 
 const editHabit = (i) => {
+  // priority options
+  let priorityLevels = ["Low", "Medium", "High"];
   // getting current user
   let users = JSON.parse(localStorage.getItem("users"));
   let currentLoggedInId = localStorage.getItem("loggedInUser");
@@ -188,13 +195,13 @@ const editHabit = (i) => {
   prioDiv.innerHTML = "<label for='editHabitPrio'>Priority</label>";
   let prioSelect = document.createElement("select");
   prioSelect.id = "editHabitPrio";
-  for (let x = 0; x < 6; x++) {
-    if (+habit.priority === x) {
-      prioSelect.innerHTML += `<option value="${habit.priority}" selected="selected">${habit.priority}</option>`;
+  priorityLevels.forEach((level) => {
+    if (level.toLowerCase() === habit.priority) {
+      prioSelect.innerHTML += `<option value="${habit.priority}" selected="selected">${level}</option>`;
     } else {
-      prioSelect.innerHTML += `<option value="${x}">${x}</option>`;
+      prioSelect.innerHTML += `<option value="${level.toLowerCase()}">${level}</option>`;
     }
-  }
+  });
 
   prioDiv.append(prioSelect);
 
@@ -222,6 +229,7 @@ const editHabit = (i) => {
   deleteBtn.innerText = "Delete Habit";
   deleteBtn.addEventListener("click", () => {
     //delete habit
+    deleteHabit(habit);
   });
 
   actionButtons.append(saveEditsBtn, deleteBtn);
@@ -261,6 +269,27 @@ const saveHabitEdits = (habit) => {
   let updatedList = user.habits;
 
   renderHabitCards(updatedList, false);
+  destroyModal();
+};
+
+const deleteHabit = (habit) => {
+  users = JSON.parse(localStorage.getItem("users"));
+
+  let loggedInUser = localStorage.getItem("loggedInUser");
+
+  let user = users.find((user) => +user.id === +loggedInUser);
+
+  let habitToDelete = user.habits.find((item) => +item.id === +habit.id);
+
+  // finding index of item
+  let index = user.habits.indexOf(habitToDelete);
+
+  // removing from array
+  user.habits.splice(index, 1);
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  renderHabitCards(user.habits, false);
   destroyModal();
 };
 
