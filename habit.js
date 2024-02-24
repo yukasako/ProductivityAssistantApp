@@ -222,6 +222,7 @@ const editHabit = (i) => {
   deleteBtn.innerText = "Delete Habit";
   deleteBtn.addEventListener("click", () => {
     //delete habit
+    deleteHabit(habit);
   });
 
   actionButtons.append(saveEditsBtn, deleteBtn);
@@ -261,6 +262,27 @@ const saveHabitEdits = (habit) => {
   let updatedList = user.habits;
 
   renderHabitCards(updatedList, false);
+  destroyModal();
+};
+
+const deleteHabit = (habit) => {
+  users = JSON.parse(localStorage.getItem("users"));
+
+  let loggedInUser = localStorage.getItem("loggedInUser");
+
+  let user = users.find((user) => +user.id === +loggedInUser);
+
+  let habitToDelete = user.habits.find((item) => +item.id === +habit.id);
+
+  // finding index of item
+  let index = user.habits.indexOf(habitToDelete);
+
+  // removing from array
+  user.habits.splice(index, 1);
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  renderHabitCards(user.habits, false);
   destroyModal();
 };
 

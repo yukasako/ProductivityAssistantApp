@@ -255,7 +255,7 @@ const editTodo = (i) => {
   editForm.classList.add("editForm", "flex", "flex-column");
   editForm.innerHTML =
     `<div class="flex flex-column"><label for="editTodoTitle">Title</label><input id="editTodoTitle" value="${todo.title}"type="text"/></div>` +
-    `<div class="flex flex-column"><label for="editTodoDesc">Description</label><textarea id="editTodoDesc" value="${todo.description}"></textarea></div>`;
+    `<div class="flex flex-column"><label for="editTodoDesc">Description</label><textarea id="editTodoDesc">${todo.description}</textarea></div>`;
 
   let editStatusDiv = document.createElement("div");
   editStatusDiv.classList.add("flex");
@@ -319,6 +319,8 @@ const editTodo = (i) => {
   deleteBtn.innerText = "Delete Todo";
   deleteBtn.addEventListener("click", () => {
     //delete todo
+    console.log(todo);
+    deleteTodo(todo);
   });
 
   actionButtons.append(saveEditsBtn, deleteBtn);
@@ -343,7 +345,7 @@ const saveTodoEdits = (todo) => {
   let [hours, minutes] = inputTimeEstimate
     .split(":")
     .map((num) => parseInt(num));
-  // Create habit object
+  // Create todo object
   let editedTodo = {
     id: todo.id,
     title: inputTodoTitle,
@@ -358,7 +360,7 @@ const saveTodoEdits = (todo) => {
   let users = JSON.parse(localStorage.getItem("users"));
   // Get logged users ID
   let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-  // Find the logged-in user by ID and push habit to their habits array
+  // Find the logged-in user by ID and push todo to their todos array
   let user = users.find((user) => user.id === loggedInUser);
   let activeTodo = user.todos.find((item) => +item.id === +todo.id);
   let index = user.todos.indexOf(activeTodo);
@@ -369,6 +371,28 @@ const saveTodoEdits = (todo) => {
   let updatedList = user.todos;
 
   renderTodoCards(updatedList, false);
+  destroyModal();
+};
+
+const deleteTodo = (todo) => {
+  users = JSON.parse(localStorage.getItem("users"));
+
+  let loggedInUser = localStorage.getItem("loggedInUser");
+
+  let user = users.find((user) => +user.id === +loggedInUser);
+
+  console.log("User: ", user.id);
+  let todoToDelete = user.todos.find((item) => +item.id === +todo.id);
+
+  // finding index of item
+  let index = user.todos.indexOf(todoToDelete);
+
+  // removing from array
+  user.todos.splice(index, 1);
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  renderTodoCards(user.todos, false);
   destroyModal();
 };
 
