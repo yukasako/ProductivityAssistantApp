@@ -358,8 +358,8 @@ toggleUserActions();
 toggleContent();
 
 //Create a Modal or Destroy Modal Functions
-const modal = document.createElement("article");
 const createModal = () => {
+  const modal = document.createElement("article");
   const modalScreen = document.createElement("section");
   modalScreen.setAttribute("id", "modalScreen");
   modalScreen.classList.add("flex");
