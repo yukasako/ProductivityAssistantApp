@@ -1,5 +1,3 @@
-
-
 // exempeldata
 // let user = {
 //   id: 1,
@@ -62,7 +60,6 @@ let todoCategories = [
 
 let emptyArr = [];
 
-
 //Retrieve quote and create greeting
 let quote;
 const getQuote = async () => {
@@ -72,9 +69,7 @@ const getQuote = async () => {
     const data = await res.json();
     if (!data || !data.content) {
       throw new Error("Could not retrieve data.");
-    }
-
-    else{
+    } else {
       quote = data.content;
       let greeting = document.createElement("article");
       greeting.id = "greeting";
@@ -83,7 +78,6 @@ const getQuote = async () => {
       loadingScreen.append(greeting);
       greeting.appendChild(quoteH1);
     }
-
   } catch (error) {
     console.error("Error fetching quote:", error);
   }
@@ -104,7 +98,7 @@ todoContent.classList.add("todoContent");
 let habitsContent = document.createElement("article");
 habitsContent.classList.add("habitsContent");
 
-content.append(todoContent, habitsContent);
+content.append(habitsContent, todoContent);
 
 let todoContentH2 = document.createElement("h2");
 todoContentH2.innerText = "Things To Do";
@@ -341,15 +335,14 @@ const toggleContent = async () => {
     appScreen.append(highlights, content);
 
     //cycle from login screen -> loadin screen -> app screen
-      loginScreen.classList.add("displayNone");
-      setTimeout(()=>{
-        loadingScreen.classList.remove("displayNone");
-        setTimeout(() => {
-          loadingScreen.classList.add("displayNone");
-          appScreen.classList.remove("displayNone");
-        }, 5000);
-      }, 1000)
-
+    loginScreen.classList.add("displayNone");
+    setTimeout(() => {
+      loadingScreen.classList.remove("displayNone");
+      setTimeout(() => {
+        loadingScreen.classList.add("displayNone");
+        appScreen.classList.remove("displayNone");
+      }, 5000);
+    }, 1000);
 
     // renderTodoCards();
   } else {
@@ -382,8 +375,8 @@ const createModal = () => {
 };
 const destroyModal = () => {
   document.getElementById("modalScreen").remove();
+  modal.innerHTML = "";
 };
-
 
 loginBtn.addEventListener("click", () => {
   logInUser();
@@ -396,4 +389,3 @@ const getCurrentUser = () => {
 
   return currentUser;
 };
-
