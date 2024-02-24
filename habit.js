@@ -38,69 +38,9 @@ const createHabitCard = (habit, id) => {
     if (e.target === completedBtn) {
       console.log("clicked checkbox");
     } else {
-      editHabit(id, li);
+      editHabit(id);
     }
   });
-
-  // Edit habit
-  // let editHabitField = document.createElement("div");
-
-  // editHabitBtn.addEventListener("click", () => {
-  // Empty the card
-  // li.innerText = "";
-  // // Get current habit from local storage
-  // let users = JSON.parse(localStorage.getItem("users"));
-  // let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-  // let user = users.find((user) => user.id === loggedInUser);
-  // let currentHabit = user.habits[index];
-  // Make edit-input-field.
-  // editHabitField.innerHTML = `<h2>Edit Habit</h2>
-  // <label for="habitTitle">Title</label>
-  // <input type="text" name="habitTitle" id="habitTitle" value=${currentHabit.title}><br>
-  // <label for="priority">Priority</label>
-  // <input type="number" min="0" name="priority" id="priority" value=${currentHabit.priority}><br>
-  // <label for="streak">Streak</label>
-  // <input type="number" min="0" name="streak" id="streak" value=${currentHabit.streak}>`;
-
-  // SaveBtn to edit update.
-  // let saveEditBtn = document.createElement("button");
-  // saveEditBtn.innerText = "Save edit";
-  // li.append(editHabitField, saveEditBtn);
-  // saveEditBtn.addEventListener("click", () => {
-  // 1, Save the input data to local storage.
-  // let inputHabitTitle = document.querySelector("#habitTitle").value;
-  // let inputPriority = document.querySelector("#priority").value;
-  // let inputStreak = document.querySelector("#streak").value;
-  // Create habit object
-  // let habit = {
-  //   title: inputHabitTitle,
-  //   streak: inputStreak,
-  //   priority: inputPriority,
-  // };
-  // Get users array from local storage
-  // let users = JSON.parse(localStorage.getItem("users"));
-  // // Get logged users ID
-  // let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-  // // Find the logged-in user by ID and push habit to their habits array
-  // let user = users.find((user) => user.id === loggedInUser);
-  // user.habits[index] = habit;
-  // Save updated users array back to local storage
-  // localStorage.setItem("users", JSON.stringify(users));
-
-  // 2, Updated info to DOM.
-  // li.innerHTML = "";
-  // editHabitField.innerHTML = "";
-  // streak.innerText = `Streak: ${habit.streak}`;
-  // li.append(
-  //   habit.title,
-  //   ", Priority: " + habit.priority,
-  //   completedBtn,
-  //   streak,
-  // );
-
-  // return li;
-  // });
-  // });
 
   li.append(habit.title, ", Priority: " + habit.priority, completedBtn, streak);
 
@@ -167,6 +107,8 @@ createHabitBtn.addEventListener("click", () => {
 
 // Generate habit-cards based on localStorage
 const renderHabitCards = (habitArr = [], onload = false) => {
+  // clear previous content
+  habitList.innerHTML = "";
   // Get users array from local storage
   let users = JSON.parse(localStorage.getItem("users"));
   // Get logged users ID
@@ -217,14 +159,13 @@ filterHabitsBtn.addEventListener("click", () => {
   filterHabits();
 });
 
-const editHabit = (i, li) => {
+const editHabit = (i) => {
   // getting current user
   let users = JSON.parse(localStorage.getItem("users"));
   let currentLoggedInId = localStorage.getItem("loggedInUser");
   let user = users.find((user) => +user.id === +currentLoggedInId);
 
   let habit = user.habits.find((habit) => habit.id === i);
-  li = createHabitCard(habit);
 
   let modalContent = document.createElement("div");
   modalContent.classList.add("modalContent");
@@ -269,8 +210,8 @@ const editHabit = (i, li) => {
   // delete habit button
   let deleteBtn = document.createElement("button");
   deleteBtn.id = "deleteHabit";
-  deleteBtn.classList.add("modalBtn");
-  deleteBtn.innerText = "Delete habit";
+  deleteBtn.classList.add("modalBtn", "danger");
+  deleteBtn.innerText = "Delete Habit";
   deleteBtn.addEventListener("click", () => {
     //delete habit
   });
@@ -306,9 +247,12 @@ const saveHabitEdits = (habit) => {
   let activeHabit = user.habits.find((item) => +item.id === +habit.id);
   let index = user.habits.indexOf(activeHabit);
   user.habits[index] = editedHabit;
-  console.log(JSON.stringify(users));
   // Save updated users array back to local storage
   localStorage.setItem("users", JSON.stringify(users));
+
+  let updatedList = user.habits;
+
+  renderHabitCards(updatedList, false);
 };
 
 renderHabitCards(emptyArr, true);

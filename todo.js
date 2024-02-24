@@ -172,6 +172,8 @@ const setIcon = (cat) => {
 
 // Generate Todo-cards based on localStorage
 const renderTodoCards = (todoArr = [], onload = false) => {
+  // clear previous content
+  todoList.innerHTML = "";
   // Get users array from local storage
   let users = JSON.parse(localStorage.getItem("users"));
   // Get logged users ID
@@ -238,7 +240,50 @@ filterTodosBtn.addEventListener("click", () => {
 });
 
 const editTodo = (i) => {
-  modal.innerText = i;
+  // getting current user
+  let users = JSON.parse(localStorage.getItem("users"));
+  let currentLoggedInId = localStorage.getItem("loggedInUser");
+  let user = users.find((user) => +user.id === +currentLoggedInId);
+
+  let todo = user.todos.find((todo) => todo.id === i);
+
+  let modalContent = document.createElement("div");
+  modalContent.classList.add("modalContent");
+  modal.append(modalContent);
+
+  let editForm = document.createElement("div");
+  editForm.classList.add("editForm", "flex", "flex-column");
+  editForm.innerHTML = `<div class="flex flex-column"><label for="editTodoTitle">Title</label><input id="editTodoTitle" value="${todo.title}"type="text"/></div>`;
+
+  // buttons
+  let actionButtons = document.createElement("div");
+  actionButtons.classList.add("actionButtons", "flex");
+
+  // save edits button
+  let saveEditsBtn = document.createElement("button");
+  saveEditsBtn.id = "saveTodoEdits";
+  saveEditsBtn.classList.add("modalBtn");
+  saveEditsBtn.innerText = "Save";
+  saveEditsBtn.addEventListener("click", () => {
+    // save changes
+    saveTodoEdits(todo);
+  });
+
+  // delete todo button
+  let deleteBtn = document.createElement("button");
+  deleteBtn.id = "deleteTodo";
+  deleteBtn.classList.add("modalBtn", "danger");
+  deleteBtn.innerText = "Delete Todo";
+  deleteBtn.addEventListener("click", () => {
+    //delete todo
+  });
+
+  actionButtons.append(saveEditsBtn, deleteBtn);
+
+  editForm.append(actionButtons);
+
+  modalContent.append(editForm);
+
   createModal();
 };
 
