@@ -76,13 +76,7 @@ const saveNewTodo = () => {
   let user = users.find((user) => user.id === loggedInUser);
 
   // generate random id
-  let todoId = Math.floor(Math.random() * 1000);
-
-  let idExists = user.todos.find((todo) => todo.id === todoId);
-
-  while (idExists) {
-    todoId = Math.floor(Math.random() * 1000);
-  }
+  let todoId = generateId(user.todos);
 
   // Generate a todo card to DOM.
 
@@ -109,7 +103,7 @@ const saveNewTodo = () => {
     todoInput.innerHTML = "";
 
     let todoCard = createTodoCard(todo, todo.id);
-    todoList.append(todoCard);
+    todoList.prepend(todoCard);
   }
 };
 
@@ -129,11 +123,21 @@ const createTodoCard = (todo, id) => {
 
   let completedCheckbox = document.createElement("input");
   completedCheckbox.type = "checkbox";
+  if (todo.completed == true || todo.completed == "true") {
+    li.classList.add("disabled");
+    completedCheckbox.checked = true;
+    completedCheckbox.disabled = true;
+  }
+
+  completedCheckbox.addEventListener("change", () => {
+    completeTodo(todo);
+  });
 
   li.addEventListener("click", (e) => {
-    if (e.target === completedCheckbox) {
-      console.log("clicked checkbox");
-    } else {
+    if (
+      e.target !== completedCheckbox &&
+      (todo.completed == "false" || todo.completed == false)
+    ) {
       editTodo(id);
     }
   });
@@ -264,7 +268,7 @@ const editTodo = (i) => {
   statusLabel.innerText = "Status";
   let editStatus = document.createElement("select");
   editStatus.id = "editTodoStatus";
-  if (todo.completed) {
+  if (todo.completed === true) {
     editStatus.innerHTML += `<option value="${todo.completed}" selected="selected">Completed</option><option value="false">Uncompleted</option>`;
   } else {
     editStatus.innerHTML += `<option value="${todo.completed}" selected="selected">Uncompleted</option><option value="true">Completed</option>`;
@@ -394,6 +398,23 @@ const deleteTodo = (todo) => {
 
   renderTodoCards(user.todos, false);
   destroyModal();
+};
+
+const completeTodo = (todo) => {
+  users = JSON.parse(localStorage.getItem("users"));
+
+  let loggedInUser = +localStorage.getItem("loggedInUser");
+
+  let user = users.find((user) => user.id === loggedInUser);
+
+  for (let item of user.todos) {
+    if (item.id === todo.id) {
+      item.completed = true;
+    }
+  }
+  localStorage.setItem("users", JSON.stringify(users));
+
+  renderTodoCards(user.todos, false);
 };
 
 renderTodoCards(emptyArr, true);
