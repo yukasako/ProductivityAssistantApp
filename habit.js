@@ -47,62 +47,70 @@ const createHabitCard = (habit, id) => {
   return li;
 };
 
+const createNewHabit = () => {
+  if (habitInput.innerHTML === "") {
+    // Create input form
+    habitInput.innerHTML = `
+ <h2>Input New Habit</h2>
+ <label for="habitTitle">Title</label>
+ <input type="text" name="habitTitle" id="habitTitle"><br>
+ <label for="priority">Priority</label>
+ <input type="number" min="0" name="priority" id="priority"><br>
+`;
+
+    let saveHabitBtn = document.createElement("button");
+    saveHabitBtn.innerText = "Save";
+
+    habitInput.append(saveHabitBtn);
+    createNewHabitDiv.append(habitInput);
+
+    saveHabitBtn.addEventListener("click", () => {
+      // Save the input data to local storage.
+      let inputHabitTitle = document.querySelector("#habitTitle").value;
+      let inputPriority = document.querySelector("#priority").value;
+
+      // Get users array from local storage
+      let users = JSON.parse(localStorage.getItem("users"));
+      // Get logged users ID
+      let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+      // Find the logged-in user by ID and push habit to their habits array
+      let user = users.find((user) => user.id === loggedInUser);
+
+      // generate random id
+      let habitId = Math.floor(Math.random() * 1000);
+
+      let idExists = user.habits.find((habit) => habit.id === habitId);
+
+      while (idExists) {
+        habitId = Math.floor(Math.random() * 1000);
+      }
+
+      // Create habit object
+      let habit = {
+        id: habitId,
+        title: inputHabitTitle,
+        streak: 0,
+        priority: inputPriority,
+      };
+
+      user.habits.push(habit);
+
+      // Save updated users array back to local storage
+      localStorage.setItem("users", JSON.stringify(users));
+      habitInput.innerHTML = "";
+
+      //Generate a habit card to DOM.
+      let habitCard = createHabitCard(habit, habit.id);
+      habitList.prepend(habitCard);
+    });
+  } else {
+    habitInput.innerHTML = "";
+  }
+};
+
 let habitInput = document.createElement("div");
 createHabitBtn.addEventListener("click", () => {
-  // Create input form
-  habitInput.innerHTML = `
-    <h2>Input New Habit</h2>
-    <label for="habitTitle">Title</label>
-    <input type="text" name="habitTitle" id="habitTitle"><br>
-    <label for="priority">Priority</label>
-    <input type="number" min="0" name="priority" id="priority"><br>
-  `;
-
-  let saveHabitBtn = document.createElement("button");
-  saveHabitBtn.innerText = "Save";
-
-  habitInput.append(saveHabitBtn);
-  createNewHabitDiv.append(habitInput);
-
-  saveHabitBtn.addEventListener("click", () => {
-    // Save the input data to local storage.
-    let inputHabitTitle = document.querySelector("#habitTitle").value;
-    let inputPriority = document.querySelector("#priority").value;
-
-    // Get users array from local storage
-    let users = JSON.parse(localStorage.getItem("users"));
-    // Get logged users ID
-    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-    // Find the logged-in user by ID and push habit to their habits array
-    let user = users.find((user) => user.id === loggedInUser);
-
-    // generate random id
-    let habitId = Math.floor(Math.random() * 1000);
-
-    let idExists = user.habits.find((habit) => habit.id === habitId);
-
-    while (idExists) {
-      habitId = Math.floor(Math.random() * 1000);
-    }
-
-    // Create habit object
-    let habit = {
-      id: habitId,
-      title: inputHabitTitle,
-      streak: 0,
-      priority: inputPriority,
-    };
-
-    user.habits.push(habit);
-
-    // Save updated users array back to local storage
-    localStorage.setItem("users", JSON.stringify(users));
-    habitInput.innerHTML = "";
-
-    //Generate a habit card to DOM.
-    let habitCard = createHabitCard(habit, habit.id);
-    habitList.prepend(habitCard);
-  });
+  createNewHabit();
 });
 
 // Generate habit-cards based on localStorage
@@ -253,6 +261,7 @@ const saveHabitEdits = (habit) => {
   let updatedList = user.habits;
 
   renderHabitCards(updatedList, false);
+  destroyModal();
 };
 
 renderHabitCards(emptyArr, true);

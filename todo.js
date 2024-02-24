@@ -253,7 +253,50 @@ const editTodo = (i) => {
 
   let editForm = document.createElement("div");
   editForm.classList.add("editForm", "flex", "flex-column");
-  editForm.innerHTML = `<div class="flex flex-column"><label for="editTodoTitle">Title</label><input id="editTodoTitle" value="${todo.title}"type="text"/></div>`;
+  editForm.innerHTML =
+    `<div class="flex flex-column"><label for="editTodoTitle">Title</label><input id="editTodoTitle" value="${todo.title}"type="text"/></div>` +
+    `<div class="flex flex-column"><label for="editTodoDesc">Description</label><textarea id="editTodoDesc" value="${todo.description}"></textarea></div>`;
+
+  let editStatusDiv = document.createElement("div");
+  editStatusDiv.classList.add("flex");
+  let statusLabel = document.createElement("label");
+  statusLabel.setAttribute("for", "editTodoStatus");
+  statusLabel.innerText = "Status";
+  let editStatus = document.createElement("select");
+  editStatus.id = "editTodoStatus";
+  if (todo.completed) {
+    editStatus.innerHTML += `<option value="${todo.completed}" selected="selected">Completed</option><option value="false">Uncompleted</option>`;
+  } else {
+    editStatus.innerHTML += `<option value="${todo.completed}" selected="selected">Uncompleted</option><option value="true">Completed</option>`;
+  }
+  editStatusDiv.append(statusLabel, editStatus);
+
+  editForm.append(editStatusDiv);
+
+  editForm.innerHTML +=
+    `<div class="flex"><label for="editDeadline">Deadline</label>
+  <input type="date" name="editDeadline" id="editDeadline" value="${todo.deadline}"></div>` +
+    `<div class="flex"><label for="editTimeEstimate">Time Estimate</label>
+  <input type="time" name="editTimeEstimate" id="editTimeEstimate" value="${todo.timeEstimate.hours}:${todo.timeEstimate.minutes}"></div>`;
+
+  let editCategoryDiv = document.createElement("div");
+  editCategoryDiv.classList.add("flex");
+  editCategoryDiv.innerHTML += "<label for='editCategory'>Category</label>";
+  let categorySelect = document.createElement("select");
+  categorySelect.name = "editCategory";
+  categorySelect.id = "editCategory";
+
+  todoCategories.forEach((cat) => {
+    if (todo.category === cat.toLowerCase()) {
+      categorySelect.innerHTML += `<option value="${cat.toLowerCase()}" selected="selected">${cat}</option>`;
+    } else {
+      categorySelect.innerHTML += `<option value="${cat.toLowerCase()}">${cat}</option>`;
+    }
+  });
+
+  editCategoryDiv.append(categorySelect);
+
+  editForm.append(editCategoryDiv);
 
   // buttons
   let actionButtons = document.createElement("div");
@@ -285,6 +328,48 @@ const editTodo = (i) => {
   modalContent.append(editForm);
 
   createModal();
+};
+
+const saveTodoEdits = (todo) => {
+  // 1, Save the input data to local storage.
+  let inputTodoTitle = document.querySelector("#editTodoTitle").value;
+  let inputTodoDesc = document.querySelector("#editTodoDesc").value;
+  let inputStatus = document.querySelector("#editTodoStatus").value;
+  let inputDeadline = document.querySelector("#editDeadline").value;
+  let inputTimeEstimate = document.querySelector("#editTimeEstimate").value;
+  let inputCategory = document.querySelector("#editCategory").value;
+
+  // Extract hours and minutes from inputTimeEstimate
+  let [hours, minutes] = inputTimeEstimate
+    .split(":")
+    .map((num) => parseInt(num));
+  // Create habit object
+  let editedTodo = {
+    id: todo.id,
+    title: inputTodoTitle,
+    description: inputTodoDesc,
+    completed: inputStatus,
+    deadline: inputDeadline,
+    timeEstimate: { hours, minutes },
+    category: inputCategory,
+  };
+
+  // Get users array from local storage
+  let users = JSON.parse(localStorage.getItem("users"));
+  // Get logged users ID
+  let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+  // Find the logged-in user by ID and push habit to their habits array
+  let user = users.find((user) => user.id === loggedInUser);
+  let activeTodo = user.todos.find((item) => +item.id === +todo.id);
+  let index = user.todos.indexOf(activeTodo);
+  user.todos[index] = editedTodo;
+  // Save updated users array back to local storage
+  localStorage.setItem("users", JSON.stringify(users));
+
+  let updatedList = user.todos;
+
+  renderTodoCards(updatedList, false);
+  destroyModal();
 };
 
 renderTodoCards(emptyArr, true);
