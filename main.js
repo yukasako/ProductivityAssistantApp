@@ -135,9 +135,6 @@ habitList.classList.add("habitList");
 let todosFilterSection = document.createElement("div"); //append this to top of todo list
 
 todosFilterSection.classList.add("flex", "flex-column", "todosFilters");
-let filterTodosBtn = document.createElement("button");
-filterTodosBtn.id = "filterTodos";
-filterTodosBtn.innerText = "Filter";
 let todoStatusSelect = document.createElement("div");
 let todosFilterSelect = document.createElement("select");
 todoStatusSelect.append(todosFilterSelect);
@@ -150,7 +147,7 @@ todoCategories.forEach((cat) => {
   todoCheckboxes.innerHTML += `<div class="flex"><input type="checkbox" id="${cat}Filter" name="category" value="${cat}"/>
     <label for="${cat}Filter">${cat}</label></div>`;
 });
-todosFilterSection.append(todoCheckboxes, todoStatusSelect, filterTodosBtn);
+todosFilterSection.append(todoCheckboxes, todoStatusSelect);
 
 // todo sorting
 let todosSortingSection = document.createElement("div");
@@ -160,13 +157,13 @@ todoSortingSelect.id = "todoSorter";
 todoSortingSelect.innerHTML +=
   "<option value='' selected='selected'>Sort by</option>";
 todoSortingSelect.innerHTML +=
-  "<option value='deadlineDesc'>Deadline / Descending</option>";
+  "<option value='deadlineDesc'>Deadline / Earliest</option>";
 todoSortingSelect.innerHTML +=
-  "<option value='deadlineAsc'>Deadline / Ascending</option>";
+  "<option value='deadlineAsc'>Deadline / Latest</option>";
 todoSortingSelect.innerHTML +=
-  "<option value='timeDesc'>Time Estimate / Descending</option>";
+  "<option value='timeDesc'>Time Estimate / Least</option>";
 todoSortingSelect.innerHTML +=
-  "<option value='timeAsc'>Time Estimate / Ascending</option>";
+  "<option value='timeAsc'>Time Estimate / Most</option>";
 
 todosSortingSection.append(todoSortingSelect);
 
@@ -177,9 +174,6 @@ todoContainer.append(todosFilterSection, todosSortingSection);
 let habitsFilterSection = document.createElement("div"); //append this to top of todo list
 
 habitsFilterSection.classList.add("flex", "habitsFilters");
-let filterHabitsBtn = document.createElement("button");
-filterHabitsBtn.id = "filterHabits";
-filterHabitsBtn.innerText = "Filter";
 
 let habitsPrioSelect = document.createElement("select");
 habitsPrioSelect.id = "priorityFilter";
@@ -189,8 +183,20 @@ habitsPrioSelect.innerHTML =
   "<option value='medium'>Medium</option>" +
   "<option value='high'>High</option>";
 
-habitsFilterSection.append(habitsPrioSelect, filterHabitsBtn);
-habitContainer.append(habitsFilterSection);
+habitsFilterSection.append(habitsPrioSelect);
+
+// habits sorting
+let habitsSortingSection = document.createElement("div");
+habitsSortingSection.classList.add("flex");
+let habitsSortSelect = document.createElement("select");
+habitsSortSelect.id = "habitsSorter";
+habitsSortSelect.innerHTML += `<option value="">Sort By</option>`;
+habitsSortSelect.innerHTML += `<option value="streakDesc">Streak / Lowest</option>`;
+habitsSortSelect.innerHTML += `<option value="streakAsc">Streak / Highest</option>`;
+habitsSortSelect.innerHTML += `<option value="prioDesc">Priority / Lowest</option>`;
+habitsSortSelect.innerHTML += `<option value="prioAsc">Priority / Highest</option>`;
+habitsSortingSection.append(habitsSortSelect);
+habitContainer.append(habitsFilterSection, habitsSortingSection);
 
 // generating random id:s
 const generateId = (arr) => {
@@ -228,6 +234,7 @@ const registerUser = () => {
           loggedIn: false,
           habits: [],
           todos: [],
+          archivedTodos: [],
         };
         users.push(newUser);
 
@@ -245,6 +252,7 @@ const registerUser = () => {
         loggedIn: false,
         habits: [],
         todos: [],
+        archivedTodos: [],
       };
       users.push(newUser);
       localStorage.setItem("users", JSON.stringify(users));

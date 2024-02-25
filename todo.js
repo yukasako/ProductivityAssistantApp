@@ -63,7 +63,7 @@ const saveNewTodo = () => {
 
   // setting default date value if none entered
   if (!inputDeadline) {
-    inputDeadline = "9999:12:31";
+    inputDeadline = "9999-12-31";
   }
 
   // Extract hours and minutes from inputTimeEstimate
@@ -214,7 +214,7 @@ const renderTodoCards = (todoArr = [], onload = false) => {
   todoContainer.append(todoList);
 };
 
-const filterTodos = () => {
+const filterAndSortTodos = () => {
   let status = document.querySelector("#todosFilterSelect").value;
   let checkedCategories = document.querySelectorAll(
     "[name='category']:checked"
@@ -249,14 +249,69 @@ const filterTodos = () => {
     );
   });
 
+  let selectedSortingOption = todoSortingSelect.value;
+
+  switch (selectedSortingOption) {
+    case "":
+      break;
+    case "deadlineDesc":
+      chosenTodos.sort((a, b) => {
+        let aDeadline = new Date(a.deadline).getTime();
+        let bDeadline = new Date(b.deadline).getTime();
+        return aDeadline < bDeadline ? 1 : bDeadline < aDeadline ? -1 : 0;
+      });
+      break;
+    case "deadlineAsc":
+      chosenTodos.sort((a, b) => {
+        let aDeadline = new Date(a.deadline).getTime();
+        let bDeadline = new Date(b.deadline).getTime();
+        return aDeadline > bDeadline ? 1 : bDeadline > aDeadline ? -1 : 0;
+      });
+      break;
+    case "timeDesc":
+      chosenTodos.sort((a, b) => {
+        let aTime =
+          a.timeEstimate.hours.toString() + a.timeEstimate.minutes.toString();
+        let bTime =
+          b.timeEstimate.hours.toString() + b.timeEstimate.minutes.toString();
+
+        aTime = +aTime;
+        bTime = +bTime;
+
+        return aTime < bTime ? 1 : bTime < aTime ? -1 : 0;
+      });
+      break;
+    case "timeAsc":
+      chosenTodos.sort((a, b) => {
+        let aTime =
+          a.timeEstimate.hours.toString() + a.timeEstimate.minutes.toString();
+        let bTime =
+          b.timeEstimate.hours.toString() + b.timeEstimate.minutes.toString();
+
+        aTime = +aTime;
+        bTime = +bTime;
+
+        return bTime < aTime ? 1 : aTime < bTime ? -1 : 0;
+      });
+      break;
+  }
+
   // clearing the current ul
   todoList.innerHTML = "";
   // generating new list based on new todo list
   renderTodoCards(chosenTodos, false);
 };
 
-filterTodosBtn.addEventListener("click", () => {
-  filterTodos();
+todosFilterSelect.addEventListener("change", () => {
+  filterAndSortTodos();
+});
+
+let categoryCheckboxes = document.querySelectorAll("[name='category']");
+
+categoryCheckboxes.forEach((checkbox) => {
+  checkbox.addEventListener("change", () => {
+    filterAndSortTodos();
+  });
 });
 
 const editTodo = (i) => {
@@ -364,7 +419,7 @@ const saveTodoEdits = (todo) => {
   let inputCategory = document.querySelector("#editCategory").value;
 
   inputDeadline == ""
-    ? (inputDeadline = "9999:12:31")
+    ? (inputDeadline = "9999-12-31")
     : (inputDeadline = inputDeadline);
 
   // Extract hours and minutes from inputTimeEstimate
@@ -456,15 +511,10 @@ const compareStatus = (a) => {
   return 0;
 };
 
-const compareEarliestDeadline = (a, b) => {
-  return new Date(b.date) - new Date(a.date);
-};
-
 // sorting todos
 
 todoSortingSelect.addEventListener("change", (e) => {
-  let chosenParam = e.target.value;
-  sortTodos(chosenParam);
+  filterAndSortTodos();
 });
 
 const sortTodos = (option) => {
