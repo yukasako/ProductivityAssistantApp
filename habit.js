@@ -16,9 +16,14 @@ const createHabitCard = (habit, id) => {
     let users = JSON.parse(localStorage.getItem("users"));
     let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
     let user = users.find((user) => user.id === loggedInUser);
+
+    // get current habit
+    let currentHabit = user.habits.find((item) => +item.id === +habit.id);
+
     // Get the streak of the habit and +1
-    let streak = parseInt(user.habits[index].streak);
-    user.habits[index].streak = streak + 1;
+    +currentHabit.streak++;
+    let index = user.habits.indexOf(currentHabit);
+    user.habits[index] = currentHabit;
     // Save updated users array back to local storage
     localStorage.setItem("users", JSON.stringify(users));
 
@@ -142,8 +147,18 @@ const renderHabitCards = (habitArr = [], onload = false) => {
   habitContainer.append(habitList);
 };
 
-const filterHabits = () => {
+habitsSortSelect.addEventListener("change", () => {
+  filterAndSortHabits();
+});
+
+habitsPrioSelect.addEventListener("change", () => {
+  filterAndSortHabits();
+});
+
+const filterAndSortHabits = () => {
   let chosenPriority = document.querySelector("#priorityFilter").value;
+  let selectedSortingOption = habitsSortSelect.value;
+  let prioOrder = { low: 1, medium: 2, high: 3 };
 
   // getting current logged in user
   let currentUserId = localStorage.getItem("loggedInUser");
@@ -162,15 +177,56 @@ const filterHabits = () => {
     return habit.priority === chosenPriority || chosenPriority === "";
   });
 
+  switch (selectedSortingOption) {
+    case "":
+      break;
+    case "streakDesc":
+      chosenHabits.sort((a, b) => {
+        return a.streak > b.streak ? 1 : b.streak > a.streak ? -1 : 0;
+      });
+      break;
+    case "streakAsc":
+      chosenHabits.sort((a, b) => {
+        return a.streak < b.streak ? 1 : b.streak < a.streak ? -1 : 0;
+      });
+      break;
+    case "prioDesc":
+      chosenHabits.sort((a) => {
+        if (a.priority === "low") {
+          return -1;
+        }
+        if (a.priority === "medium") {
+          return 0;
+        }
+        if (a.priority === "high") {
+          return 1;
+        }
+      });
+      break;
+    case "prioAsc":
+      chosenHabits.sort((a) => {
+        if (a.priority === "high") {
+          return -1;
+        }
+        if (a.priority === "medium") {
+          return 0;
+        }
+        if (a.priority === "low") {
+          return 1;
+        }
+      });
+      break;
+  }
+
   // clearing the current ul
   habitList.innerHTML = "";
   // generating new list based on new habit list
   renderHabitCards(chosenHabits, false);
 };
 
-filterHabitsBtn.addEventListener("click", () => {
-  filterHabits();
-});
+// filterHabitsBtn.addEventListener("click", () => {
+//   filterAndSortHabits();
+// });
 
 const editHabit = (i) => {
   // priority options
