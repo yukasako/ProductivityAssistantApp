@@ -7,7 +7,7 @@ const createHabitCard = (habit, id) => {
   li.dataset.id = id;
 
   let streak = document.createElement("p");
-  streak.innerText = `Streak: ${habit.streak}`;
+  streak.innerText = `Streak: ${habit.streak.length} day/s`;
 
   let completedBtn = document.createElement("button");
   completedBtn.innerText = "Complete";
@@ -16,33 +16,12 @@ const createHabitCard = (habit, id) => {
     let users = JSON.parse(localStorage.getItem("users"));
     let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
     let user = users.find((user) => user.id === loggedInUser);
-
-    // get current habit
-    let currentHabit = user.habits.find((item) => +item.id === +habit.id);
-
-    // Get the streak of the habit and +1
-    +currentHabit.streak++;
-    let index = user.habits.indexOf(currentHabit);
-    user.habits[index] = currentHabit;
-    // Save updated users array back to local storage
-    localStorage.setItem("users", JSON.stringify(users));
-
-    //(DOM)Get streakDOM and update to the same as data.
-    let streakElement = li.querySelector("p");
-    streakElement.innerText = `Streak: ${user.habits[index].streak}`;
-
-    // Set timer on completeBtn
-    completedBtn.disabled = true;
-    let timer = 43200000;
-    setTimeout(() => {
-      completedBtn.disabled = false;
-    }, timer);
+    let currentHabit = user.habits.find((item) => item.id === habit.id);
+    streakIncrementer(currentHabit);
   });
 
   li.addEventListener("click", (e) => {
-    if (e.target === completedBtn) {
-      console.log("clicked checkbox");
-    } else {
+    if (e.target !== completedBtn) {
       editHabit(id);
     }
   });
@@ -102,7 +81,7 @@ const saveNewHabit = () => {
     let habit = {
       id: habitId,
       title: inputHabitTitle,
-      streak: 0,
+      streak: [],
       priority: inputPriority,
     };
 
@@ -158,7 +137,6 @@ habitsPrioSelect.addEventListener("change", () => {
 const filterAndSortHabits = () => {
   let chosenPriority = document.querySelector("#priorityFilter").value;
   let selectedSortingOption = habitsSortSelect.value;
-  let prioOrder = { low: 1, medium: 2, high: 3 };
 
   // getting current logged in user
   let currentUserId = localStorage.getItem("loggedInUser");
@@ -182,12 +160,16 @@ const filterAndSortHabits = () => {
       break;
     case "streakDesc":
       chosenHabits.sort((a, b) => {
-        return a.streak > b.streak ? 1 : b.streak > a.streak ? -1 : 0;
+        let aStreak = a.streak.length;
+        let bStreak = b.streak.length;
+        return aStreak > bStreak ? 1 : bStreak > aStreak ? -1 : 0;
       });
       break;
     case "streakAsc":
       chosenHabits.sort((a, b) => {
-        return a.streak < b.streak ? 1 : b.streak < a.streak ? -1 : 0;
+        let aStreak = a.streak.length;
+        let bStreak = b.streak.length;
+        return aStreak < bStreak ? 1 : bStreak < aStreak ? -1 : 0;
       });
       break;
     case "prioDesc":
@@ -263,7 +245,7 @@ const editHabit = (i) => {
 
   editForm.append(prioDiv);
 
-  editForm.innerHTML += `<div class="flex><label for="editHabitStreak">Streak</label><input type="number" min="0" id="editHabitStreak" value="${habit.streak}"/></div>`;
+  editForm.innerHTML += `<div class="flex><label for="editHabitStreak">Streak</label><input type="number" min="0" id="editHabitStreak"/></div>`;
   // buttons
   let actionButtons = document.createElement("div");
   actionButtons.classList.add("actionButtons", "flex");
@@ -301,12 +283,20 @@ const saveHabitEdits = (habit) => {
   // 1, Save the input data to local storage.
   let inputHabitTitle = document.querySelector("#editHabitTitle").value;
   let inputPriority = document.querySelector("#editHabitPrio").value;
-  let inputStreak = document.querySelector("#editHabitStreak").value;
+  let inputStreak = +document.querySelector("#editHabitStreak").value;
+
+  // logic for increasing, resetting or increasing streak
+  inputStreak === 0
+    ? (habit.streak = [])
+    : inputStreak > 0
+    ? addToStreak(habit)
+    : subtractFromStreak(habit);
+
   // Create habit object
   let editedHabit = {
     id: habit.id,
     title: inputHabitTitle,
-    streak: inputStreak,
+    streak: habit.streak,
     priority: inputPriority,
   };
 
@@ -347,6 +337,57 @@ const deleteHabit = (habit) => {
 
   renderHabitCards(user.habits, false);
   destroyModal();
+};
+
+const getToday = () => {
+  let today = new Date();
+  let year = today.getFullYear();
+  let mm = today.getMonth() + 1;
+  let dd = today.getDate();
+  // Add leading zero if the day is less than 10
+  if (dd < 10) {
+    dd = "0" + dd;
+  }
+
+  // Add leading zero if the month is less than 10
+  if (mm < 10) {
+    mm = "0" + mm;
+  }
+  today = `${year}-${mm}-${dd}`;
+
+  return today;
+};
+
+const streakIncrementer = (habit) => {
+  users = JSON.parse(localStorage.getItem("users"));
+
+  let loggedInUser = +localStorage.getItem("loggedInUser");
+  let user = users.find((user) => user.id === loggedInUser);
+  let currentHabit = user.habits.find((item) => item.id === habit.id);
+  let indexOfHabit = user.habits.indexOf(currentHabit);
+
+  let streakArray = currentHabit.streak;
+
+  let today = new Date(getToday());
+
+  let latestDayInStreak = new Date(streakArray[streakArray.length - 1]);
+
+  let previousDay = new Date(today);
+  previousDay.setDate(today.getDate() - 1);
+
+  if (previousDay === latestDayInStreak || streakArray.length === 0) {
+    today = getToday();
+    user.habits[indexOfHabit].streak.push(today);
+  }
+
+  localStorage.setItem("users", JSON.stringify(users));
+  renderHabitCards(user.habits, false);
+};
+
+const streakDecrementer = (numOfDays) => {
+  users = JSON.parse(localStorage.getItem("users"));
+  let loggedInUser = +localStorage.getItem("loggedInUser");
+  user = users.find((user) => user.id === loggedInUser);
 };
 
 renderHabitCards(emptyArr, true);
