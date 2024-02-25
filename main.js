@@ -155,7 +155,7 @@ todosSortingSection.classList.add("flex", "todosSorting");
 let todoSortingSelect = document.createElement("select");
 todoSortingSelect.id = "todoSorter";
 todoSortingSelect.innerHTML +=
-  "<option value='' selected='selected'>Sort by</option>";
+  "<option value='' selected='selected'>Sort By</option>";
 todoSortingSelect.innerHTML +=
   "<option value='deadlineDesc'>Deadline / Earliest</option>";
 todoSortingSelect.innerHTML +=

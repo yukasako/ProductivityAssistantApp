@@ -126,7 +126,7 @@ const createTodoCard = (todo, id) => {
   let li = document.createElement("li");
   li.style.border = "1px solid lightpink";
   li.dataset.id = id;
-  li.classList.add("todo");
+  li.classList.add("todo", "clickable");
 
   let icon = setIcon(todo.category);
 
@@ -137,6 +137,14 @@ const createTodoCard = (todo, id) => {
     completedCheckbox.checked = true;
     completedCheckbox.disabled = true;
   }
+
+  let archiveIcon = document.createElement("i");
+  archiveIcon.classList.add("fa-solid", "fa-box-archive", "clickable");
+
+  archiveIcon.addEventListener("click", () => {
+    verifyArchiving(todo);
+  });
+  archiveIcon.setAttribute("title", "Click to Archive Todo");
 
   completedCheckbox.addEventListener("change", () => {
     completeTodo(todo);
@@ -152,6 +160,9 @@ const createTodoCard = (todo, id) => {
   });
 
   li.append(icon, todo.title, completedCheckbox);
+  if (todo.completed.toString() === "true") {
+    li.append(archiveIcon);
+  }
 
   return li;
 };
@@ -517,52 +528,112 @@ todoSortingSelect.addEventListener("change", (e) => {
   filterAndSortTodos();
 });
 
-const sortTodos = (option) => {
+// const sortTodos = (option) => {
+//   users = JSON.parse(localStorage.getItem("users"));
+//   let loggedInUser = +localStorage.getItem("loggedInUser");
+
+//   let user = users.find((user) => user.id === loggedInUser);
+
+//   let userTodos = [...user.todos];
+//   switch (option) {
+//     case "":
+//       renderTodoCards(userTodos, false);
+//       break;
+//     case "deadlineDesc":
+//       userTodos.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+//       break;
+//     case "deadlineAsc":
+//       userTodos.sort((a, b) => new Date(b.deadline) - new Date(a.deadline));
+//       break;
+//     case "timeDesc":
+//       userTodos.sort((a, b) => {
+//         let aTime =
+//           a.timeEstimate.hours.toString() + a.timeEstimate.minutes.toString();
+//         let bTime =
+//           b.timeEstimate.hours.toString() + b.timeEstimate.minutes.toString();
+
+//         aTime = +aTime;
+//         bTime = +bTime;
+
+//         return aTime < bTime ? 1 : bTime < aTime ? -1 : 0;
+//       });
+//       break;
+//     case "timeAsc":
+//       userTodos.sort((a, b) => {
+//         let aTime =
+//           a.timeEstimate.hours.toString() + a.timeEstimate.minutes.toString();
+//         let bTime =
+//           b.timeEstimate.hours.toString() + b.timeEstimate.minutes.toString();
+
+//         aTime = +aTime;
+//         bTime = +bTime;
+
+//         return bTime < aTime ? 1 : aTime < bTime ? -1 : 0;
+//       });
+//       break;
+//   }
+
+//   renderTodoCards(userTodos, false);
+// };
+
+const saveTodoToArchive = (todo) => {
+  // getting current user
   users = JSON.parse(localStorage.getItem("users"));
   let loggedInUser = +localStorage.getItem("loggedInUser");
-
   let user = users.find((user) => user.id === loggedInUser);
+  console.log(user);
 
-  let userTodos = [...user.todos];
-  switch (option) {
-    case "":
-      renderTodoCards(userTodos, false);
-      break;
-    case "deadlineDesc":
-      userTodos.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
-      break;
-    case "deadlineAsc":
-      userTodos.sort((a, b) => new Date(b.deadline) - new Date(a.deadline));
-      break;
-    case "timeDesc":
-      userTodos.sort((a, b) => {
-        let aTime =
-          a.timeEstimate.hours.toString() + a.timeEstimate.minutes.toString();
-        let bTime =
-          b.timeEstimate.hours.toString() + b.timeEstimate.minutes.toString();
+  // matching todo
+  let todoToArchive = user.todos.find((item) => item.id === todo.id);
 
-        aTime = +aTime;
-        bTime = +bTime;
+  let indexOfTodo = user.todos.indexOf(todo);
+  // removing todo from main todo array
+  user.todos.splice(indexOfTodo, 1);
 
-        return aTime < bTime ? 1 : bTime < aTime ? -1 : 0;
-      });
-      break;
-    case "timeAsc":
-      userTodos.sort((a, b) => {
-        let aTime =
-          a.timeEstimate.hours.toString() + a.timeEstimate.minutes.toString();
-        let bTime =
-          b.timeEstimate.hours.toString() + b.timeEstimate.minutes.toString();
+  // adding todo to archived todos array
+  user.archivedTodos.push(todoToArchive);
 
-        aTime = +aTime;
-        bTime = +bTime;
+  // updating local storage
+  localStorage.setItem("users", JSON.stringify(users));
 
-        return bTime < aTime ? 1 : aTime < bTime ? -1 : 0;
-      });
-      break;
-  }
+  renderTodoCards(user.todos, false);
 
-  renderTodoCards(userTodos, false);
+  // close modal
+  destroyModal();
+};
+
+const verifyArchiving = (todo) => {
+  let nvmBtn = document.createElement("button");
+  nvmBtn.classList.add("modalBtn");
+  nvmBtn.innerText = "Nevermind";
+
+  nvmBtn.addEventListener("click", () => {
+    destroyModal();
+  });
+
+  let proceedBtn = document.createElement("button");
+  proceedBtn.classList.add("modalBtn");
+  proceedBtn.innerText = "Archive";
+
+  proceedBtn.addEventListener("click", () => {
+    saveTodoToArchive(todo);
+  });
+
+  let actionButtons = document.createElement("div");
+  actionButtons.classList.add("flex", "actionButtons");
+  actionButtons.append(proceedBtn, nvmBtn);
+
+  let archivingContent = document.createElement("div");
+  archivingContent.classList.add("archiveForm", "flex", "flex-column");
+
+  archivingContent.innerHTML = `<h2>Are you sure you want to archive this Todo?</h2>
+  <p>${todo.title}</p>`;
+
+  archivingContent.append(actionButtons);
+
+  modal.append(archivingContent);
+
+  createModal();
 };
 
 renderTodoCards(emptyArr, true);

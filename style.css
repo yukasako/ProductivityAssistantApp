@@ -43,6 +43,10 @@ nav {
   position: fixed;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 nav .wrapper {
   height: 100%;
 }
