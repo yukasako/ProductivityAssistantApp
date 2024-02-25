@@ -147,7 +147,7 @@ todosFilterSelect.innerHTML =
 let todoCheckboxes = document.createElement("div");
 todoCheckboxes.classList.add("flex");
 todoCategories.forEach((cat) => {
-  todoCheckboxes.innerHTML += `<div><input type="checkbox" id="${cat}Filter" name="category" value="${cat}"/>
+  todoCheckboxes.innerHTML += `<div class="flex"><input type="checkbox" id="${cat}Filter" name="category" value="${cat}"/>
     <label for="${cat}Filter">${cat}</label></div>`;
 });
 todosFilterSection.append(todoCheckboxes, todoStatusSelect, filterTodosBtn);
