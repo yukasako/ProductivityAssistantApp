@@ -3,7 +3,7 @@
 const createHabitCard = (habit, id) => {
   let li = document.createElement("li");
   li.style.border = "1px solid lightblue";
-  li.classList.add("habit");
+  li.classList.add("habit", "clickable");
   li.dataset.id = id;
 
   let streak = document.createElement("p");
