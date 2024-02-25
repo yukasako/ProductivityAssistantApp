@@ -151,7 +151,27 @@ todoCategories.forEach((cat) => {
     <label for="${cat}Filter">${cat}</label></div>`;
 });
 todosFilterSection.append(todoCheckboxes, todoStatusSelect, filterTodosBtn);
-todoContainer.append(todosFilterSection);
+
+// todo sorting
+let todosSortingSection = document.createElement("div");
+todosSortingSection.classList.add("flex", "todosSorting");
+let todoSortingSelect = document.createElement("select");
+todoSortingSelect.id = "todoSorter";
+todoSortingSelect.innerHTML +=
+  "<option value='' selected='selected'>Sort by</option>";
+todoSortingSelect.innerHTML +=
+  "<option value='deadlineDesc'>Deadline / Descending</option>";
+todoSortingSelect.innerHTML +=
+  "<option value='deadlineAsc'>Deadline / Ascending</option>";
+todoSortingSelect.innerHTML +=
+  "<option value='timeDesc'>Time Estimate / Descending</option>";
+todoSortingSelect.innerHTML +=
+  "<option value='timeAsc'>Time Estimate / Ascending</option>";
+
+todosSortingSection.append(todoSortingSelect);
+
+// appending filters and sorting
+todoContainer.append(todosFilterSection, todosSortingSection);
 
 // habits filtering
 let habitsFilterSection = document.createElement("div"); //append this to top of todo list
