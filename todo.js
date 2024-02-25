@@ -27,7 +27,7 @@ const createNewTodo = () => {
     <input type="text" name="description" id="description">
     <br>
     <label for="deadline">Deadline</label>
-    <input type="date" name="deadline" id="deadline">
+    <input type="date" name="deadline" id="deadline" min="${new Date()}">
     <br>
     <label for="timeEstimate">Time Estimate</label>
     <input type="time" name="timeEstimate" id="timeEstimate">
@@ -61,10 +61,22 @@ const saveNewTodo = () => {
     inputCategory = document.querySelector("#categorySelect option").value;
   }
 
+  // setting default date value if none entered
+  if (!inputDeadline) {
+    inputDeadline = "9999:12:31";
+  }
+
   // Extract hours and minutes from inputTimeEstimate
   let [hours, minutes] = inputTimeEstimate
     .split(":")
     .map((num) => parseInt(num));
+
+  let timeEstimate;
+  if (!inputTimeEstimate) {
+    timeEstimate = { hours: 0, minutes: 0 };
+  } else {
+    timeEstimate = { hours, minutes };
+  }
 
   // Get users array from local storage
   let users = JSON.parse(localStorage.getItem("users"));
@@ -89,10 +101,7 @@ const saveNewTodo = () => {
       description: inputDescription,
       completed: false,
       deadline: inputDeadline,
-      timeEstimate: {
-        hours: hours,
-        minutes: minutes,
-      },
+      timeEstimate,
       category: inputCategory,
     };
 
@@ -186,10 +195,17 @@ const renderTodoCards = (todoArr = [], onload = false) => {
   let user = users.find((user) => user.id === loggedInUser);
 
   if (todoArr.length === 0 && onload) {
-    user.todos.forEach((todo) => {
+    let userTodos = [...user.todos];
+    // sorting array by status
+    userTodos.sort(compareStatus);
+    // iterating through array to create cards
+    userTodos.forEach((todo) => {
       todoList.append(createTodoCard(todo, todo.id));
     });
   } else {
+    // sorting array by status
+    todoArr.sort(compareStatus);
+    // iterating through array to create cards
     todoArr.forEach((todo) => {
       todoList.append(createTodoCard(todo, todo.id));
     });
@@ -279,7 +295,9 @@ const editTodo = (i) => {
 
   editForm.innerHTML +=
     `<div class="flex"><label for="editDeadline">Deadline</label>
-  <input type="date" name="editDeadline" id="editDeadline" value="${todo.deadline}"></div>` +
+  <input type="date" name="editDeadline" id="editDeadline" value="${
+    todo.deadline == "9999:12:31" ? "" : todo.deadline
+  }"></div>` +
     `<div class="flex"><label for="editTimeEstimate">Time Estimate</label>
   <input type="time" name="editTimeEstimate" id="editTimeEstimate" value="${todo.timeEstimate.hours}:${todo.timeEstimate.minutes}"></div>`;
 
@@ -345,10 +363,21 @@ const saveTodoEdits = (todo) => {
   let inputTimeEstimate = document.querySelector("#editTimeEstimate").value;
   let inputCategory = document.querySelector("#editCategory").value;
 
+  inputDeadline == ""
+    ? (inputDeadline = "9999:12:31")
+    : (inputDeadline = inputDeadline);
+
   // Extract hours and minutes from inputTimeEstimate
   let [hours, minutes] = inputTimeEstimate
     .split(":")
     .map((num) => parseInt(num));
+
+  let timeEstimate;
+  if (!inputTimeEstimate) {
+    timeEstimate = { hours: 0, minutes: 0 };
+  } else {
+    timeEstimate = { hours, minutes };
+  }
   // Create todo object
   let editedTodo = {
     id: todo.id,
@@ -356,7 +385,7 @@ const saveTodoEdits = (todo) => {
     description: inputTodoDesc,
     completed: inputStatus,
     deadline: inputDeadline,
-    timeEstimate: { hours, minutes },
+    timeEstimate,
     category: inputCategory,
   };
 
@@ -415,6 +444,75 @@ const completeTodo = (todo) => {
   localStorage.setItem("users", JSON.stringify(users));
 
   renderTodoCards(user.todos, false);
+};
+
+const compareStatus = (a) => {
+  if (a.completed.toString() === "true") {
+    return 1;
+  }
+  if (a.completed.toString() === "false") {
+    return -1;
+  }
+  return 0;
+};
+
+const compareEarliestDeadline = (a, b) => {
+  return new Date(b.date) - new Date(a.date);
+};
+
+// sorting todos
+
+todoSortingSelect.addEventListener("change", (e) => {
+  let chosenParam = e.target.value;
+  sortTodos(chosenParam);
+});
+
+const sortTodos = (option) => {
+  users = JSON.parse(localStorage.getItem("users"));
+  let loggedInUser = +localStorage.getItem("loggedInUser");
+
+  let user = users.find((user) => user.id === loggedInUser);
+
+  let userTodos = [...user.todos];
+  switch (option) {
+    case "":
+      renderTodoCards(userTodos, false);
+      break;
+    case "deadlineDesc":
+      userTodos.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+      break;
+    case "deadlineAsc":
+      userTodos.sort((a, b) => new Date(b.deadline) - new Date(a.deadline));
+      break;
+    case "timeDesc":
+      userTodos.sort((a, b) => {
+        let aTime =
+          a.timeEstimate.hours.toString() + a.timeEstimate.minutes.toString();
+        let bTime =
+          b.timeEstimate.hours.toString() + b.timeEstimate.minutes.toString();
+
+        aTime = +aTime;
+        bTime = +bTime;
+
+        return aTime < bTime ? 1 : bTime < aTime ? -1 : 0;
+      });
+      break;
+    case "timeAsc":
+      userTodos.sort((a, b) => {
+        let aTime =
+          a.timeEstimate.hours.toString() + a.timeEstimate.minutes.toString();
+        let bTime =
+          b.timeEstimate.hours.toString() + b.timeEstimate.minutes.toString();
+
+        aTime = +aTime;
+        bTime = +bTime;
+
+        return bTime < aTime ? 1 : aTime < bTime ? -1 : 0;
+      });
+      break;
+  }
+
+  renderTodoCards(userTodos, false);
 };
 
 renderTodoCards(emptyArr, true);
