@@ -76,6 +76,7 @@ const getQuote = async () => {
       quoteH1.innerText = quote;
       loadingScreen.append(greeting);
       greeting.appendChild(quoteH1);
+      localStorage.setItem("greeting", true);
     }
   } catch (error) {
     console.error("Error fetching quote:", error);
@@ -292,6 +293,7 @@ const logInUser = () => {
             logOutBtn.dataset.id = matchingUser.id;
 
             // appending the log out button
+            getQuote();
             toggleUserActions();
             toggleContent();
           }
@@ -328,6 +330,7 @@ const logOutUser = () => {
   //   updating local storage
   localStorage.setItem("users", JSON.stringify(newUserList));
   localStorage.removeItem("loggedInUser");
+  localStorage.removeItem("greeting");
   toggleUserActions(1500, "Bye for now!");
   toggleContent();
 };
