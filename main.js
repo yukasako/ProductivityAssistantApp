@@ -63,7 +63,6 @@ let emptyArr = [];
 //Retrieve quote and create greeting
 let quote;
 const getQuote = async () => {
-  console.log("working");
   try {
     const res = await fetch("https://api.quotable.io/random?maxLength=75?");
     const data = await res.json();
@@ -369,6 +368,7 @@ const toggleContent = async () => {
       }, 5000);
     }, 1000);
 
+    resetStreak();
     // renderTodoCards();
   } else {
     content.innerHTML = "";

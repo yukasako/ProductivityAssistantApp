@@ -407,7 +407,6 @@ const editTodo = (i) => {
   deleteBtn.innerText = "Delete Todo";
   deleteBtn.addEventListener("click", () => {
     //delete todo
-    console.log(todo);
     deleteTodo(todo);
   });
 
@@ -480,7 +479,6 @@ const deleteTodo = (todo) => {
 
   let user = users.find((user) => +user.id === +loggedInUser);
 
-  console.log("User: ", user.id);
   let todoToDelete = user.todos.find((item) => +item.id === +todo.id);
 
   // finding index of item
@@ -581,7 +579,6 @@ const saveTodoToArchive = (todo) => {
   users = JSON.parse(localStorage.getItem("users"));
   let loggedInUser = +localStorage.getItem("loggedInUser");
   let user = users.find((user) => user.id === loggedInUser);
-  console.log(user);
 
   // matching todo
   let todoToArchive = user.todos.find((item) => item.id === todo.id);
