@@ -1,8 +1,5 @@
 
 fixa så att enter loggar in user
-styla habits / todos
-marker hamnar utanför paddingen
-bugg när man klickar på li
+styla habits / todos    
 röd ram runt li
 minska filter alternativ pga. styling
-vad är status filter?
