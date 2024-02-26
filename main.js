@@ -76,13 +76,16 @@ const getQuote = async () => {
       quoteH1.innerText = quote;
       loadingScreen.append(greeting);
       greeting.appendChild(quoteH1);
-      localStorage.setItem("greeting", true);
     }
   } catch (error) {
     console.error("Error fetching quote:", error);
   }
 };
-// getQuote();
+
+if (!JSON.parse(localStorage.getItem("shouldGetQuote") === false)) {
+  getQuote();
+}
+
 
 let highlights = document.createElement("article");
 highlights.id = "highlights";
@@ -289,6 +292,7 @@ const logInUser = () => {
             localStorage.setItem("users", JSON.stringify(newUserList));
 
             localStorage.setItem("loggedInUser", matchingUser.id);
+            localStorage.setItem("shouldGetQuote", false);
 
             logOutBtn.dataset.id = matchingUser.id;
 
@@ -327,15 +331,17 @@ const logOutUser = () => {
 
   let newUserList = [...users];
 
+  localStorage.removeItem("shouldGetQuote");
+
   //   updating local storage
   localStorage.setItem("users", JSON.stringify(newUserList));
   localStorage.removeItem("loggedInUser");
-  localStorage.removeItem("greeting");
   toggleUserActions(1500, "Bye for now!");
   toggleContent();
 };
 
 logOutBtn.addEventListener("click", () => {
+  localStorage.removeItem("shouldQuote");
   logOutUser();
 });
 
@@ -362,14 +368,20 @@ const toggleContent = async () => {
     appScreen.append(highlights, content);
 
     //cycle from login screen -> loadin screen -> app screen
-    loginScreen.classList.add("displayNone");
-    setTimeout(() => {
-      loadingScreen.classList.remove("displayNone");
+    if (JSON.parse(localStorage.getItem("shouldQuote")) === true) {
+      loginScreen.classList.add("displayNone");
       setTimeout(() => {
-        loadingScreen.classList.add("displayNone");
-        appScreen.classList.remove("displayNone");
-      }, 5000);
-    }, 1000);
+        loadingScreen.classList.remove("displayNone");
+        setTimeout(() => {
+          loadingScreen.classList.add("displayNone");
+          appScreen.classList.remove("displayNone");
+        }, 5000);
+      }, 1000);
+      localStorage.removeItem("shouldQuote");
+    } else {
+      loginScreen.classList.add("displayNone");
+      appScreen.classList.remove("displayNone");
+    }
 
     resetStreak();
     // renderTodoCards();
@@ -406,8 +418,9 @@ const destroyModal = () => {
   modal.innerHTML = "";
 };
 
-loginBtn.addEventListener("click", () => {
+loginBtn.addEventListener("click", async () => {
   logInUser();
+  localStorage.setItem("shouldQuote", true);
 });
 
 const getCurrentUser = () => {
@@ -417,10 +430,6 @@ const getCurrentUser = () => {
 
   return currentUser;
 };
-
-if (!localStorage.getItem("greeting")) {
-  getQuote();
-}
 
 const getToday = () => {
   let today = new Date();
