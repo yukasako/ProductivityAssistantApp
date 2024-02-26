@@ -346,25 +346,6 @@ const deleteHabit = (habit) => {
   destroyModal();
 };
 
-const getToday = () => {
-  let today = new Date();
-  let year = today.getFullYear();
-  let mm = today.getMonth() + 1;
-  let dd = today.getDate();
-  // Add leading zero if the day is less than 10
-  if (dd < 10) {
-    dd = "0" + dd;
-  }
-
-  // Add leading zero if the month is less than 10
-  if (mm < 10) {
-    mm = "0" + mm;
-  }
-  today = `${year}-${mm}-${dd}`;
-
-  return today;
-};
-
 const streakIncrementer = (habit) => {
   users = JSON.parse(localStorage.getItem("users"));
 

@@ -27,7 +27,7 @@ const createNewTodo = () => {
     <input type="text" name="description" id="description">
     <br>
     <label for="deadline">Deadline</label>
-    <input type="date" name="deadline" id="deadline" min="${new Date()}">
+    <input type="date" name="deadline" id="deadline" min="${getToday()}">
     <br>
     <label for="timeEstimate">Time Estimate</label>
     <input type="time" name="timeEstimate" id="timeEstimate">
@@ -361,9 +361,9 @@ const editTodo = (i) => {
 
   editForm.innerHTML +=
     `<div class="flex"><label for="editDeadline">Deadline</label>
-  <input type="date" name="editDeadline" id="editDeadline" value="${
-    todo.deadline == "9999:12:31" ? "" : todo.deadline
-  }"></div>` +
+  <input type="date" min="${getToday()}" name="editDeadline" id="editDeadline" value="${
+      todo.deadline == "9999:12:31" ? "" : todo.deadline
+    }"></div>` +
     `<div class="flex"><label for="editTimeEstimate">Time Estimate</label>
   <input type="time" name="editTimeEstimate" id="editTimeEstimate" value="${todo.timeEstimate.hours}:${todo.timeEstimate.minutes}"></div>`;
 
