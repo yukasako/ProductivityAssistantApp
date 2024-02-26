@@ -155,6 +155,12 @@ const filterAndSortHabits = () => {
     return habit.priority === chosenPriority || chosenPriority === "";
   });
 
+  let priorityValues = [
+    { name: "low", value: 1 },
+    { name: "medium", value: 2 },
+    { name: "high", value: 3 },
+  ];
+
   switch (selectedSortingOption) {
     case "":
       break;
@@ -173,29 +179,23 @@ const filterAndSortHabits = () => {
       });
       break;
     case "prioDesc":
-      chosenHabits.sort((a) => {
-        if (a.priority === "low") {
-          return -1;
-        }
-        if (a.priority === "medium") {
-          return 0;
-        }
-        if (a.priority === "high") {
-          return 1;
-        }
+      chosenHabits.sort((a, b) => {
+        let aPrio = priorityValues.find((prio) => prio.name === a.priority);
+        aPrio = aPrio.value;
+        let bPrio = priorityValues.find((prio) => prio.name === b.priority);
+        bPrio = bPrio.value;
+
+        return aPrio - bPrio;
       });
       break;
     case "prioAsc":
-      chosenHabits.sort((a) => {
-        if (a.priority === "high") {
-          return -1;
-        }
-        if (a.priority === "medium") {
-          return 0;
-        }
-        if (a.priority === "low") {
-          return 1;
-        }
+      chosenHabits.sort((a, b) => {
+        let aPrio = priorityValues.find((prio) => prio.name === a.priority);
+        aPrio = aPrio.value;
+        let bPrio = priorityValues.find((prio) => prio.name === b.priority);
+        bPrio = bPrio.value;
+
+        return bPrio - aPrio;
       });
       break;
   }
@@ -283,7 +283,7 @@ const saveHabitEdits = (habit) => {
   // 1, Save the input data to local storage.
   let inputHabitTitle = document.querySelector("#editHabitTitle").value;
   let inputPriority = document.querySelector("#editHabitPrio").value;
-  let inputStreak = +document.querySelector("#editHabitStreak").value;
+  let inputStreak = document.querySelector("#editHabitStreak").value;
 
   // logic for increasing, resetting or increasing streak
   inputStreak === 0
@@ -375,12 +375,17 @@ const streakIncrementer = (habit) => {
   let previousDay = new Date(today);
   previousDay.setDate(today.getDate() - 1);
 
-  if (previousDay === latestDayInStreak || streakArray.length === 0) {
+  if (
+    previousDay.getTime() === latestDayInStreak.getTime() ||
+    streakArray.length === 0
+  ) {
     today = getToday();
     user.habits[indexOfHabit].streak.push(today);
   }
 
+  // updating local storage
   localStorage.setItem("users", JSON.stringify(users));
+  // refreshing the list
   renderHabitCards(user.habits, false);
 };
 
