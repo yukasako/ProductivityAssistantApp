@@ -389,10 +389,26 @@ const streakIncrementer = (habit) => {
   renderHabitCards(user.habits, false);
 };
 
-const streakDecrementer = (numOfDays) => {
+const resetStreak = () => {
   users = JSON.parse(localStorage.getItem("users"));
-  let loggedInUser = +localStorage.getItem("loggedInUser");
-  user = users.find((user) => user.id === loggedInUser);
+  let loggedInUSer = +localStorage.getTime("loggedInUser");
+  let user = users.find((user) => user.id === loggedInUSer);
+
+  let today = new Date(getToday());
+  let previousDay = new Date(today);
+  previousDay.setDate(today.getDate() - 1);
+
+  user.habits.forEach((habit) => {
+    let latestDayInStreak = new Date(habit.streak[streakArray.length - 1]);
+
+    // setting streak to zero if one day missed
+    if (previousDay.getTime() !== latestDayInStreak.getTime()) {
+      habit.streak = [];
+    }
+  });
+
+  // updating local storage
+  localStorage.setItem("users", JSON.stringify(users));
 };
 
 renderHabitCards(emptyArr, true);
