@@ -583,7 +583,7 @@ const saveTodoToArchive = (todo) => {
   // matching todo
   let todoToArchive = user.todos.find((item) => item.id === todo.id);
 
-  let indexOfTodo = user.todos.indexOf(todo);
+  let indexOfTodo = user.todos.indexOf(todoToArchive);
   // removing todo from main todo array
   user.todos.splice(indexOfTodo, 1);
 
