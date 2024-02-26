@@ -245,7 +245,22 @@ const editHabit = (i) => {
 
   editForm.append(prioDiv);
 
-  editForm.innerHTML += `<div class="flex><label for="editHabitStreak">Streak</label><input type="number" min="0" id="editHabitStreak"/></div>`;
+  // container for resetting streak action
+  let resetDiv = document.createElement("div");
+  resetDiv.classList.add("flex");
+  resetDiv.innerHTML = `<p class="currentStreak">${habit.streak.length}</p>`;
+  let resetBtn = document.createElement("button");
+  resetBtn.id = "resetStreak";
+  resetBtn.innerText = "Reset Streak";
+
+  resetBtn.addEventListener("click", () => {
+    habit = resetActiveHabitStreak(habit);
+    resetDiv.innerHTML = `<p class="currentStreak">${habit.streak.length}</p>`;
+    resetDiv.append(resetBtn);
+  });
+  resetDiv.append(resetBtn);
+  editForm.append(resetDiv);
+
   // buttons
   let actionButtons = document.createElement("div");
   actionButtons.classList.add("actionButtons", "flex");
@@ -283,14 +298,6 @@ const saveHabitEdits = (habit) => {
   // 1, Save the input data to local storage.
   let inputHabitTitle = document.querySelector("#editHabitTitle").value;
   let inputPriority = document.querySelector("#editHabitPrio").value;
-  let inputStreak = document.querySelector("#editHabitStreak").value;
-
-  // logic for increasing, resetting or increasing streak
-  inputStreak === 0
-    ? (habit.streak = [])
-    : inputStreak > 0
-    ? addToStreak(habit)
-    : subtractFromStreak(habit);
 
   // Create habit object
   let editedHabit = {
@@ -391,7 +398,7 @@ const streakIncrementer = (habit) => {
 
 const resetStreak = () => {
   users = JSON.parse(localStorage.getItem("users"));
-  let loggedInUSer = +localStorage.getTime("loggedInUser");
+  let loggedInUSer = +localStorage.getItem("loggedInUser");
   let user = users.find((user) => user.id === loggedInUSer);
 
   let today = new Date(getToday());
@@ -409,6 +416,22 @@ const resetStreak = () => {
 
   // updating local storage
   localStorage.setItem("users", JSON.stringify(users));
+};
+
+const resetActiveHabitStreak = (habit) => {
+  users = JSON.parse(localStorage.getItem("users"));
+  let loggedInUSer = +localStorage.getItem("loggedInUser");
+  let user = users.find((user) => user.id === loggedInUSer);
+
+  let currentHabit = user.habits.find((item) => item.id === habit.id);
+  // ressetting current habit streak
+  currentHabit.streak = [];
+
+  // updating local storage
+  localStorage.setItem("users", JSON.stringify(users));
+
+  // returning new length of habit streak
+  return currentHabit;
 };
 
 renderHabitCards(emptyArr, true);
