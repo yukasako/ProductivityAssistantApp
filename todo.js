@@ -77,7 +77,7 @@ const saveNewTodo = () => {
 
   let timeEstimate;
   if (!inputTimeEstimate) {
-    timeEstimate = { hours: 0, minutes: 0 };
+    timeEstimate = { hours: "00", minutes: "00" };
   } else {
     timeEstimate = { hours, minutes };
   }
@@ -452,7 +452,7 @@ const saveTodoEdits = (todo) => {
 
   let timeEstimate;
   if (!inputTimeEstimate) {
-    timeEstimate = { hours: 0, minutes: 0 };
+    timeEstimate = { hours: "00", minutes: "00" };
   } else {
     timeEstimate = { hours, minutes };
   }
@@ -555,54 +555,6 @@ const compareStatus = (a) => {
 todoSortingSelect.addEventListener("change", (e) => {
   filterAndSortTodos();
 });
-
-// const sortTodos = (option) => {
-//   users = JSON.parse(localStorage.getItem("users"));
-//   let loggedInUser = +localStorage.getItem("loggedInUser");
-
-//   let user = users.find((user) => user.id === loggedInUser);
-
-//   let userTodos = [...user.todos];
-//   switch (option) {
-//     case "":
-//       renderTodoCards(userTodos, false);
-//       break;
-//     case "deadlineDesc":
-//       userTodos.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
-//       break;
-//     case "deadlineAsc":
-//       userTodos.sort((a, b) => new Date(b.deadline) - new Date(a.deadline));
-//       break;
-//     case "timeDesc":
-//       userTodos.sort((a, b) => {
-//         let aTime =
-//           a.timeEstimate.hours.toString() + a.timeEstimate.minutes.toString();
-//         let bTime =
-//           b.timeEstimate.hours.toString() + b.timeEstimate.minutes.toString();
-
-//         aTime = +aTime;
-//         bTime = +bTime;
-
-//         return aTime < bTime ? 1 : bTime < aTime ? -1 : 0;
-//       });
-//       break;
-//     case "timeAsc":
-//       userTodos.sort((a, b) => {
-//         let aTime =
-//           a.timeEstimate.hours.toString() + a.timeEstimate.minutes.toString();
-//         let bTime =
-//           b.timeEstimate.hours.toString() + b.timeEstimate.minutes.toString();
-
-//         aTime = +aTime;
-//         bTime = +bTime;
-
-//         return bTime < aTime ? 1 : aTime < bTime ? -1 : 0;
-//       });
-//       break;
-//   }
-
-//   renderTodoCards(userTodos, false);
-// };
 
 const saveTodoToArchive = (todo) => {
   // getting current user
