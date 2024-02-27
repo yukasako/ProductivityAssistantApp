@@ -133,7 +133,7 @@ habitList.classList.add("habitList");
 
 // creating other elements
 
-// todo-filtering
+// todo filtering
 let todosFilterSection = document.createElement("div"); //append this to top of todo list
 
 todosFilterSection.classList.add("flex", "flex-column", "todosFilters");
