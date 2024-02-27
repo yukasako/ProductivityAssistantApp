@@ -3,4 +3,6 @@ fixa så att enter loggar in user
 styla habits / todos    
 kl 10 torsdag möte
 
-100vh på main med modal på.
+fixa öveflödiga divs + ids på first element
+
+esc stänger modal

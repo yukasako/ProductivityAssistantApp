@@ -423,6 +423,12 @@ const createModal = () => {
     destroyModal();
   })
 
+  document.addEventListener("keydown", function(event) {
+    if (event.keyCode === 27) {
+      destroyModal();
+    }
+  });
+
   //Scroll Lock
   document.body.classList.add("scrollLock");
 };
@@ -436,10 +442,20 @@ const destroyModal = () => {
 
 
 
+
+//Trigger Login
 loginBtn.addEventListener("click", async () => {
   logInUser();
   localStorage.setItem("shouldQuote", true);
 });
+
+document.addEventListener("keydown", function(event) {
+  if (event.keyCode === 13) {
+    logInUser();
+    localStorage.setItem("shouldQuote", true);
+  }
+});
+
 
 const getCurrentUser = () => {
   let users = JSON.parse(localStorage.getItem("users"));
