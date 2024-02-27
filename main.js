@@ -399,6 +399,7 @@ toggleContent();
 
 //Create a Modal or Destroy Modal Functions
 const modal = document.createElement("article");
+
 const createModal = () => {
   const modalScreen = document.createElement("section");
   modalScreen.setAttribute("id", "modalScreen");
@@ -409,16 +410,58 @@ const createModal = () => {
   modalScreen.appendChild(modal);
 
   main.appendChild(modalScreen);
+
+  const closeModal = document.createElement("button");
+  closeModal.setAttribute("id", "closeModalBtn");
+
+  const closeModalIcon = document.createElement("i");
+  closeModal.appendChild(closeModalIcon);
+
+  closeModalIcon.classList.add("fa-solid", "fa-xmark");
+ 
+
+  modal.appendChild(closeModal);
+  closeModal.appendChild(closeModalIcon);
+  
+
+  //To exit the modal
+  document.getElementById("closeModalBtn").addEventListener("click", ()=>{
+    destroyModal();
+  })
+
+  document.addEventListener("keydown", function(event) {
+    if (event.keyCode === 27) {
+      destroyModal();
+    }
+  });
+
+  //Scroll Lock
+  document.body.classList.add("scrollLock");
 };
+
 const destroyModal = () => {
   document.getElementById("modalScreen").remove();
   modal.innerHTML = "";
+  document.body.classList.remove("scrollLock");
 };
 
+
+
+
+
+//Trigger Login
 loginBtn.addEventListener("click", async () => {
   logInUser();
   localStorage.setItem("shouldQuote", true);
 });
+
+document.addEventListener("keydown", function(event) {
+  if (event.keyCode === 13) {
+    logInUser();
+    localStorage.setItem("shouldQuote", true);
+  }
+});
+
 
 const getCurrentUser = () => {
   let users = JSON.parse(localStorage.getItem("users"));
