@@ -115,8 +115,8 @@ const saveNewTodo = () => {
     localStorage.setItem("users", JSON.stringify(users));
     todoInput.innerHTML = "";
 
-    let todoCard = createTodoCard(todo, todo.id);
-    todoList.prepend(todoCard);
+    renderTodoCards(user.todos, false);
+    resetTodoFilterAndSorting();
     destroyModal();
   }
 };
@@ -129,7 +129,6 @@ createTodoBtn.addEventListener("click", () => {
 // called upon in both renderTodoList function and createTodoBtn event listener
 const createTodoCard = (todo, id) => {
   let li = document.createElement("li");
-  li.style.border = "1px solid lightpink";
   li.dataset.id = id;
   li.classList.add("todo", "clickable", "flex");
 
@@ -646,7 +645,7 @@ const verifyArchiving = (todo) => {
   let archivingContent = document.createElement("div");
   archivingContent.classList.add("archiveForm", "flex", "flex-column");
 
-  archivingContent.innerHTML = `<h2>Are you sure you want to archive this Todo?</h2>
+  archivingContent.innerHTML = `<h2>Are you sure you want to archive this task?</h2>
   <p>${todo.title}</p>`;
 
   archivingContent.append(actionButtons);
@@ -654,6 +653,14 @@ const verifyArchiving = (todo) => {
   modal.append(archivingContent);
 
   createModal();
+};
+
+const resetTodoFilterAndSorting = () => {
+  todoStatusSelect.querySelector("[value='']").selected = true;
+  todoSortingSelect.querySelector("[value='']").selected = true;
+  todoCheckboxes.querySelectorAll("[name='category']").forEach((checkbox) => {
+    checkbox.checked = false;
+  });
 };
 
 renderTodoCards(emptyArr, true);

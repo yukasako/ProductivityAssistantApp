@@ -11,9 +11,13 @@ const createHabitCard = (habit, id) => {
   infoDiv.innerHTML = `<h3 class="itemTitle">${habit.title}</h3>`;
   let subInfo = document.createElement("div");
   subInfo.classList.add("subInfo", "flex");
-  subInfo.innerHTML = `<p>Priority: ${habit.priority}</p><p>Streak: ${
-    habit.streak.length
-  } ${
+  subInfo.innerHTML = `<p>Priority: ${
+    habit.priority === "low"
+      ? "Low <i class='fa-solid fa-circle success'></i>"
+      : habit.priority === "medium"
+      ? "Medium <i class='fa-solid fa-circle warning'></i>"
+      : "High <i class='fa-solid fa-circle danger'></i>"
+  }</p><p>Streak: ${habit.streak.length} ${
     habit.streak.length > 1 ? "days" : habit.streak.length === 1 ? "day" : ""
   }</p>`;
 
@@ -117,9 +121,8 @@ const saveNewHabit = () => {
     localStorage.setItem("users", JSON.stringify(users));
     habitInput.innerHTML = "";
 
-    //Generate a habit card to DOM.
-    let habitCard = createHabitCard(habit, habit.id);
-    habitList.prepend(habitCard);
+    renderHabitCards(user.habits, false);
+    resetHabitFilterAndSorting();
     destroyModal();
   }
 };
@@ -440,6 +443,11 @@ const resetActiveHabitStreak = (habit) => {
 
   // returning new length of habit streak
   return currentHabit;
+};
+
+const resetHabitFilterAndSorting = () => {
+  habitsPrioSelect.querySelector("[value='']").selected = true;
+  habitsSortSelect.querySelector("[value='']").selected = true;
 };
 
 renderHabitCards(emptyArr, true);

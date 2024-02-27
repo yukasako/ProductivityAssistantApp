@@ -25,7 +25,6 @@ ul {
 }
 
 body {
-
 }
 
 main {
@@ -224,5 +223,18 @@ nav .wrapper {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     opacity: 1;
+  }
+}
+
+i {
+  &.danger {
+    color: #fb370d;
+  }
+
+  &.warning {
+    color: #f2cb05;
+  }
+  &.success {
+    color: #14a662;
   }
 }
