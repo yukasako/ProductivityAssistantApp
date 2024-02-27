@@ -86,7 +86,6 @@ if (!JSON.parse(localStorage.getItem("shouldGetQuote") === false)) {
   getQuote();
 }
 
-
 let highlights = document.createElement("article");
 highlights.id = "highlights";
 let content = document.createElement("div");
@@ -111,11 +110,8 @@ let habitsContentH2 = document.createElement("h2");
 habitsContentH2.innerText = "Routine";
 habitsContent.append(habitsContentH2);
 
-let createNewTodoDiv = document.createElement("div");
-createNewTodoDiv.id = "createNewTodoDiv";
 let createTodoBtn = document.createElement("button");
 createTodoBtn.innerText = "New Todo";
-createNewTodoDiv.append(createTodoBtn);
 
 let todoContainer = document.createElement("article");
 todoContainer.id = "todoContainer";
@@ -362,7 +358,7 @@ const toggleUserActions = (ms = 0, msg = "") => {
 // hiding / showing locked content based on log in status
 const toggleContent = async () => {
   if (localStorage.getItem("loggedInUser")) {
-    todoContent.append(todoContainer, createNewTodoDiv);
+    todoContent.append(todoContainer, createTodoBtn);
     habitsContent.append(habitContainer, createNewHabitDiv);
 
     appScreen.append(highlights, content);

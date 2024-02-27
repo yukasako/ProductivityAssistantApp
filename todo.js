@@ -20,7 +20,7 @@ const createNewTodo = () => {
     categorySelect.append(todoCategories);
     categoryDiv.append(categoryLabel, categorySelect);
     todoInput.innerHTML = `
-    <h2>Input New Todo</h2>
+    <h2>New Todo</h2>
     <label for="todoTitle">Title</label>
     <input type="text" name="todoTitle" id="todoTitle"><br>
     <label for="description">Description</label>
@@ -38,7 +38,11 @@ const createNewTodo = () => {
     saveTodoBtn.innerText = "Save";
 
     todoInput.append(categoryDiv, saveTodoBtn);
-    createNewTodoDiv.append(todoInput);
+    let createDiv = document.createElement("div");
+    createDiv.append(todoInput);
+    modal.append(createDiv);
+
+    createModal();
 
     saveTodoBtn.addEventListener("click", () => {
       saveNewTodo();
@@ -113,6 +117,7 @@ const saveNewTodo = () => {
 
     let todoCard = createTodoCard(todo, todo.id);
     todoList.prepend(todoCard);
+    destroyModal();
   }
 };
 
@@ -126,9 +131,18 @@ const createTodoCard = (todo, id) => {
   let li = document.createElement("li");
   li.style.border = "1px solid lightpink";
   li.dataset.id = id;
-  li.classList.add("todo", "clickable");
+  li.classList.add("todo", "clickable", "flex");
 
+  // icon + title html
+  let todoInfo = document.createElement("div");
+  todoInfo.classList.add("flex", "todoInfo");
   let icon = setIcon(todo.category);
+  todoInfo.append(icon);
+  todoInfo.innerHTML += `<h3 class="todoTitle">${todo.title}</h3>`;
+
+  // complete checkbox and archive icon (if completed)
+  let actionDiv = document.createElement("div");
+  actionDiv.classList.add("flex", "todoActions");
 
   let completedCheckbox = document.createElement("input");
   completedCheckbox.type = "checkbox";
@@ -137,6 +151,7 @@ const createTodoCard = (todo, id) => {
     completedCheckbox.checked = true;
     completedCheckbox.disabled = true;
   }
+  actionDiv.append(completedCheckbox);
 
   let archiveIcon = document.createElement("i");
   archiveIcon.classList.add("fa-solid", "fa-box-archive", "clickable");
@@ -159,9 +174,9 @@ const createTodoCard = (todo, id) => {
     }
   });
 
-  li.append(icon, todo.title, completedCheckbox);
+  li.append(todoInfo, actionDiv);
   if (todo.completed.toString() === "true") {
-    li.append(archiveIcon);
+    actionDiv.append(archiveIcon);
   }
 
   return li;
@@ -362,7 +377,7 @@ const editTodo = (i) => {
   editForm.innerHTML +=
     `<div class="flex"><label for="editDeadline">Deadline</label>
   <input type="date" min="${getToday()}" name="editDeadline" id="editDeadline" value="${
-      todo.deadline == "9999:12:31" ? "" : todo.deadline
+      todo.deadline == "9999-12-31" ? "" : todo.deadline
     }"></div>` +
     `<div class="flex"><label for="editTimeEstimate">Time Estimate</label>
   <input type="time" name="editTimeEstimate" id="editTimeEstimate" value="${todo.timeEstimate.hours}:${todo.timeEstimate.minutes}"></div>`;

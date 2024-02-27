@@ -2,12 +2,18 @@
 // called upon in both renderHabitList function and createHabitBtn event listener
 const createHabitCard = (habit, id) => {
   let li = document.createElement("li");
-  li.style.border = "1px solid lightblue";
-  li.classList.add("habit", "clickable");
+  li.classList.add("habit", "clickable", "flex");
   li.dataset.id = id;
 
-  let streak = document.createElement("p");
-  streak.innerText = `Streak: ${habit.streak.length} day/s`;
+  // div containing the habit info
+  let infoDiv = document.createElement("div");
+  infoDiv.classList.add("flex", "flex-column", "habitInfo");
+  infoDiv.innerHTML = `<h3 class="itemTitle">${habit.title}</h3>`;
+  let subInfo = document.createElement("div");
+  subInfo.classList.add("subInfo", "flex");
+  subInfo.innerHTML = `<p>Priority: ${habit.priority}</p><p>Streak: ${habit.streak.length} day/s</p>`;
+
+  infoDiv.append(subInfo);
 
   let completedBtn = document.createElement("button");
   completedBtn.innerText = "Complete";
@@ -26,7 +32,7 @@ const createHabitCard = (habit, id) => {
     }
   });
 
-  li.append(habit.title, ", Priority: " + habit.priority, completedBtn, streak);
+  li.append(infoDiv, completedBtn);
 
   return li;
 };
@@ -35,7 +41,7 @@ const createNewHabit = () => {
   if (habitInput.innerHTML === "") {
     // Create input form
     habitInput.innerHTML = `
- <h2>Input New Habit</h2>
+ <h2>New Habit</h2>
  <label for="habitTitle">Title</label>
  <input type="text" name="habitTitle" id="habitTitle"><br>
  <label for="priority">Priority</label>
@@ -46,11 +52,16 @@ const createNewHabit = () => {
  </select><br>
 `;
 
+    let createDiv = document.createElement("div");
+    createDiv.append(habitInput);
+
     let saveHabitBtn = document.createElement("button");
     saveHabitBtn.innerText = "Save";
 
     habitInput.append(saveHabitBtn);
-    createNewHabitDiv.append(habitInput);
+    modal.append(createDiv);
+
+    createModal();
 
     saveHabitBtn.addEventListener("click", () => {
       saveNewHabit();
@@ -94,6 +105,7 @@ const saveNewHabit = () => {
     //Generate a habit card to DOM.
     let habitCard = createHabitCard(habit, habit.id);
     habitList.prepend(habitCard);
+    destroyModal();
   }
 };
 
