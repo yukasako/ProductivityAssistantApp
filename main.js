@@ -107,12 +107,13 @@ todoContentH2.innerText = "Things To Do";
 todoContent.append(todoContentH2);
 
 let habitsContentH2 = document.createElement("h2");
-habitsContentH2.innerText = "Routine";
+habitsContentH2.innerText = "Routines";
 habitsContent.append(habitsContentH2);
 
 let createTodoBtn = document.createElement("button");
-createTodoBtn.innerText = "New Todo";
-
+createTodoBtn.classList.add("addNew");
+createTodoBtn.innerHTML =
+  "<span>New Todo</span><i class='fa-solid fa-plus'></i>";
 let todoContainer = document.createElement("article");
 todoContainer.id = "todoContainer";
 let todoList = document.createElement("ul");
@@ -120,7 +121,9 @@ todoList.classList.add("todoList");
 
 let createNewHabitDiv = document.createElement("div");
 let createHabitBtn = document.createElement("button");
-createHabitBtn.innerText = "New Habit";
+createHabitBtn.classList.add("addNew");
+createHabitBtn.innerHTML =
+  "<span>New Habit</span><i class='fa-solid fa-plus'></i>";
 createNewHabitDiv.append(createHabitBtn);
 
 let habitContainer = document.createElement("article");

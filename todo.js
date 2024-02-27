@@ -149,7 +149,6 @@ const createTodoCard = (todo, id) => {
   if (todo.completed == true || todo.completed == "true") {
     li.classList.add("disabled");
     completedCheckbox.checked = true;
-    completedCheckbox.disabled = true;
   }
   actionDiv.append(completedCheckbox);
 
@@ -162,7 +161,7 @@ const createTodoCard = (todo, id) => {
   archiveIcon.setAttribute("title", "Click to Archive Todo");
 
   completedCheckbox.addEventListener("change", () => {
-    completeTodo(todo);
+    completedCheckbox.checked ? completeTodo(todo) : unCompleteTodo(todo);
   });
 
   li.addEventListener("click", (e) => {
@@ -525,6 +524,23 @@ const completeTodo = (todo) => {
   renderTodoCards(user.todos, false);
 };
 
+const unCompleteTodo = (todo) => {
+  users = JSON.parse(localStorage.getItem("users"));
+
+  let loggedInUser = +localStorage.getItem("loggedInUser");
+
+  let user = users.find((user) => user.id === loggedInUser);
+
+  for (let item of user.todos) {
+    if (item.id === todo.id) {
+      item.completed = false;
+    }
+  }
+  localStorage.setItem("users", JSON.stringify(users));
+
+  renderTodoCards(user.todos, false);
+};
+
 const compareStatus = (a) => {
   if (a.completed.toString() === "true") {
     return 1;
@@ -615,14 +631,6 @@ const saveTodoToArchive = (todo) => {
 };
 
 const verifyArchiving = (todo) => {
-  let nvmBtn = document.createElement("button");
-  nvmBtn.classList.add("modalBtn");
-  nvmBtn.innerText = "Nevermind";
-
-  nvmBtn.addEventListener("click", () => {
-    destroyModal();
-  });
-
   let proceedBtn = document.createElement("button");
   proceedBtn.classList.add("modalBtn");
   proceedBtn.innerText = "Archive";
@@ -633,7 +641,7 @@ const verifyArchiving = (todo) => {
 
   let actionButtons = document.createElement("div");
   actionButtons.classList.add("flex", "actionButtons");
-  actionButtons.append(proceedBtn, nvmBtn);
+  actionButtons.append(proceedBtn);
 
   let archivingContent = document.createElement("div");
   archivingContent.classList.add("archiveForm", "flex", "flex-column");
