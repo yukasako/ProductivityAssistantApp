@@ -11,12 +11,26 @@ const createHabitCard = (habit, id) => {
   infoDiv.innerHTML = `<h3 class="itemTitle">${habit.title}</h3>`;
   let subInfo = document.createElement("div");
   subInfo.classList.add("subInfo", "flex");
-  subInfo.innerHTML = `<p>Priority: ${habit.priority}</p><p>Streak: ${habit.streak.length} day/s</p>`;
+  subInfo.innerHTML = `<p>Priority: ${habit.priority}</p><p>Streak: ${
+    habit.streak.length
+  } ${
+    habit.streak.length > 1 ? "days" : habit.streak.length === 1 ? "day" : ""
+  }</p>`;
 
   infoDiv.append(subInfo);
 
+  let today = new Date(getToday()).getTime();
+  let latestDayInStreak = new Date(
+    habit.streak[habit.streak.length - 1]
+  ).getTime();
+  let completedToday = today === latestDayInStreak;
+
   let completedBtn = document.createElement("button");
-  completedBtn.innerText = "Complete";
+  if (completedToday) {
+    completedBtn.innerHTML = `<span>Completed</span><i class="fa-solid fa-check"></i>`;
+  } else {
+    completedBtn.innerHTML = `<span>Complete</span>`;
+  }
   completedBtn.addEventListener("click", (e) => {
     // (Data)Get current user from local storage
     let users = JSON.parse(localStorage.getItem("users"));
@@ -24,10 +38,11 @@ const createHabitCard = (habit, id) => {
     let user = users.find((user) => user.id === loggedInUser);
     let currentHabit = user.habits.find((item) => item.id === habit.id);
     streakIncrementer(currentHabit);
+    e.stopPropagation();
   });
 
   li.addEventListener("click", (e) => {
-    if (e.target !== completedBtn) {
+    if (e.target !== completedBtn && e.target !== completedBtn.innerHTML) {
       editHabit(id);
     }
   });
