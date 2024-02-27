@@ -422,11 +422,15 @@ const createModal = () => {
   document.getElementById("closeModalBtn").addEventListener("click", ()=>{
     destroyModal();
   })
+
+  //Scroll Lock
+  document.body.classList.add("scrollLock");
 };
 
 const destroyModal = () => {
   document.getElementById("modalScreen").remove();
   modal.innerHTML = "";
+  document.body.classList.remove("scrollLock");
 };
 
 
