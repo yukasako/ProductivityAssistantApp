@@ -198,6 +198,15 @@ nav .wrapper {
   width: 33%;
   height: 50%;
   background-color: white;
+  position: relative;
+}
+
+#closeModalBtn{
+  width:2rem;
+  height:2rem;
+  position:absolute;
+  top:1rem;
+  right:1rem;
 }
 
 /* Animation for Welcome Quote */

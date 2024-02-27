@@ -401,6 +401,7 @@ toggleContent();
 
 //Create a Modal or Destroy Modal Functions
 const modal = document.createElement("article");
+
 const createModal = () => {
   const modalScreen = document.createElement("section");
   modalScreen.setAttribute("id", "modalScreen");
@@ -411,11 +412,25 @@ const createModal = () => {
   modalScreen.appendChild(modal);
 
   main.appendChild(modalScreen);
+
+  const closeModal = document.createElement("button");
+  closeModal.setAttribute("id", "closeModalBtn");
+
+  modal.appendChild(closeModal);
+
+  //To exit the modal
+  document.getElementById("closeModalBtn").addEventListener("click", ()=>{
+    destroyModal();
+  })
 };
+
 const destroyModal = () => {
   document.getElementById("modalScreen").remove();
   modal.innerHTML = "";
 };
+
+
+
 
 loginBtn.addEventListener("click", async () => {
   logInUser();

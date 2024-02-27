@@ -1,5 +1,4 @@
 
 fixa så att enter loggar in user
 styla habits / todos    
-röd ram runt li
-minska filter alternativ pga. styling
+kl 10 torsdag möte
