@@ -416,7 +416,15 @@ const createModal = () => {
   const closeModal = document.createElement("button");
   closeModal.setAttribute("id", "closeModalBtn");
 
+  const closeModalIcon = document.createElement("i");
+  closeModal.appendChild(closeModalIcon);
+
+  closeModalIcon.classList.add("fa-solid", "fa-xmark");
+ 
+
   modal.appendChild(closeModal);
+  closeModal.appendChild(closeModalIcon);
+  
 
   //To exit the modal
   document.getElementById("closeModalBtn").addEventListener("click", ()=>{
