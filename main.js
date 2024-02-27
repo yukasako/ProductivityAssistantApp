@@ -30,6 +30,7 @@
 
 import("/todo.js");
 import("/habit.js");
+import("/timer.js");
 
 // globala variabler i main
 const main = document.querySelector("main");
@@ -381,9 +382,6 @@ const toggleContent = async () => {
       loginScreen.classList.add("displayNone");
       appScreen.classList.remove("displayNone");
     }
-
-    resetStreak();
-    // renderTodoCards();
   } else {
     content.innerHTML = "";
     appScreen.innerHTML = "";

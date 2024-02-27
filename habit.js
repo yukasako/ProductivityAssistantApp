@@ -134,6 +134,7 @@ createHabitBtn.addEventListener("click", () => {
 
 // Generate habit-cards based on localStorage
 const renderHabitCards = (habitArr = [], onload = false) => {
+  resetStreak();
   // clear previous content
   habitList.innerHTML = "";
   // Get users array from local storage
@@ -417,10 +418,12 @@ const resetStreak = () => {
   previousDay.setDate(today.getDate() - 1);
 
   user.habits.forEach((habit) => {
-    let latestDayInStreak = new Date(habit.streak[streakArray.length - 1]);
-
+    let latestDayInStreak = new Date(habit.streak[habit.streak.length - 1]);
     // setting streak to zero if one day missed
-    if (previousDay.getTime() !== latestDayInStreak.getTime()) {
+    if (
+      previousDay.getTime() !== latestDayInStreak.getTime() &&
+      today.getTime() !== latestDayInStreak.getTime()
+    ) {
       habit.streak = [];
     }
   });
