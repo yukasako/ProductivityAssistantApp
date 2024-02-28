@@ -430,12 +430,15 @@ const createModal = () => {
   document.getElementById("closeModalBtn").addEventListener("click", () => {
     destroyModal();
   });
-
   document.addEventListener("keydown", function (event) {
     if (event.keyCode === 27) {
       destroyModal();
     }
   });
+  const getModalScreen = document.getElementById("modalScreen");
+  getModalScreen.addEventListener("click", () => {
+    destroyModal();
+  })
 
   //Scroll Lock
   document.body.classList.add("scrollLock");
