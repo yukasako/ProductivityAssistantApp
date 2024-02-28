@@ -8,11 +8,13 @@ openBtnText.innerText = "Focus Timer";
 openTimerBtn.append(openBtnIcon, openBtnText);
 
 if (localStorage.getItem("loggedInUser")) {
-  navBtnGroup.prepend(openTimerBtn);
+  navBtnGroup.insertBefore(openTimerBtn, logOutBtn);
 }
 const extractMinutesAndSeconds = (ms) => {
   let m = Math.floor(ms % (1000 * 60 * 60)) / (1000 * 60);
+  m = Math.floor(m);
   let s = Math.floor((ms % (1000 * 60)) / 1000);
+  s = Math.floor(s);
 
   if (m < 10) {
     m = "0" + m;
@@ -25,6 +27,9 @@ const extractMinutesAndSeconds = (ms) => {
   return `${m}:${s}`;
 };
 
+let buttonsSet = document.createElement("div");
+buttonsSet.classList.add("flex", "flex-row", "timerOptions");
+
 let setTimeContent = document.createElement("p");
 setTimeContent.classList.add("timeDisplay");
 setTimeContent.dataset.time = 5;
@@ -34,6 +39,54 @@ let timerContent = document.createElement("div");
 timerContent.id = "timerModal";
 
 let timerIsActive = false;
+
+// start timer button
+let timerBtn = document.createElement("button");
+timerBtn.id = "toggleTimer";
+timerBtn.innerHTML = "Start";
+
+timerBtn.addEventListener("click", () => {
+  if (!timerIsActive) {
+    startTimer();
+  }
+});
+
+//   pause timer button
+let pauseBtn = document.createElement("button");
+pauseBtn.id = "pauseTimerBtn";
+pauseBtn.classList.add("timerIconBtn");
+pauseBtn.innerHTML = "<i class='fa-solid fa-pause'></i>";
+
+pauseBtn.addEventListener("click", () => {
+  pauseTimer();
+});
+
+// stop timer button
+let stopBtn = document.createElement("button");
+stopBtn.id = "stopTimerBtn";
+stopBtn.classList.add("timerIconBtn");
+stopBtn.innerHTML = "<i class='fa-solid fa-stop'></i>";
+
+stopBtn.addEventListener("click", () => {
+  stopTimer();
+  buttonDiv.remove();
+  timerContent.append(timerBtn);
+});
+
+// play timer button
+let playBtn = document.createElement("button");
+playBtn.id = "playTimerBtn";
+playBtn.classList.add("timerIconBtn");
+playBtn.innerHTML = "<i class='fa-solid fa-play'></i>";
+
+playBtn.addEventListener("click", () => {
+  resumeTimer();
+});
+
+//   place play, pause and stop buttons in div
+let buttonDiv = document.createElement("div");
+buttonDiv.classList.add("flex", "timerToggleButtons");
+buttonDiv.append(pauseBtn, stopBtn);
 
 let breakOptions = { short: 5, medium: 10, long: 15 };
 
@@ -45,8 +98,6 @@ const viewTimer = () => {
   timerContent.innerHTML = "";
   // creating modal content
 
-  let buttonsSet = document.createElement("div");
-  buttonsSet.classList.add("flex", "flex-row", "timerOptions");
   let options = ["short", "medium", "long", "custom"];
 
   options.forEach((option) => {
@@ -85,15 +136,6 @@ const viewTimer = () => {
   //   time display
   timerContent.append(setTimeContent);
 
-  //   start timer button
-  let timerBtn = document.createElement("button");
-  timerBtn.id = "toggleTimer";
-  timerBtn.innerText = "Start";
-
-  timerBtn.addEventListener("click", () => {
-    toggleTimer();
-  });
-
   timerContent.append(timerBtn);
 
   modal.append(timerContent);
@@ -106,24 +148,27 @@ const setTimer = (minutes) => {
   setTimeContent.innerText = extractMinutesAndSeconds(minutesInMs);
 };
 
+// get custom time from user input
 const getCustomeTime = () => {};
 
-const toggleTimer = () => {
-  let minutes = setTimeContent.dataset.time;
-  let ms = minutes * 60 * 1000;
+let myTimer;
 
-  let currentTime = new Date().getTime();
-  let goalTime = currentTime + ms;
+const startTimer = (time) => {
+  if (!time) {
+    // change buttons
+    timerContent.append(buttonDiv);
+    playBtn.remove();
+    timerBtn.remove();
+    buttonDiv.prepend(pauseBtn);
 
-  let countdown;
+    let minutes = setTimeContent.dataset.time;
+    let ms = minutes * 60 * 1000;
 
-  if (countdown > 1) {
-    clearInterval(countdown);
-    setTimeContent.innerText = extractMinutesAndSeconds(ms);
-    setTimeContent.dataset.id = minutes;
-  } else {
+    let currentTime = new Date().getTime();
+    let goalTime = currentTime + ms;
+
     // Update the count down every 1 second
-    countdown = setInterval(() => {
+    myTimer = setInterval(() => {
       // Get today's date and time
       let now = new Date().getTime();
 
@@ -133,13 +178,110 @@ const toggleTimer = () => {
       let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+      if (minutes < 10) {
+        minutes = "0" + minutes;
+      }
+
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+      }
+
       setTimeContent.innerText = `${minutes}:${seconds}`;
 
       if (distance < 0) {
-        clearInterval(countdown);
+        clearInterval(myTimer);
         setTimeContent.innerText = extractMinutesAndSeconds(ms);
         setTimeContent.dataset.id = minutes;
+        timerIsActive = false;
+        buttonDiv.remove();
+        timerContent.append(timerBtn);
       }
     }, 1000);
+
+    timerIsActive = true;
+  } else {
+    playBtn.remove();
+
+    let currentTime = new Date().getTime();
+    let goalTime = currentTime + time;
+
+    // Update the count down every 1 second
+    myTimer = setInterval(() => {
+      // Get today's date and time
+      let now = new Date().getTime();
+
+      // Find the distance between now and the count down date
+      let distance = goalTime - now;
+
+      let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      if (minutes < 10) {
+        minutes = "0" + minutes;
+      }
+
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+      }
+
+      setTimeContent.innerText = `${minutes}:${seconds}`;
+
+      if (distance < 0) {
+        clearInterval(myTimer);
+        setTimeContent.innerText = extractMinutesAndSeconds(ms);
+        setTimeContent.dataset.id = minutes;
+        timerIsActive = false;
+        buttonDiv.remove();
+        timerContent.append(timerBtn);
+      }
+    }, 1000);
+
+    timerIsActive = true;
   }
+};
+
+const stopTimer = () => {
+  let time = setTimeContent.dataset.time;
+  let [m, s] = time.split(":").map((num) => num);
+
+  let minutesToMs = Math.floor(+m * 60000);
+  clearInterval(myTimer);
+  setTimeContent.innerText = extractMinutesAndSeconds(minutesToMs);
+
+  timerIsActive = false;
+};
+
+const findTimeLeft = () => {
+  let timeLeft = setTimeContent.innerText;
+
+  let [minutes, seconds] = timeLeft.split(":").map((num) => num);
+
+  let minutesToMs = Math.floor(minutes * 60000);
+  let secondsToMs = Math.floor(seconds * 1000);
+  let ms = minutesToMs + secondsToMs;
+  return ms;
+};
+
+const pauseTimer = () => {
+  let timeLeft = findTimeLeft();
+
+  setTimeContent.innerText = extractMinutesAndSeconds(timeLeft);
+  clearInterval(myTimer);
+
+  //   let formatted = setTimeContent.innerText;
+  //   let [minutes, seconds] = formatted.split(":").map((num) => num);
+
+  //   setTimeContent.dataset.time = `${minutes}:${seconds}`;
+
+  timerIsActive = false;
+
+  pauseBtn.remove();
+  buttonDiv.prepend(playBtn);
+};
+
+const resumeTimer = () => {
+  let timeLeft = findTimeLeft();
+  startTimer(timeLeft);
+  playBtn.remove();
+  buttonDiv.prepend(pauseBtn);
 };
