@@ -1,11 +1,12 @@
 let todoInput = document.createElement("div");
-todoInput.classList.add("todoInputs");
+todoInput.id = "createTodoModal";
 
 const createNewTodo = () => {
   if (todoInput.innerHTML === "") {
     // Create input form
 
     let categoryDiv = document.createElement("div");
+    categoryDiv.classList.add("flex");
     let categoryLabel = document.createElement("label");
     categoryLabel.innerText = "Category";
     categoryLabel.setAttribute("for", "categorySelect");
@@ -21,26 +22,24 @@ const createNewTodo = () => {
     categoryDiv.append(categoryLabel, categorySelect);
     todoInput.innerHTML = `
     <h2>New Todo</h2>
-    <label for="todoTitle">Title</label>
-    <input type="text" name="todoTitle" id="todoTitle"><br>
-    <label for="description">Description</label>
+    <div class="flex"><label for="todoTitle">Title</label>
+    <input type="text" name="todoTitle" id="todoTitle"></div>
+    <div class="flex>"<label for="description">Description</label>
     <input type="text" name="description" id="description">
-    <br>
-    <label for="deadline">Deadline</label>
+    </div>
+    <div class="flex"><label for="deadline">Deadline</label>
     <input type="date" name="deadline" id="deadline" min="${getToday()}">
-    <br>
-    <label for="timeEstimate">Time Estimate</label>
+    </div>
+    <div class="flex"><label for="timeEstimate">Time Estimate</label>
     <input type="time" name="timeEstimate" id="timeEstimate">
-    <br>
+    </div>
     `;
 
     let saveTodoBtn = document.createElement("button");
     saveTodoBtn.innerText = "Save";
 
     todoInput.append(categoryDiv, saveTodoBtn);
-    let createDiv = document.createElement("div");
-    createDiv.append(todoInput);
-    modal.append(createDiv);
+    modal.append(todoInput);
 
     createModal();
 
@@ -71,9 +70,7 @@ const saveNewTodo = () => {
   }
 
   // Extract hours and minutes from inputTimeEstimate
-  let [hours, minutes] = inputTimeEstimate
-    .split(":")
-    .map((num) => parseInt(num));
+  let [hours, minutes] = inputTimeEstimate.split(":").map((num) => num);
 
   let timeEstimate;
   if (!inputTimeEstimate) {
@@ -346,12 +343,9 @@ const editTodo = (i) => {
 
   let todo = user.todos.find((todo) => todo.id === i);
 
-  let modalContent = document.createElement("div");
-  modalContent.classList.add("modalContent");
-  modal.append(modalContent);
-
   let editForm = document.createElement("div");
-  editForm.classList.add("editForm", "flex", "flex-column");
+  editForm.classList.add("flex", "flex-column");
+  editForm.id = "editTodoModal";
   editForm.innerHTML =
     `<div class="flex flex-column"><label for="editTodoTitle">Title</label><input id="editTodoTitle" value="${todo.title}"type="text"/></div>` +
     `<div class="flex flex-column"><label for="editTodoDesc">Description</label><textarea id="editTodoDesc">${todo.description}</textarea></div>`;
@@ -427,7 +421,7 @@ const editTodo = (i) => {
 
   editForm.append(actionButtons);
 
-  modalContent.append(editForm);
+  modal.append(editForm);
 
   createModal();
 };
@@ -446,9 +440,7 @@ const saveTodoEdits = (todo) => {
     : (inputDeadline = inputDeadline);
 
   // Extract hours and minutes from inputTimeEstimate
-  let [hours, minutes] = inputTimeEstimate
-    .split(":")
-    .map((num) => parseInt(num));
+  let [hours, minutes] = inputTimeEstimate.split(":").map((num) => num);
 
   let timeEstimate;
   if (!inputTimeEstimate) {
@@ -595,7 +587,8 @@ const verifyArchiving = (todo) => {
   actionButtons.append(proceedBtn);
 
   let archivingContent = document.createElement("div");
-  archivingContent.classList.add("archiveForm", "flex", "flex-column");
+  archivingContent.classList.add("flex", "flex-column");
+  archivingContent.id = "archiveTodoModal";
 
   archivingContent.innerHTML = `<h2>Are you sure you want to archive this task?</h2>
   <p>${todo.title}</p>`;
