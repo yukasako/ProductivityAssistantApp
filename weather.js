@@ -59,7 +59,7 @@ let weatherData = async () => {
 
   let weatherDiv = document.createElement("div");
   weatherDiv.innerText = `${temperature}℃ ${weather}`;
-  logOutBtn.parentNode.insertBefore(weatherDiv, logOutBtn);
+  navBtnGroup.prepend(weatherDiv);
 };
 weatherData();
 
