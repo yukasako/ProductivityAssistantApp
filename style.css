@@ -24,9 +24,6 @@ ul {
   list-style: none;
 }
 
-body {
-}
-
 main {
   min-height: 100vh;
 }
@@ -63,6 +60,10 @@ nav .wrapper {
   height: 100%;
   line-height: 3rem;
   font-size: 2rem;
+}
+
+.btnGroup > * {
+  margin-left:1rem;
 }
 
 #logOut{
@@ -227,6 +228,8 @@ nav .wrapper {
   margin-right: 0.2rem;
 }
 
+/* Habits */
+
 .habitsContent {
   min-width: 50%;
   border: solid 1px black;
@@ -287,10 +290,7 @@ nav .wrapper {
   margin-left:0.5rem;
 }
 
-/* HABIT MODAL */
-
-
-
+/* Modal */
 #modalScreen {
   z-index: 2;
   background-color: hsla(0, 0%, 0%, 0.8);
@@ -305,9 +305,10 @@ nav .wrapper {
 
 #modal {
   width: 33%;
-  height: 50%;
   background-color: white;
   position: relative;
+  border-radius: 0.5rem;
+  padding:2rem;
 }
 
 #closeModalBtn{
@@ -316,6 +317,9 @@ nav .wrapper {
   position:absolute;
   top:0.5rem;
   right:0.5rem;
+  background-color: white;
+  border: none;
+  cursor: pointer;
 }
 
 #closeModalBtn i {
@@ -325,6 +329,136 @@ nav .wrapper {
 .scrollLock{
   overflow:hidden;
 }
+
+/* Habits Modal */
+#createHabitModal{
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#createHabitModal > * {
+  margin:0.5rem;
+}
+
+#createHabitModal > * :nth-child(1) {
+  margin-right:1rem;
+}
+
+#habitTitle{
+  width:100%;
+}
+
+#createHabitModal button{
+  height:2rem;
+  border-radius:0.3rem;
+}
+
+#editHabitModal{
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#editHabitModal > * {
+  margin:0.5rem;
+}
+
+#editHabitModal :nth-child(1){
+  flex-direction: row;
+}
+
+#editHabitModal > * > *{
+  margin:0rem 0.3rem;
+}
+
+#editHabitModal .actionButtons button{
+  height:2rem;
+}
+
+#editHabitTitle {
+  width:100%;
+}
+
+#editHabitModal button{
+  width:100%;
+  
+}
+
+/* Todo Modal */
+#createTodoModal{
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#createTodoModal > * {
+  margin:0.5rem;
+}
+
+#createTodoModal > * :nth-child(1) {
+  margin-right:0.5rem;
+}
+
+#todoTitle{
+  width:100%;
+}
+
+#description{
+  width:100%;
+}
+
+#createTodoModal button{
+  height:2rem;
+}
+
+#editTodoModal{
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#editTodoModal > * {
+  margin:0.5rem;
+}
+
+#editTodoModal > * :nth-child(1) {
+  margin-right:0.5rem;
+}
+
+#editTodoModal :nth-child(1) {
+  flex-direction: row;
+}
+
+#editTodoModal :nth-child(1) input {
+  width: 100%;
+}
+
+
+#editTodoModal :nth-child(2) {
+  flex-direction: row;
+}
+
+#editTodoModal :nth-child(2) textarea {
+  height:1.2rem;
+  width:100%;
+}
+
+#editTodoModal button{
+  width:100%;
+  height:2rem;
+  border-radius: 0.3rem;
+}
+
+
 
 /* Animation for Welcome Quote */
 @-webkit-keyframes fade-in-fwd {

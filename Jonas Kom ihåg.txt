@@ -1,8 +1,12 @@
 
-fixa så att enter loggar in user
-styla habits / todos    
 kl 10 torsdag möte
 
-fixa öveflödiga divs + ids på first element
+fixa h på edit habit och edit todo
 
-esc stänger modal
+create todo modal description texten ligger fel. htmlen är fel.
+
+description edit och create är olika types
+
+
+fixade styling
+fixade modal close on outside click
