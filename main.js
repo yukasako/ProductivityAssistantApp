@@ -31,8 +31,8 @@
 
 import("/todo.js");
 import("/habit.js");
-import("/timer.js");
 import("/weather.js");
+import("/timer.js");
 
 // globala variabler i main
 const main = document.querySelector("main");
