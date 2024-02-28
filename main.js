@@ -31,6 +31,7 @@
 import("/todo.js");
 import("/habit.js");
 import("/timer.js");
+import("/weather.js");
 
 // globala variabler i main
 const main = document.querySelector("main");
@@ -418,18 +419,16 @@ const createModal = () => {
   closeModal.appendChild(closeModalIcon);
 
   closeModalIcon.classList.add("fa-solid", "fa-xmark");
- 
 
   modal.appendChild(closeModal);
   closeModal.appendChild(closeModalIcon);
-  
 
   //To exit the modal
-  document.getElementById("closeModalBtn").addEventListener("click", ()=>{
+  document.getElementById("closeModalBtn").addEventListener("click", () => {
     destroyModal();
-  })
+  });
 
-  document.addEventListener("keydown", function(event) {
+  document.addEventListener("keydown", function (event) {
     if (event.keyCode === 27) {
       destroyModal();
     }
@@ -445,23 +444,18 @@ const destroyModal = () => {
   document.body.classList.remove("scrollLock");
 };
 
-
-
-
-
 //Trigger Login
 loginBtn.addEventListener("click", async () => {
   logInUser();
   localStorage.setItem("shouldQuote", true);
 });
 
-document.addEventListener("keydown", function(event) {
+document.addEventListener("keydown", function (event) {
   if (event.keyCode === 13) {
     logInUser();
     localStorage.setItem("shouldQuote", true);
   }
 });
-
 
 const getCurrentUser = () => {
   let users = JSON.parse(localStorage.getItem("users"));
