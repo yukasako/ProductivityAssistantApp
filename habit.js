@@ -57,37 +57,32 @@ const createHabitCard = (habit, id) => {
 };
 
 const createNewHabit = () => {
-  if (habitInput.innerHTML === "") {
-    // Create input form
-    habitInput.innerHTML = `
+  let habitInput = document.createElement("div");
+  habitInput.id = "createHabitModal";
+  // Create input form
+  habitInput.innerHTML = `
  <h2>New Habit</h2>
- <label for="habitTitle">Title</label>
- <input type="text" name="habitTitle" id="habitTitle"><br>
- <label for="priority">Priority</label>
+ <div class="flex"><label for="habitTitle">Title</label>
+ <input type="text" name="habitTitle" id="habitTitle"></div>
+ <div class="flex"><label for="priority">Priority</label>
  <select id="priority">
  <option value="low" selected="selected">Low</option>
  <option value="medium">Medium</option>
  <option value="high">High</option>
- </select><br>
+ </select></div>
 `;
 
-    let createDiv = document.createElement("div");
-    createDiv.append(habitInput);
+  let saveHabitBtn = document.createElement("button");
+  saveHabitBtn.innerText = "Save";
 
-    let saveHabitBtn = document.createElement("button");
-    saveHabitBtn.innerText = "Save";
+  habitInput.append(saveHabitBtn);
+  modal.append(habitInput);
 
-    habitInput.append(saveHabitBtn);
-    modal.append(createDiv);
+  createModal();
 
-    createModal();
-
-    saveHabitBtn.addEventListener("click", () => {
-      saveNewHabit();
-    });
-  } else {
-    habitInput.innerHTML = "";
-  }
+  saveHabitBtn.addEventListener("click", () => {
+    saveNewHabit();
+  });
 };
 
 const saveNewHabit = () => {
@@ -119,7 +114,6 @@ const saveNewHabit = () => {
 
     // Save updated users array back to local storage
     localStorage.setItem("users", JSON.stringify(users));
-    habitInput.innerHTML = "";
 
     renderHabitCards(user.habits, false);
     resetHabitFilterAndSorting();
@@ -127,7 +121,6 @@ const saveNewHabit = () => {
   }
 };
 
-let habitInput = document.createElement("div");
 createHabitBtn.addEventListener("click", () => {
   createNewHabit();
 });
@@ -251,12 +244,9 @@ const editHabit = (i) => {
 
   let habit = user.habits.find((habit) => habit.id === i);
 
-  let modalContent = document.createElement("div");
-  modalContent.classList.add("modalContent");
-  modal.append(modalContent);
-
   let editForm = document.createElement("div");
-  editForm.classList.add("editForm", "flex", "flex-column");
+  editForm.classList.add("flex", "flex-column");
+  editForm.id = "editHabitModal";
   editForm.innerHTML = `<div class="flex flex-column"><label for="editHabitTitle">Title</label><input id="editHabitTitle" value="${habit.title}"type="text"/></div>`;
 
   let prioDiv = document.createElement("div");
@@ -320,7 +310,7 @@ const editHabit = (i) => {
 
   editForm.append(actionButtons);
 
-  modalContent.append(editForm);
+  modal.append(editForm);
 
   createModal();
 };

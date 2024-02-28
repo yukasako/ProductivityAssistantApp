@@ -1,31 +1,32 @@
 // exempeldata
 // let user = {
-//   id: 1,
+//   id: 326,
 //   username: "test",
 //   password: "test123",
 //   loggedIn: true,
 //   habits: [
 //     {
-//       userId: 1,
+//       id: 673,
 //       title: "title",
-//       streak: 6,
+//       streak: ["2024-03-04", "2024-03-05"],
 //       priority: "high",
 //     },
 //   ],
 //   todos: [
 //     {
-//       userId: 1,
+//       id: 659,
 //       title: "title",
 //       description: "loremloremlorem",
 //       completed: true,
 //       deadline: "2024-04-04",
 //       timeEstimate: {
-//         hours: 0,
-//         minutes: 40,
+//         hours: "01",
+//         minutes: "10",
 //       },
 //       category: "pleasure",
 //     },
 //   ],
+// archivedTodos: []
 // };
 
 import("/todo.js");
