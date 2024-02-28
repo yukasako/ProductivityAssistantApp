@@ -49,6 +49,8 @@ let loginBtn = document.querySelector("#logIn");
 let logOutBtn = document.querySelector("#logOut");
 let logInRegisterContent = document.querySelector("#userDetails");
 
+let navBtnGroup = document.querySelector("nav .btnGroup");
+
 let statusMsg = document.querySelector("#statusMsg");
 
 let users = [];
