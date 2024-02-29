@@ -435,10 +435,10 @@ const createModal = () => {
       destroyModal();
     }
   });
-  const getModalScreen = document.getElementById("modalScreen");
-  getModalScreen.addEventListener("click", () => {
-    destroyModal();
-  })
+  // const getModalScreen = document.getElementById("modalScreen");
+  // getModalScreen.addEventListener("click", () => {
+  //   destroyModal();
+  // })
 
   //Scroll Lock
   document.body.classList.add("scrollLock");
