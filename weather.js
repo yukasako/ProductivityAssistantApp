@@ -32,10 +32,8 @@ let getWeatherData = async () => {
       weatherIcon.classList.add("fa-regular", "fa-sun");
       break;
     case 2:
-      weatherIcon.classList.add("fa-solid", "fa-cloud-sun");
-      break;
     case 3:
-      weatherIcon.classList.add("fa-solid", "fa-cloud");
+      weatherIcon.classList.add("fa-solid", "fa-cloud-sun");
       break;
     // 45, 48	Fog and depositing rime fog
     case 45:
