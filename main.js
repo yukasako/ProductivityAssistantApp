@@ -53,6 +53,8 @@ let navBtnGroup = document.querySelector("nav .btnGroup");
 
 let statusMsg = document.querySelector("#statusMsg");
 
+let requiredMsg = document.createElement("span");
+
 let users = [];
 let todoCategories = [
   "Leasure",
@@ -387,6 +389,7 @@ const toggleContent = async () => {
       appScreen.classList.remove("displayNone");
     }
   } else {
+    openTimerBtn.remove();
     content.innerHTML = "";
     appScreen.innerHTML = "";
 

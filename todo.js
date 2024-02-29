@@ -1,7 +1,7 @@
 let todoInput = document.createElement("div");
 todoInput.id = "createTodoModal";
-
 const createNewTodo = () => {
+  requiredMsg.innerText = "";
   if (todoInput.innerHTML === "") {
     // Create input form
 
@@ -22,8 +22,8 @@ const createNewTodo = () => {
     categoryDiv.append(categoryLabel, categorySelect);
     todoInput.innerHTML = `
     <h2>New Todo</h2>
-    <div class="flex"><label for="todoTitle">Title</label>
-    <input type="text" name="todoTitle" id="todoTitle"></div>
+    <div class="flex requiredField"><label for="todoTitle">Title</label>
+    <input type="text" name="todoTitle" id="todoTitle"><i class="fa-solid fa-asterisk requiredAsterisk"></i></div>
     <div class="flex>"<label for="description">Description</label>
     <input type="text" name="description" id="description">
     </div>
@@ -40,6 +40,9 @@ const createNewTodo = () => {
 
     todoInput.append(categoryDiv, saveTodoBtn);
     modal.append(todoInput);
+
+    let required = todoInput.querySelector(".requiredField");
+    required.before(requiredMsg);
 
     createModal();
 
@@ -115,6 +118,8 @@ const saveNewTodo = () => {
     renderTodoCards(user.todos, false);
     resetTodoFilterAndSorting();
     destroyModal();
+  } else {
+    requiredMsg.innerText = "Title is required";
   }
 };
 
@@ -336,6 +341,8 @@ categoryCheckboxes.forEach((checkbox) => {
 });
 
 const editTodo = (i) => {
+  requiredMsg.innerText = "";
+
   // getting current user
   let users = JSON.parse(localStorage.getItem("users"));
   let currentLoggedInId = localStorage.getItem("loggedInUser");
@@ -347,7 +354,7 @@ const editTodo = (i) => {
   editForm.classList.add("flex", "flex-column");
   editForm.id = "editTodoModal";
   editForm.innerHTML =
-    `<div class="flex flex-column"><label for="editTodoTitle">Title</label><input id="editTodoTitle" value="${todo.title}"type="text"/></div>` +
+    `<div class="flex flex-column requiredField"><label for="editTodoTitle">Title</label><input id="editTodoTitle" value="${todo.title}"type="text"/><i class="fa-solid fa-asterisk requiredAsterisk"></i></div>` +
     `<div class="flex flex-column"><label for="editTodoDesc">Description</label><textarea id="editTodoDesc">${todo.description}</textarea></div>`;
 
   let editStatusDiv = document.createElement("div");
@@ -423,6 +430,9 @@ const editTodo = (i) => {
 
   modal.append(editForm);
 
+  let required = editForm.querySelector(".requiredField");
+  required.before(requiredMsg);
+
   createModal();
 };
 
@@ -448,33 +458,38 @@ const saveTodoEdits = (todo) => {
   } else {
     timeEstimate = { hours, minutes };
   }
-  // Create todo object
-  let editedTodo = {
-    id: todo.id,
-    title: inputTodoTitle,
-    description: inputTodoDesc,
-    completed: inputStatus,
-    deadline: inputDeadline,
-    timeEstimate,
-    category: inputCategory,
-  };
 
-  // Get users array from local storage
-  let users = JSON.parse(localStorage.getItem("users"));
-  // Get logged users ID
-  let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-  // Find the logged-in user by ID and push todo to their todos array
-  let user = users.find((user) => user.id === loggedInUser);
-  let activeTodo = user.todos.find((item) => +item.id === +todo.id);
-  let index = user.todos.indexOf(activeTodo);
-  user.todos[index] = editedTodo;
-  // Save updated users array back to local storage
-  localStorage.setItem("users", JSON.stringify(users));
+  if (inputTodoTitle) {
+    // Create todo object
+    let editedTodo = {
+      id: todo.id,
+      title: inputTodoTitle,
+      description: inputTodoDesc,
+      completed: inputStatus,
+      deadline: inputDeadline,
+      timeEstimate,
+      category: inputCategory,
+    };
 
-  let updatedList = user.todos;
+    // Get users array from local storage
+    let users = JSON.parse(localStorage.getItem("users"));
+    // Get logged users ID
+    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+    // Find the logged-in user by ID and push todo to their todos array
+    let user = users.find((user) => user.id === loggedInUser);
+    let activeTodo = user.todos.find((item) => +item.id === +todo.id);
+    let index = user.todos.indexOf(activeTodo);
+    user.todos[index] = editedTodo;
+    // Save updated users array back to local storage
+    localStorage.setItem("users", JSON.stringify(users));
 
-  renderTodoCards(updatedList, false);
-  destroyModal();
+    let updatedList = user.todos;
+
+    renderTodoCards(updatedList, false);
+    destroyModal();
+  } else {
+    requiredMsg.innerText = "Title is required";
+  }
 };
 
 const deleteTodo = (todo) => {

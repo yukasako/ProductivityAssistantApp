@@ -85,11 +85,11 @@ nav .wrapper {
 }
 
 .btnGroup > * {
-  margin-left:1rem;
+  margin-left: 1rem;
 }
 
-#logOut{
-  width:3rem;
+#logOut {
+  width: 3rem;
   height: 3rem;
 }
 
@@ -98,7 +98,7 @@ nav .wrapper {
   font-size: 2rem;
 }
 
-#weatherDiv{
+#weatherDiv {
   height: 3rem;
   font-size: 1rem;
   display: flex;
@@ -188,21 +188,22 @@ nav .wrapper {
   flex-direction: row-reverse;
   align-items: center;
   justify-content: flex-end;
-  padding:0.5rem 0rem;
+  padding: 0.5rem 0rem;
 }
 
 #todosFilterSelect {
-  margin-right:1rem;
+  margin-right: 1rem;
 }
 
-.todosSorting{
-  padding:0.5rem 0rem;
+.todosSorting {
+  padding: 0.5rem 0rem;
 }
 
 .todoList {
   margin: 0.5rem 0rem;
   border:solid 1px var(--color-5);
   background-color: var(--color-2);
+  border: solid 1px black;
   border-radius: 0.3rem;
 }
 
@@ -220,7 +221,7 @@ nav .wrapper {
 }
 
 .todo > * {
-  margin-right:0.5rem;
+  margin-right: 0.5rem;
 }
 
 .todoInfo i {
@@ -232,16 +233,16 @@ nav .wrapper {
 }
 
 .todoContent .addNew {
-  margin:0.5rem 0rem;
-  width:100%;
-  height:2rem;
+  margin: 0.5rem 0rem;
+  width: 100%;
+  height: 2rem;
   border-radius: 0.3rem;
   color: var(--color-1);
   background-color: var(--color-4);
 }
 
-.todoContent .addNew i{
-  margin-left:0.5rem;
+.todoContent .addNew i {
+  margin-left: 0.5rem;
 }
 
 #createNewTodoDiv {
@@ -275,12 +276,12 @@ nav .wrapper {
   border-radius: 0.5rem;
 }
 
-.habitsFilters{
-  margin:0.5rem 0rem;
+.habitsFilters {
+  margin: 0.5rem 0rem;
 }
 
-#habitsSorter{
-  margin:0.5rem 0rem;
+#habitsSorter {
+  margin: 0.5rem 0rem;
 }
 
 .habitList{
@@ -290,8 +291,8 @@ nav .wrapper {
   border-radius: 0.3rem;
 }
 
-.habit{
-  padding:0.5rem;
+.habit {
+  padding: 0.5rem;
   border-radius: 0.3rem;
   border:solid 1px var(--color-5);
   background-color: var(--color-1);
@@ -301,27 +302,27 @@ nav .wrapper {
 }
 
 .habitInfo > * {
-  padding:0.25rem;
+  padding: 0.25rem;
 }
 
-.subInfo{
-  margin:0.5rem 1rem;
+.subInfo {
+  margin: 0.5rem 1rem;
 }
 
 .habit button {
   border-radius: 1rem;
-  width:10rem;
-  height:2rem;
-  margin:0.5rem 0rem;
+  width: 10rem;
+  height: 2rem;
+  margin: 0.5rem 0rem;
 }
 
 .habit button i {
-  margin-left:0.5rem;
+  margin-left: 0.5rem;
 }
 
-.habitsContent .addNew{
-  width:100%;
-  height:2rem;
+.habitsContent .addNew {
+  width: 100%;
+  height: 2rem;
   margin: 0.5rem 0rem;
   border-radius: 0.3rem;
   color: var(--color-1);
@@ -329,7 +330,7 @@ nav .wrapper {
 }
 
 .habitsContent .addNew i {
-  margin-left:0.5rem;
+  margin-left: 0.5rem;
 }
 
 /* Modal */
@@ -350,7 +351,7 @@ nav .wrapper {
   background-color: var(--color-1);
   position: relative;
   border-radius: 0.5rem;
-  padding:2rem;
+  padding: 2rem;
 }
 
 #closeModalBtn{
@@ -368,112 +369,111 @@ nav .wrapper {
   font-size: 1.2rem;
 }
 
-.scrollLock{
-  overflow:hidden;
+.scrollLock {
+  overflow: hidden;
 }
 
 /* Habits Modal */
-#createHabitModal{
-  width:100%;
-  height:100%;
-  display:flex;
+#createHabitModal {
+  width: 100%;
+  height: 100%;
+  display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 #createHabitModal > * {
-  margin:0.5rem;
+  margin: 0.5rem;
 }
 
 #createHabitModal > * :nth-child(1) {
-  margin-right:1rem;
+  margin-right: 1rem;
 }
 
-#habitTitle{
-  width:100%;
+#habitTitle {
+  width: 100%;
 }
 
-#createHabitModal button{
-  height:2rem;
-  border-radius:0.3rem;
+#createHabitModal button {
+  height: 2rem;
+  border-radius: 0.3rem;
 }
 
-#editHabitModal{
-  width:100%;
-  height:100%;
-  display:flex;
+#editHabitModal {
+  width: 100%;
+  height: 100%;
+  display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 #editHabitModal > * {
-  margin:0.5rem;
+  margin: 0.5rem;
 }
 
-#editHabitModal :nth-child(1){
+#editHabitModal :nth-child(1) {
   flex-direction: row;
 }
 
-#editHabitModal > * > *{
-  margin:0rem 0.3rem;
+#editHabitModal > * > * {
+  margin: 0rem 0.3rem;
 }
 
-#editHabitModal .actionButtons button{
-  height:2rem;
+#editHabitModal .actionButtons button {
+  height: 2rem;
 }
 
 #editHabitTitle {
-  width:100%;
+  width: 100%;
 }
 
-#editHabitModal button{
-  width:100%;
-  
+#editHabitModal button {
+  width: 100%;
 }
 
 /* Todo Modal */
-#createTodoModal{
-  width:100%;
-  height:100%;
-  display:flex;
+#createTodoModal {
+  width: 100%;
+  height: 100%;
+  display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 #createTodoModal > * {
-  margin:0.5rem;
+  margin: 0.5rem;
 }
 
 #createTodoModal > * :nth-child(1) {
-  margin-right:0.5rem;
+  margin-right: 0.5rem;
 }
 
-#todoTitle{
-  width:100%;
+#todoTitle {
+  width: 100%;
 }
 
-#description{
-  width:100%;
+#description {
+  width: 100%;
 }
 
-#createTodoModal button{
-  height:2rem;
+#createTodoModal button {
+  height: 2rem;
 }
 
-#editTodoModal{
-  width:100%;
-  height:100%;
-  display:flex;
+#editTodoModal {
+  width: 100%;
+  height: 100%;
+  display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 #editTodoModal > * {
-  margin:0.5rem;
+  margin: 0.5rem;
 }
 
 #editTodoModal > * :nth-child(1) {
-  margin-right:0.5rem;
+  margin-right: 0.5rem;
 }
 
 #editTodoModal :nth-child(1) {
@@ -484,23 +484,20 @@ nav .wrapper {
   width: 100%;
 }
 
-
 #editTodoModal :nth-child(2) {
   flex-direction: row;
 }
 
 #editTodoModal :nth-child(2) textarea {
-  height:1.2rem;
-  width:100%;
+  height: 1.2rem;
+  width: 100%;
 }
 
-#editTodoModal button{
-  width:100%;
-  height:2rem;
+#editTodoModal button {
+  width: 100%;
+  height: 2rem;
   border-radius: 0.3rem;
 }
-
-
 
 /* Animation for Welcome Quote */
 @-webkit-keyframes fade-in-fwd {
@@ -529,7 +526,8 @@ nav .wrapper {
 }
 
 i {
-  &.danger {
+  &.danger,
+  &.requiredAsterisk {
     color: #fb370d;
   }
 
@@ -538,5 +536,9 @@ i {
   }
   &.success {
     color: #14a662;
+  }
+
+  &.requiredAsterisk {
+    font-size: 0.1rem;
   }
 }
