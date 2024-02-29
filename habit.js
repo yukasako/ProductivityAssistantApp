@@ -56,14 +56,16 @@ const createHabitCard = (habit, id) => {
   return li;
 };
 
+let habitInput = document.createElement("div");
+habitInput.id = "createHabitModal";
 const createNewHabit = () => {
-  let habitInput = document.createElement("div");
-  habitInput.id = "createHabitModal";
+  requiredMsg.innerText = "";
+
   // Create input form
   habitInput.innerHTML = `
  <h2>New Habit</h2>
- <div class="flex"><label for="habitTitle">Title</label>
- <input type="text" name="habitTitle" id="habitTitle"></div>
+ <div class="flex requiredField"><label for="habitTitle">Title</label>
+ <input type="text" name="habitTitle" id="habitTitle"><i class="fa-solid fa-asterisk requiredAsterisk"></i></div>
  <div class="flex"><label for="priority">Priority</label>
  <select id="priority">
  <option value="low" selected="selected">Low</option>
@@ -77,6 +79,9 @@ const createNewHabit = () => {
 
   habitInput.append(saveHabitBtn);
   modal.append(habitInput);
+
+  let required = habitInput.querySelector(".requiredField");
+  required.before(requiredMsg);
 
   createModal();
 
@@ -118,6 +123,8 @@ const saveNewHabit = () => {
     renderHabitCards(user.habits, false);
     resetHabitFilterAndSorting();
     destroyModal();
+  } else {
+    requiredMsg.innerText = "Title is required";
   }
 };
 
@@ -235,6 +242,8 @@ const filterAndSortHabits = () => {
 // });
 
 const editHabit = (i) => {
+  requiredMsg.innerText = "";
+
   // priority options
   let priorityLevels = ["Low", "Medium", "High"];
   // getting current user
@@ -247,7 +256,7 @@ const editHabit = (i) => {
   let editForm = document.createElement("div");
   editForm.classList.add("flex", "flex-column");
   editForm.id = "editHabitModal";
-  editForm.innerHTML = `<div class="flex flex-column"><label for="editHabitTitle">Title</label><input id="editHabitTitle" value="${habit.title}"type="text"/></div>`;
+  editForm.innerHTML = `<div class="flex flex-column requiredField"><label for="editHabitTitle">Title</label><div class="flex"><input id="editHabitTitle" value="${habit.title}"type="text"/><i class="fa-solid fa-asterisk requiredAsterisk"></i></div></div>`;
 
   let prioDiv = document.createElement("div");
   prioDiv.classList.add("flex");
@@ -311,6 +320,8 @@ const editHabit = (i) => {
   editForm.append(actionButtons);
 
   modal.append(editForm);
+  let required = editForm.querySelector(".requiredField");
+  required.before(requiredMsg);
 
   createModal();
 };
@@ -320,30 +331,34 @@ const saveHabitEdits = (habit) => {
   let inputHabitTitle = document.querySelector("#editHabitTitle").value;
   let inputPriority = document.querySelector("#editHabitPrio").value;
 
-  // Create habit object
-  let editedHabit = {
-    id: habit.id,
-    title: inputHabitTitle,
-    streak: habit.streak,
-    priority: inputPriority,
-  };
+  if (inputHabitTitle) {
+    // Create habit object
+    let editedHabit = {
+      id: habit.id,
+      title: inputHabitTitle,
+      streak: habit.streak,
+      priority: inputPriority,
+    };
 
-  // Get users array from local storage
-  let users = JSON.parse(localStorage.getItem("users"));
-  // Get logged users ID
-  let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-  // Find the logged-in user by ID and push habit to their habits array
-  let user = users.find((user) => user.id === loggedInUser);
-  let activeHabit = user.habits.find((item) => +item.id === +habit.id);
-  let index = user.habits.indexOf(activeHabit);
-  user.habits[index] = editedHabit;
-  // Save updated users array back to local storage
-  localStorage.setItem("users", JSON.stringify(users));
+    // Get users array from local storage
+    let users = JSON.parse(localStorage.getItem("users"));
+    // Get logged users ID
+    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+    // Find the logged-in user by ID and push habit to their habits array
+    let user = users.find((user) => user.id === loggedInUser);
+    let activeHabit = user.habits.find((item) => +item.id === +habit.id);
+    let index = user.habits.indexOf(activeHabit);
+    user.habits[index] = editedHabit;
+    // Save updated users array back to local storage
+    localStorage.setItem("users", JSON.stringify(users));
 
-  let updatedList = user.habits;
+    let updatedList = user.habits;
 
-  renderHabitCards(updatedList, false);
-  destroyModal();
+    renderHabitCards(updatedList, false);
+    destroyModal();
+  } else {
+    requiredMsg.innerText = "Title is required";
+  }
 };
 
 const deleteHabit = (habit) => {
