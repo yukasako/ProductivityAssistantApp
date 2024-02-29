@@ -1,7 +1,9 @@
-:root{
-  --color-1: #FFFFFF;
-  --color-2: #EDEDED;
-  --color-3: #BDBDBD;
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch&display=swap");
+
+:root {
+  --color-1: #ffffff;
+  --color-2: #ededed;
+  --color-3: #bdbdbd;
   --color-4: #000000;
   --color-5: #000000;
   --color-modal: hsla(0, 0%, 0%, 0.8);
@@ -41,9 +43,10 @@ ul {
   list-style: none;
 }
 
-button{
+button {
   background-color: var(--color-3);
   border-radius: 16px;
+  cursor: pointer;
 }
 
 main {
@@ -84,8 +87,8 @@ nav .wrapper {
   font-size: 2rem;
 }
 
-.btnGroup > * {
-  margin-left: 1rem;
+.btnGroup {
+  gap: 1rem;
 }
 
 #logOut {
@@ -94,7 +97,7 @@ nav .wrapper {
 }
 
 #logOut i,
-#weatherDiv i{
+#weatherDiv i {
   font-size: 2rem;
 }
 
@@ -201,7 +204,7 @@ nav .wrapper {
 
 .todoList {
   margin: 0.5rem 0rem;
-  border:solid 1px var(--color-5);
+  border: solid 1px var(--color-5);
   background-color: var(--color-2);
   border: solid 1px black;
   border-radius: 0.3rem;
@@ -216,7 +219,7 @@ nav .wrapper {
   justify-content: space-between;
 }
 
-.disabled{
+.disabled {
   background-color: var(--color-2);
 }
 
@@ -284,8 +287,8 @@ nav .wrapper {
   margin: 0.5rem 0rem;
 }
 
-.habitList{
-  margin:0.5rem 0rem;
+.habitList {
+  margin: 0.5rem 0rem;
   border: solid 1px var(--color-5);
   background-color: var(--color-2);
   border-radius: 0.3rem;
@@ -294,7 +297,7 @@ nav .wrapper {
 .habit {
   padding: 0.5rem;
   border-radius: 0.3rem;
-  border:solid 1px var(--color-5);
+  border: solid 1px var(--color-5);
   background-color: var(--color-1);
   margin: 1rem 2rem;
   justify-content: space-between;
@@ -354,12 +357,12 @@ nav .wrapper {
   padding: 2rem;
 }
 
-#closeModalBtn{
-  width:2rem;
-  height:2rem;
-  position:absolute;
-  top:0.5rem;
-  right:0.5rem;
+#closeModalBtn {
+  width: 2rem;
+  height: 2rem;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
   background-color: var(--color-1);
   border: none;
   cursor: pointer;
@@ -540,5 +543,75 @@ i {
 
   &.requiredAsterisk {
     font-size: 0.1rem;
+  }
+}
+
+#openTimerBtn {
+  padding: 0.3em 0.6em;
+  font-size: 1.2rem;
+
+  &i {
+    font-size: 1.3rem;
+  }
+}
+
+#openTimerBtn .iconBtn {
+  gap: 0.3rem;
+  align-items: center;
+}
+
+#timerModal {
+  align-items: center;
+  padding-inline: 2rem;
+}
+
+.timerOptions {
+  gap: 0.5rem;
+  padding: 1rem;
+}
+.timerOptionBtn {
+  border-radius: 0.5rem;
+  padding: 0.3em 0.6em;
+  background-color: var(--color-4);
+  color: var(--color-2);
+}
+
+.timerOptionBtn:disabled {
+  /* background-color: hsl(0, 0%, 30%); */
+  opacity: 0.6;
+  cursor: default;
+}
+
+.timerOptionBtn .customBtn {
+  gap: 0.3rem;
+}
+
+.timeDisplay {
+  font-size: 4.5rem;
+  font-family: "Chakra Petch", sans-serif;
+}
+
+.timerToggleButtons {
+  gap: 0.5rem;
+}
+
+#toggleTimer,
+#pauseTimerBtn,
+#stopTimerBtn,
+#playTimerBtn {
+  padding: 0.3em 0.6em;
+  border-radius: 0.5rem;
+  background-color: var(--color-4);
+  color: var(--color-2);
+}
+
+.customTimeDiv {
+  width: 100%;
+  justify-content: end;
+  gap: 0.3rem;
+  font-size: 1.2rem;
+
+  &input {
+    padding: 0.5em;
   }
 }

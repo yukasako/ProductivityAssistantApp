@@ -1,11 +1,14 @@
 let openTimerBtn = document.createElement("button");
 openTimerBtn.id = "openTimerBtn";
+openTimerBtn.classList.add("clickable");
+let timerBtnSpan = document.createElement("span");
+timerBtnSpan.classList.add("flex", "iconBtn");
 let openBtnIcon = document.createElement("i");
 openBtnIcon.classList.add("fa-solid", "fa-clock");
 let openBtnText = document.createElement("span");
-openBtnText.innerText = "Focus Timer";
-
-openTimerBtn.append(openBtnIcon, openBtnText);
+openBtnText.innerHTML = "<span>Focus Timer</span>";
+timerBtnSpan.append(openBtnIcon, openBtnText);
+openTimerBtn.append(timerBtnSpan);
 
 if (localStorage.getItem("loggedInUser")) {
   navBtnGroup.insertBefore(openTimerBtn, logOutBtn);
@@ -27,8 +30,59 @@ const extractMinutesAndSeconds = (ms) => {
   return `${m}:${s}`;
 };
 
+// get custom time from user input
+const getCustomeTime = () => {
+  let customTimeInput = document.querySelector("#customTime");
+
+  customTimeInput.addEventListener("keyup", () => {
+    let minutes = customTimeInput.value;
+    setTimer(minutes);
+    setTimeContent.dataset.time = minutes;
+    setTimer(minutes);
+    return minutes;
+  });
+};
+
 let buttonsSet = document.createElement("div");
 buttonsSet.classList.add("flex", "flex-row", "timerOptions");
+
+let timerOptions = ["short", "medium", "long", "custom"];
+
+timerOptions.forEach((option) => {
+  let button = document.createElement("button");
+  button.classList.add("timerOptionBtn");
+  if (option === "short") {
+    button.innerText = "Short";
+    button.addEventListener("click", () => {
+      setTimeContent.dataset.time = breakOptions.short;
+      setTimer(breakOptions.short);
+    });
+  } else if (option === "medium") {
+    button.innerText = "Medium";
+    button.addEventListener("click", () => {
+      setTimeContent.dataset.time = breakOptions.medium;
+      setTimer(breakOptions.medium);
+    });
+  } else if (option === "long") {
+    button.innerText = "Long";
+    button.addEventListener("click", () => {
+      setTimeContent.dataset.time = breakOptions.long;
+      setTimer(breakOptions.long);
+    });
+  } else {
+    button.innerHTML = `<span class="flex customBtn"><i class="fa-solid fa-gear"></i><span>Custom</span></span>`;
+    button.addEventListener("click", () => {
+      buttonsSet.after(customTimeDiv);
+      getCustomeTime();
+    });
+  }
+  buttonsSet.append(button);
+});
+
+let customTimeDiv = document.createElement("div");
+customTimeDiv.classList.add("flex", "customTimeDiv");
+customTimeDiv.innerHTML =
+  "<input id='customTime' type='number' min='1' max='60'><label for='customTime'>minutes</label>";
 
 let setTimeContent = document.createElement("p");
 setTimeContent.classList.add("timeDisplay");
@@ -37,6 +91,7 @@ let defaultTime = 5 * 60 * 1000;
 setTimeContent.innerText = extractMinutesAndSeconds(defaultTime);
 let timerContent = document.createElement("div");
 timerContent.id = "timerModal";
+timerContent.classList.add("flex", "flex-column");
 
 let timerIsActive = false;
 
@@ -91,46 +146,16 @@ buttonDiv.append(pauseBtn, stopBtn);
 let breakOptions = { short: 5, medium: 10, long: 15 };
 
 openTimerBtn.addEventListener("click", () => {
+  //   document.querySelector("#timerModal").innerHTML = "";
   viewTimer();
 });
 
 const viewTimer = () => {
-  timerContent.innerHTML = "";
+  if (timerIsActive) {
+    stopTimer();
+  }
   // creating modal content
 
-  let options = ["short", "medium", "long", "custom"];
-
-  options.forEach((option) => {
-    let button = document.createElement("button");
-    button.classList.add("timerOptionBtn");
-    if (option === "short") {
-      button.innerText = "Short Break";
-      button.addEventListener("click", () => {
-        setTimeContent.dataset.time = breakOptions.short;
-        setTimer(breakOptions.short);
-      });
-    } else if (option === "medium") {
-      button.innerText = "Medium Break";
-      button.addEventListener("click", () => {
-        setTimeContent.dataset.time = breakOptions.medium;
-        setTimer(breakOptions.medium);
-      });
-    } else if (option === "long") {
-      button.innerText = "Long Break";
-      button.addEventListener("click", () => {
-        setTimeContent.dataset.time = breakOptions.long;
-        setTimer(breakOptions.long);
-      });
-    } else {
-      button.innerHTML = `<i class="fa-solid fa-gear"></i><span>Custom</span>`;
-      let minutes = getCustomeTime();
-      button.addEventListener("click", () => {
-        setTimeContent.dataset.time = minutes;
-        setTimer(minutes);
-      });
-    }
-    buttonsSet.append(button);
-  });
   timerContent.append(buttonsSet);
 
   //   time display
@@ -148,24 +173,31 @@ const setTimer = (minutes) => {
   setTimeContent.innerText = extractMinutesAndSeconds(minutesInMs);
 };
 
-// get custom time from user input
-const getCustomeTime = () => {};
-
 let myTimer;
 
 const startTimer = (time) => {
+  let optionBtns = buttonsSet.querySelectorAll("button");
+  let timeInput = document.querySelector("#customTime");
+  if (timeInput) {
+    timeInput.value = "";
+  }
+  customTimeDiv.remove();
   if (!time) {
     // change buttons
     timerContent.append(buttonDiv);
-    playBtn.remove();
+
     timerBtn.remove();
-    buttonDiv.prepend(pauseBtn);
+    buttonDiv.prepend(pauseBtn, stopBtn);
 
     let minutes = setTimeContent.dataset.time;
     let ms = minutes * 60 * 1000;
 
     let currentTime = new Date().getTime();
     let goalTime = currentTime + ms;
+
+    optionBtns.forEach((button) => {
+      button.disabled = true;
+    });
 
     // Update the count down every 1 second
     myTimer = setInterval(() => {
@@ -195,12 +227,19 @@ const startTimer = (time) => {
         timerIsActive = false;
         buttonDiv.remove();
         timerContent.append(timerBtn);
+        optionBtns.forEach((button) => {
+          button.disabled = false;
+        });
       }
     }, 1000);
 
     timerIsActive = true;
   } else {
-    playBtn.remove();
+    // change buttons
+    timerContent.append(buttonDiv);
+
+    timerBtn.remove();
+    buttonDiv.prepend(pauseBtn, stopBtn);
 
     let currentTime = new Date().getTime();
     let goalTime = currentTime + time;
@@ -233,6 +272,9 @@ const startTimer = (time) => {
         timerIsActive = false;
         buttonDiv.remove();
         timerContent.append(timerBtn);
+        optionBtns.forEach((button) => {
+          button.disabled = false;
+        });
       }
     }, 1000);
 
@@ -249,6 +291,14 @@ const stopTimer = () => {
   setTimeContent.innerText = extractMinutesAndSeconds(minutesToMs);
 
   timerIsActive = false;
+
+  let optionBtns = buttonsSet.querySelectorAll("button");
+  optionBtns.forEach((button) => {
+    button.disabled = false;
+  });
+  playBtn.remove();
+  pauseBtn.remove();
+  stopBtn.remove();
 };
 
 const findTimeLeft = () => {
@@ -267,11 +317,6 @@ const pauseTimer = () => {
 
   setTimeContent.innerText = extractMinutesAndSeconds(timeLeft);
   clearInterval(myTimer);
-
-  //   let formatted = setTimeContent.innerText;
-  //   let [minutes, seconds] = formatted.split(":").map((num) => num);
-
-  //   setTimeContent.dataset.time = `${minutes}:${seconds}`;
 
   timerIsActive = false;
 
