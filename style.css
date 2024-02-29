@@ -70,8 +70,15 @@ nav .wrapper {
   height: 3rem;
 }
 
-#logOut i {
+#logOut i{
   font-size: 2rem;
+}
+
+#weatherDiv{
+  height: 3rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
 }
 
 #loginScreen {

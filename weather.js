@@ -8,7 +8,7 @@ let getData = async (url) => {
   }
 };
 
-let weatherData = async () => {
+let getWeatherData = async () => {
   // Get weather data
   let params = new URLSearchParams();
   params.append("latitude", 59.3294);
@@ -23,54 +23,71 @@ let weatherData = async () => {
   //DOM
   let temperature = weatherData.current.temperature_2m;
   let weatherCode = weatherData.current.weather_code;
-  let weather = "";
+  let weatherIcon = document.createElement("i");
   switch (weatherCode) {
+    // 0	Clear sky
+    // 1, 2, 3	Mainly clear, partly cloudy, and overcast
     case 0:
-      weather = "Clear";
-      break;
     case 1:
-      weather = "Partly cloudy";
+      weatherIcon.classList.add("fa-regular", "fa-sun");
       break;
     case 2:
-      weather = "Snow";
+      weatherIcon.classList.add("fa-solid", "fa-cloud-sun");
       break;
     case 3:
-      weather = "Blowing snow";
+      weatherIcon.classList.add("fa-solid", "fa-cloud");
       break;
-    case 4:
-      weather = "Fog";
+    // 45, 48	Fog and depositing rime fog
+    case 45:
+    case 48:
+      weatherIcon.classList.add("fa-solid", "fa-smog");
       break;
-    case 5:
-      weather = "Drizzle";
+    // 51, 53, 55	Drizzle: Light, moderate, and dense intensity
+    // 56, 57	Freezing Drizzle: Light and dense intensity
+    case 51:
+    case 53:
+    case 55:
+    case 56:
+    case 57:
+      weatherIcon.classList.add("fa-solid", "fa-cloud-rain");
       break;
-    case 6:
-      weather = "Rain";
+    // 61, 63, 65	Rain: Slight, moderate and heavy intensity
+    // 66, 67	Freezing Rain: Light and heavy intensity
+    // 80, 81, 82	Rain showers: Slight, moderate, and violent
+    case 61:
+    case 63:
+    case 65:
+    case 66:
+    case 67:
+    case 80:
+    case 81:
+    case 82:
+      weatherIcon.classList.add("fa-solid", "fa-umbrella");
       break;
-    case 7:
-      weather = "Snow";
+    // 71, 73, 75	Snow fall: Slight, moderate, and heavy intensity
+    // 77	Snow grains
+    // 85, 86	Snow showers slight and heavy
+    case 71:
+    case 73:
+    case 75:
+    case 77:
+    case 85:
+    case 86:
+      weatherIcon.classList.add("fa-solid", "fa-snowflake");
       break;
-    case 8:
-      weather = "Shower";
-      break;
-    case 9:
-      weather = "Thunderstorm";
+    // 95 *	Thunderstorm: Slight or moderate
+    // 96, 99 *	Thunderstorm with slight and heavy hail
+    case 95:
+    case 96:
+    case 99:
+      weatherIcon.classList.add("fa-solid", "fa-cloud-bolt");
       break;
   }
 
   let weatherDiv = document.createElement("div");
-  weatherDiv.innerText = `${temperature}℃ ${weather}`;
+  weatherDiv.id = "weatherDiv";
+  weatherDiv.innerHTML = `${temperature}℃`;
+  weatherDiv.append(weatherIcon);
   navBtnGroup.prepend(weatherDiv);
 };
-weatherData();
-
-// WMO weather code
-// 0	Clear(No cloud at any level)
-// 1	Partly cloudy(Scattered or broken)
-// 2	Continuous layer(s) of blowing snow
-// 3	Sandstorm, duststorm, or blowing snow
-// 4	Fog, thick dust or haze
-// 5	Drizzle
-// 6	Rain
-// 7	Snow, or rain and snow mixed
-// 8	Shower(s)
-// 9	Thunderstorm(s)
+getWeatherData();
