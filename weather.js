@@ -84,7 +84,7 @@ let getWeatherData = async () => {
 
   let weatherDiv = document.createElement("div");
   weatherDiv.id = "weatherDiv";
-  weatherDiv.innerHTML = `${temperature}℃`;
+  weatherDiv.innerHTML = `Stockholm ${temperature}℃`;
   weatherDiv.append(weatherIcon);
   navBtnGroup.prepend(weatherDiv);
 };

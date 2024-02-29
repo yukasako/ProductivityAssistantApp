@@ -213,14 +213,13 @@ const setIcon = (cat) => {
 const renderTodoCards = (todoArr = [], onload = false) => {
   // clear previous content
   todoList.innerHTML = "";
-  // Get users array from local storage
+  // Get current user's array from local storage
   let users = JSON.parse(localStorage.getItem("users"));
-  // Get logged users ID
   let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-  // Find the logged-in user by ID and push todo to their todos array
   let user = users.find((user) => user.id === loggedInUser);
 
   if (todoArr.length === 0 && onload) {
+    // Generate from local storage
     let userTodos = [...user.todos];
     // sorting array by status
     userTodos.sort(compareStatus);
@@ -229,6 +228,7 @@ const renderTodoCards = (todoArr = [], onload = false) => {
       todoList.append(createTodoCard(todo, todo.id));
     });
   } else {
+    // For editing and filtering
     // sorting array by status
     todoArr.sort(compareStatus);
     // iterating through array to create cards
