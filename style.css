@@ -1,3 +1,20 @@
+:root{
+  --color-1: #FFFFFF;
+  --color-2: #EDEDED;
+  --color-3: #BDBDBD;
+  --color-4: #000000;
+  --color-5: #000000;
+  --color-modal: hsla(0, 0%, 0%, 0.8);
+
+  /* pattern1
+  --color-1: #FFFFFF;
+  --color-2: #FFF4E1;
+  --color-3: #9DDCDC;
+  --color-4: #E67A7A;
+  --color-5: #000000;
+  --color-modal: hsla(0, 0%, 0%, 0.8); */
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -24,6 +41,11 @@ ul {
   list-style: none;
 }
 
+button{
+  background-color: var(--color-3);
+  border-radius: 16px;
+}
+
 main {
   min-height: 100vh;
 }
@@ -31,12 +53,12 @@ main {
 nav {
   height: 5rem;
   width: 100%;
-  border-bottom: solid 1px black;
+  border-bottom: solid 1px var(--color-5);
   align-items: center;
   justify-content: space-between;
   padding: 1rem 3rem;
   position: fixed;
-  background-color: white;
+  background-color: var(--color-3);
 }
 
 .clickable {
@@ -48,7 +70,7 @@ nav .wrapper {
 }
 
 #logo {
-  background-color: black;
+  background-color: var(--color-5);
   width: 3rem;
   height: 100%;
 }
@@ -71,7 +93,8 @@ nav .wrapper {
   height: 3rem;
 }
 
-#logOut i{
+#logOut i,
+#weatherDiv i{
   font-size: 2rem;
 }
 
@@ -110,7 +133,7 @@ nav .wrapper {
 }
 
 #userDetails {
-  border: solid 1px black;
+  border: solid 1px var(--color-5);
   padding: 1rem;
 }
 
@@ -149,12 +172,12 @@ nav .wrapper {
   width: 100%;
   text-align: center;
   margin-bottom: 1rem;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--color-5);
   padding-bottom: 0.5rem;
 }
 
 .todoContent {
-  border: solid 1px black;
+  border: solid 1px var(--color-5);
   padding: 1rem;
   margin: 1rem;
   min-width: 50%;
@@ -178,16 +201,22 @@ nav .wrapper {
 
 .todoList {
   margin: 0.5rem 0rem;
-  border:solid 1px black;
+  border:solid 1px var(--color-5);
+  background-color: var(--color-2);
   border-radius: 0.3rem;
 }
 
 .todo {
   padding: 0.5rem;
   margin: 1rem 2rem;
-  border: solid 1px black;
+  border: solid 1px var(--color-5);
+  background-color: var(--color-1);
   border-radius: 0.3rem;
   justify-content: space-between;
+}
+
+.disabled{
+  background-color: var(--color-2);
 }
 
 .todo > * {
@@ -207,6 +236,8 @@ nav .wrapper {
   width:100%;
   height:2rem;
   border-radius: 0.3rem;
+  color: var(--color-1);
+  background-color: var(--color-4);
 }
 
 .todoContent .addNew i{
@@ -239,7 +270,7 @@ nav .wrapper {
 
 .habitsContent {
   min-width: 50%;
-  border: solid 1px black;
+  border: solid 1px var(--color-5);
   padding: 1rem;
   border-radius: 0.5rem;
 }
@@ -254,14 +285,16 @@ nav .wrapper {
 
 .habitList{
   margin:0.5rem 0rem;
-  border: solid 1px black;
+  border: solid 1px var(--color-5);
+  background-color: var(--color-2);
   border-radius: 0.3rem;
 }
 
 .habit{
   padding:0.5rem;
   border-radius: 0.3rem;
-  border:solid 1px black;
+  border:solid 1px var(--color-5);
+  background-color: var(--color-1);
   margin: 1rem 2rem;
   justify-content: space-between;
   align-items: flex-end;
@@ -291,6 +324,8 @@ nav .wrapper {
   height:2rem;
   margin: 0.5rem 0rem;
   border-radius: 0.3rem;
+  color: var(--color-1);
+  background-color: var(--color-4);
 }
 
 .habitsContent .addNew i {
@@ -300,7 +335,7 @@ nav .wrapper {
 /* Modal */
 #modalScreen {
   z-index: 2;
-  background-color: hsla(0, 0%, 0%, 0.8);
+  background-color: var(--color-modal);
   width: 100%;
   height: 100%;
   position: fixed;
@@ -312,7 +347,7 @@ nav .wrapper {
 
 #modal {
   width: 33%;
-  background-color: white;
+  background-color: var(--color-1);
   position: relative;
   border-radius: 0.5rem;
   padding:2rem;
@@ -324,7 +359,7 @@ nav .wrapper {
   position:absolute;
   top:0.5rem;
   right:0.5rem;
-  background-color: white;
+  background-color: var(--color-1);
   border: none;
   cursor: pointer;
 }

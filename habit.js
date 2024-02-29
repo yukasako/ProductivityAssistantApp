@@ -130,18 +130,18 @@ const renderHabitCards = (habitArr = [], onload = false) => {
   resetStreak();
   // clear previous content
   habitList.innerHTML = "";
-  // Get users array from local storage
+  // Get current user's array from local storage
   let users = JSON.parse(localStorage.getItem("users"));
-  // Get logged users ID
   let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
-  // Find the logged-in user by ID and push habit to their habits array
   let user = users.find((user) => user.id === loggedInUser);
 
   if (habitArr.length === 0 && onload) {
+    // Generate from local storage
     user.habits.forEach((habit) => {
       habitList.append(createHabitCard(habit, habit.id));
     });
   } else {
+    // For editing and filtering
     habitArr.forEach((habit) => {
       habitList.append(createHabitCard(habit, habit.id));
     });
