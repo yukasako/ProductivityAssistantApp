@@ -340,6 +340,7 @@ const logOutUser = () => {
   //   updating local storage
   localStorage.setItem("users", JSON.stringify(newUserList));
   localStorage.removeItem("loggedInUser");
+  openTimerBtn.remove();
   toggleUserActions(1500);
   toggleContent();
 };
@@ -385,7 +386,6 @@ const toggleContent = async () => {
       appScreen.classList.remove("displayNone");
     }
   } else {
-    openTimerBtn.remove();
     content.innerHTML = "";
     appScreen.innerHTML = "";
 
