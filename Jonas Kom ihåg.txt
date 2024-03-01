@@ -1,6 +1,4 @@
 
-kl 10 torsdag möte
-
 fixa h på edit habit och edit todo
 
 create todo modal description texten ligger fel. htmlen är fel.
@@ -8,9 +6,8 @@ create todo modal description texten ligger fel. htmlen är fel.
 description edit och create är olika types
 
 
-fixade styling
-fixade modal close on outside click
-
-
 login section
 modal bugg
+
+skapa calender knapp
+pastea in koden genererad i separat fil

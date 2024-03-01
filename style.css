@@ -143,12 +143,17 @@ nav .wrapper {
 #userDetails {
   border: solid 1px var(--color-5);
   padding: 1rem;
+  border-radius: 0.5rem;
 }
 
 #userDetails .wrapper {
   align-items: center;
   justify-content: center;
   margin: 1rem;
+}
+
+#userDetails label{
+  width:25%;
 }
 
 #userDetails input {
@@ -159,6 +164,7 @@ nav .wrapper {
 #userDetails button {
   width: 33%;
   margin: 0rem 1rem;
+  border-radius: 0.3rem;
 }
 
 #appScreen {
