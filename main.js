@@ -341,7 +341,7 @@ const logOutUser = () => {
   localStorage.setItem("users", JSON.stringify(newUserList));
   localStorage.removeItem("loggedInUser");
   openTimerBtn.remove();
-  toggleUserActions(1500);
+  toggleUserActions();
   toggleContent();
 };
 
