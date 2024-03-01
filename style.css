@@ -68,6 +68,10 @@ nav {
   cursor: pointer;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 nav .wrapper {
   height: 100%;
 }
@@ -229,6 +233,10 @@ nav .wrapper {
 
 .todoInfo i {
   margin-right: 0.5rem;
+}
+
+.todoActions {
+  align-items: center;
 }
 
 .todoActions i {
@@ -528,9 +536,13 @@ nav .wrapper {
   }
 }
 
+.required {
+  color: #fb370d;
+  font-size: 1.1rem;
+}
+
 i {
-  &.danger,
-  &.requiredAsterisk {
+  &.danger {
     color: #fb370d;
   }
 
@@ -539,10 +551,6 @@ i {
   }
   &.success {
     color: #14a662;
-  }
-
-  &.requiredAsterisk {
-    font-size: 0.1rem;
   }
 }
 
@@ -563,6 +571,11 @@ i {
 #timerModal {
   align-items: center;
   padding-inline: 2rem;
+}
+
+#timerModal button:not(:disabled):hover {
+  background-color: var(--color-3);
+  color: var(--color-4);
 }
 
 .timerOptions {
@@ -589,6 +602,7 @@ i {
 .timeDisplay {
   font-size: 4.5rem;
   font-family: "Chakra Petch", sans-serif;
+  margin-bottom: 1.5rem;
 }
 
 .timerToggleButtons {
@@ -605,13 +619,19 @@ i {
   color: var(--color-2);
 }
 
+#toggleTimer {
+  min-width: 4rem;
+}
+
 .customTimeDiv {
   width: 100%;
   justify-content: end;
+  align-items: center;
   gap: 0.3rem;
   font-size: 1.2rem;
+}
 
-  &input {
-    padding: 0.5em;
-  }
+.customTimeDiv input {
+  padding: 0.3em 0.5rem;
+  border-radius: 4px;
 }

@@ -48,10 +48,9 @@ let registerBtn = document.querySelector("#register");
 let loginBtn = document.querySelector("#logIn");
 let logOutBtn = document.querySelector("#logOut");
 let logInRegisterContent = document.querySelector("#userDetails");
+let userDetailsMsg = logInRegisterContent.querySelector(".statusMsg");
 
 let navBtnGroup = document.querySelector("nav .btnGroup");
-
-let statusMsg = document.querySelector("#statusMsg");
 
 let requiredMsg = document.createElement("span");
 
@@ -224,7 +223,7 @@ const generateId = (arr) => {
 
 // register and log in user logic
 const registerUser = () => {
-  statusMsg.innerText = "";
+  userDetailsMsg.innerText = "";
   let username = usernameInput.value;
   let password = passwordInput.value;
 
@@ -251,7 +250,7 @@ const registerUser = () => {
 
         localStorage.setItem("users", JSON.stringify(newUserList));
       } else {
-        statusMsg.innerText = "User already exists!";
+        userDetailsMsg.innerText = "User already exists!";
       }
     } else {
       let newUser = {
@@ -274,7 +273,7 @@ const registerUser = () => {
 };
 
 const logInUser = () => {
-  statusMsg.innerText = "";
+  userDetailsMsg.innerText = "";
   let username = usernameInput.value;
   let password = passwordInput.value;
 
@@ -310,10 +309,10 @@ const logInUser = () => {
         });
       } else {
         // if no matching user
-        statusMsg.innerText = "User with matching credentials not found!";
+        userDetailsMsg.innerText = "User with matching credentials not found!";
       }
     } else {
-      statusMsg.innerText = "User with matching credentials not found!";
+      userDetailsMsg.innerText = "User with matching credentials not found!";
     }
   }
 
@@ -328,7 +327,6 @@ registerBtn.addEventListener("click", () => {
 
 // log out logic
 const logOutUser = () => {
-  statusMsg.innerText = "";
   users = JSON.parse(localStorage.getItem("users"));
 
   users.forEach((user) => {
@@ -342,7 +340,7 @@ const logOutUser = () => {
   //   updating local storage
   localStorage.setItem("users", JSON.stringify(newUserList));
   localStorage.removeItem("loggedInUser");
-  toggleUserActions(1500, "Bye for now!");
+  toggleUserActions(1500);
   toggleContent();
 };
 
@@ -351,15 +349,13 @@ logOutBtn.addEventListener("click", () => {
   logOutUser();
 });
 
-const toggleUserActions = (ms = 0, msg = "") => {
+const toggleUserActions = (ms = 0) => {
   if (localStorage.getItem("loggedInUser")) {
     logOutBtn.classList.remove("displayNone");
     logInRegisterContent.style.display = "none";
   } else {
     logOutBtn.classList.add("displayNone");
-    statusMsg.innerText = msg;
     setTimeout(() => {
-      statusMsg.innerText = "";
       logInRegisterContent.style.display = "block";
     }, ms);
   }

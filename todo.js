@@ -23,9 +23,9 @@ const createNewTodo = () => {
     todoInput.innerHTML = `
     <h2>New Todo</h2>
     <div class="flex requiredField"><label for="todoTitle">Title</label>
-    <input type="text" name="todoTitle" id="todoTitle"><i class="fa-solid fa-asterisk requiredAsterisk"></i></div>
+    <input type="text" name="todoTitle" id="todoTitle"><span class="required">*</span></div>
     <div class="flex>"<label for="description">Description</label>
-    <input type="text" name="description" id="description">
+    <textarea name="description" id="description"></textarea>
     </div>
     <div class="flex"><label for="deadline">Deadline</label>
     <input type="date" name="deadline" id="deadline" min="${getToday()}">
@@ -354,7 +354,8 @@ const editTodo = (i) => {
   editForm.classList.add("flex", "flex-column");
   editForm.id = "editTodoModal";
   editForm.innerHTML =
-    `<div class="flex flex-column requiredField"><label for="editTodoTitle">Title</label><input id="editTodoTitle" value="${todo.title}"type="text"/><i class="fa-solid fa-asterisk requiredAsterisk"></i></div>` +
+    `<h2>Edit Todo</h2>` +
+    `<div class="flex flex-column requiredField"><label for="editTodoTitle">Title</label><input id="editTodoTitle" value="${todo.title}"type="text"/><span class="required">*</span></div>` +
     `<div class="flex flex-column"><label for="editTodoDesc">Description</label><textarea id="editTodoDesc">${todo.description}</textarea></div>`;
 
   let editStatusDiv = document.createElement("div");
@@ -623,4 +624,6 @@ const resetTodoFilterAndSorting = () => {
   });
 };
 
-renderTodoCards(emptyArr, true);
+if (localStorage.getItem("loggedInUser")) {
+  renderTodoCards(emptyArr, true);
+}
