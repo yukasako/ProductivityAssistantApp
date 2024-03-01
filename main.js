@@ -401,6 +401,10 @@ toggleContent();
 //Create a Modal or Destroy Modal Functions
 const modal = document.createElement("article");
 
+modal.addEventListener("click", ()=> {
+  event.stopPropagation();
+})
+
 const createModal = () => {
   const modalScreen = document.createElement("section");
   modalScreen.setAttribute("id", "modalScreen");
@@ -423,6 +427,8 @@ const createModal = () => {
   modal.appendChild(closeModal);
   closeModal.appendChild(closeModalIcon);
 
+
+
   //To exit the modal
   document.getElementById("closeModalBtn").addEventListener("click", () => {
     destroyModal();
@@ -432,10 +438,10 @@ const createModal = () => {
       destroyModal();
     }
   });
-  // const getModalScreen = document.getElementById("modalScreen");
-  // getModalScreen.addEventListener("click", () => {
-  //   destroyModal();
-  // })
+  const getModalScreen = document.getElementById("modalScreen");
+  getModalScreen.addEventListener("click", () => {
+    destroyModal();
+  })
 
   //Scroll Lock
   document.body.classList.add("scrollLock");
