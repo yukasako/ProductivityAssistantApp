@@ -65,7 +65,7 @@ const createNewHabit = () => {
   habitInput.innerHTML = `
  <h2>New Habit</h2>
  <div class="flex requiredField"><label for="habitTitle">Title</label>
- <input type="text" name="habitTitle" id="habitTitle"><i class="fa-solid fa-asterisk requiredAsterisk"></i></div>
+ <input type="text" name="habitTitle" id="habitTitle"><span class="required">*</span></div>
  <div class="flex"><label for="priority">Priority</label>
  <select id="priority">
  <option value="low" selected="selected">Low</option>
@@ -256,7 +256,7 @@ const editHabit = (i) => {
   let editForm = document.createElement("div");
   editForm.classList.add("flex", "flex-column");
   editForm.id = "editHabitModal";
-  editForm.innerHTML = `<div class="flex flex-column requiredField"><label for="editHabitTitle">Title</label><div class="flex"><input id="editHabitTitle" value="${habit.title}"type="text"/><i class="fa-solid fa-asterisk requiredAsterisk"></i></div></div>`;
+  editForm.innerHTML = `<h2>Edit Habit</h2><div class="flex flex-column requiredField"><label for="editHabitTitle">Title</label><div class="flex"><input id="editHabitTitle" value="${habit.title}"type="text"/><span class="required">*</span></div></div>`;
 
   let prioDiv = document.createElement("div");
   prioDiv.classList.add("flex");
@@ -458,4 +458,6 @@ const resetHabitFilterAndSorting = () => {
   habitsSortSelect.querySelector("[value='']").selected = true;
 };
 
-renderHabitCards(emptyArr, true);
+if (localStorage.getItem("loggedInUser")) {
+  renderHabitCards(emptyArr, true);
+}

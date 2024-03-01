@@ -31,15 +31,17 @@ const extractMinutesAndSeconds = (ms) => {
 };
 
 // get custom time from user input
-const getCustomeTime = () => {
+const getCustomTime = () => {
   let customTimeInput = document.querySelector("#customTime");
 
   customTimeInput.addEventListener("keyup", () => {
     let minutes = customTimeInput.value;
-    setTimer(minutes);
-    setTimeContent.dataset.time = minutes;
-    setTimer(minutes);
-    return minutes;
+    if (minutes > 0) {
+      setTimer(minutes);
+      setTimeContent.dataset.time = minutes;
+      setTimer(minutes);
+      return minutes;
+    }
   });
 };
 
@@ -72,8 +74,8 @@ timerOptions.forEach((option) => {
   } else {
     button.innerHTML = `<span class="flex customBtn"><i class="fa-solid fa-gear"></i><span>Custom</span></span>`;
     button.addEventListener("click", () => {
-      buttonsSet.after(customTimeDiv);
-      getCustomeTime();
+      customTimeDiv.classList.toggle("hidden");
+      getCustomTime();
     });
   }
   buttonsSet.append(button);
@@ -158,6 +160,9 @@ const viewTimer = () => {
 
   timerContent.append(buttonsSet);
 
+  customTimeDiv.classList.add("hidden");
+  timerContent.append(customTimeDiv);
+
   //   time display
   timerContent.append(setTimeContent);
 
@@ -176,12 +181,13 @@ const setTimer = (minutes) => {
 let myTimer;
 
 const startTimer = (time) => {
+  customTimeDiv.classList.add("hidden");
   let optionBtns = buttonsSet.querySelectorAll("button");
   let timeInput = document.querySelector("#customTime");
   if (timeInput) {
     timeInput.value = "";
   }
-  customTimeDiv.remove();
+
   if (!time) {
     // change buttons
     timerContent.append(buttonDiv);
