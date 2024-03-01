@@ -341,6 +341,7 @@ const logOutUser = () => {
   localStorage.setItem("users", JSON.stringify(newUserList));
   localStorage.removeItem("loggedInUser");
   openTimerBtn.remove();
+  weatherDiv.remove();
   toggleUserActions();
   toggleContent();
 };
@@ -390,8 +391,8 @@ const toggleContent = async () => {
     appScreen.innerHTML = "";
 
     //Cycle back to login screen
-      appScreen.classList.add("displayNone");
-      loginScreen.classList.remove("displayNone");
+    appScreen.classList.add("displayNone");
+    loginScreen.classList.remove("displayNone");
   }
 };
 
@@ -401,9 +402,9 @@ toggleContent();
 //Create a Modal or Destroy Modal Functions
 const modal = document.createElement("article");
 
-modal.addEventListener("click", ()=> {
+modal.addEventListener("click", () => {
   event.stopPropagation();
-})
+});
 
 const createModal = () => {
   const modalScreen = document.createElement("section");
@@ -427,8 +428,6 @@ const createModal = () => {
   modal.appendChild(closeModal);
   closeModal.appendChild(closeModalIcon);
 
-
-
   //To exit the modal
   document.getElementById("closeModalBtn").addEventListener("click", () => {
     destroyModal();
@@ -441,7 +440,7 @@ const createModal = () => {
   const getModalScreen = document.getElementById("modalScreen");
   getModalScreen.addEventListener("click", () => {
     destroyModal();
-  })
+  });
 
   //Scroll Lock
   document.body.classList.add("scrollLock");

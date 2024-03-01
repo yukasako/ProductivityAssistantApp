@@ -11,8 +11,8 @@ let getData = async (url) => {
 let getWeatherData = async () => {
   // Get weather data
   let params = new URLSearchParams();
-  params.append("latitude", 59.3294);
-  params.append("longitude", 18.0687);
+  params.append("latitude", 59.3293);
+  params.append("longitude", 18.0685);
   params.append("current", ["weather_code", "temperature_2m"]);
 
   let weatherData = await getData(
@@ -84,8 +84,11 @@ let getWeatherData = async () => {
 
   let weatherDiv = document.createElement("div");
   weatherDiv.id = "weatherDiv";
-  weatherDiv.innerHTML = `Stockholm ${temperature}℃`;
+  weatherDiv.innerHTML = `Stockholm \n ${temperature}℃`;
   weatherDiv.append(weatherIcon);
   navBtnGroup.prepend(weatherDiv);
 };
-getWeatherData();
+
+if (localStorage.getItem("loggedInUser")) {
+  getWeatherData();
+}
