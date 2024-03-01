@@ -8,3 +8,6 @@ description edit och create är olika types
 
 login section
 modal bugg
+
+skapa calender knapp
+pastea in koden genererad i separat fil
