@@ -390,10 +390,8 @@ const toggleContent = async () => {
     appScreen.innerHTML = "";
 
     //Cycle back to login screen
-    setTimeout(() => {
       appScreen.classList.add("displayNone");
       loginScreen.classList.remove("displayNone");
-    }, 2000);
   }
 };
 
