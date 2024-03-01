@@ -642,3 +642,149 @@ i {
   padding: 0.3em 0.5rem;
   border-radius: 4px;
 }
+
+/* Calendar */
+#calendarScreen{
+  width:100%;
+  background-color: red;
+  min-height:100vh;
+  position:absolute;
+}
+
+#calendar{
+  width:75%;
+  margin:5rem auto;
+}
+
+#calendarBtn{
+  width:2rem;
+  height:2rem;
+}
+
+.calendarMonth {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin:1rem;
+  width:100%;
+}
+
+table{
+  padding:1rem;
+  table-layout: fixed;
+}
+
+.calendarMonth h2 {
+  margin-bottom: 1rem;
+}
+
+.calendarMonth table {
+  width: 100%;
+  padding:2rem;
+  border: solid 1px black;
+  border-radius: 1rem;
+}
+
+.calendarMonth th,
+.calendarMonth td {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  height: 3rem;
+  cursor: pointer;
+}
+
+.calendarMonth td:hover{
+  border: 1px solid black;
+}
+.day1 {
+  background-color: #ffc0cb;
+}
+.day2 {
+  background-color: #ffa07a;
+}
+.day3 {
+  background-color: #ff7f50;
+}
+.day4 {
+  background-color: #ff6347;
+}
+.day5 {
+  background-color: #ff4500;
+}
+.day6 {
+  background-color: #ff8c00;
+}
+.day7 {
+  background-color: #ffa500;
+}
+.day8 {
+  background-color: #ffd700;
+}
+.day9 {
+  background-color: #ffff00;
+}
+.day10 {
+  background-color: #adff2f;
+}
+.day11 {
+  background-color: #7fff00;
+}
+.day12 {
+  background-color: #32cd32;
+}
+.day13 {
+  background-color: #00ff00;
+}
+.day14 {
+  background-color: #00fa9a;
+}
+.day15 {
+  background-color: #00ffff;
+}
+.day16 {
+  background-color: #00ced1;
+}
+.day17 {
+  background-color: #1e90ff;
+}
+.day18 {
+  background-color: #0000ff;
+}
+.day19 {
+  background-color: #8a2be2;
+}
+.day20 {
+  background-color: #9932cc;
+}
+.day21 {
+  background-color: #9400d3;
+}
+.day22 {
+  background-color: #8b008b;
+}
+.day23 {
+  background-color: #800080;
+}
+.day24 {
+  background-color: #4b0082;
+}
+.day25 {
+  background-color: #6a5acd;
+}
+.day26 {
+  background-color: #483d8b;
+}
+.day27 {
+  background-color: #7b68ee;
+}
+.day28 {
+  background-color: #9370db;
+}
+.day29 {
+  background-color: #a9a9a9;
+}
+.day30 {
+  background-color: #d3d3d3;
+}
+.day31 {
+  background-color: #778899;
+}

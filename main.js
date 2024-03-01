@@ -491,3 +491,194 @@ const getToday = () => {
 
   return today;
 };
+
+
+
+//CALENDAR
+
+//Generate calendar
+let generateCalendar = () => {
+  var months = [
+    "January", "February", "March", "April",
+    "May", "June", "July", "August",
+    "September", "October", "November", "December"
+  ];
+  
+  // Days in each month
+  var daysInMonth = {
+    January: 31,
+    February: 29,
+    March: 31,
+    April: 30,
+    May: 31,
+    June: 30,
+    July: 31,
+    August: 31,
+    September: 30,
+    October: 31,
+    November: 30,
+    December: 31
+  };
+
+  let calendar = document.createElement("article");
+  calendar.setAttribute("id", "calendar");
+  document.getElementById("calendarScreen").appendChild(calendar);
+
+  
+  // Create calendar for each month
+  months.forEach(function(monthName) {
+    var calendarDiv = document.createElement("div");
+    calendarDiv.className = "calendarMonth";
+  
+    var table = document.createElement("table");
+    table.id = monthName;
+  
+    var header = document.createElement("h2");
+    header.textContent = monthName;
+    table.appendChild(header);
+  
+    var headerRow = document.createElement("tr");
+    ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(function(day) {
+      var th = document.createElement("th");
+      th.textContent = day;
+      headerRow.appendChild(th);
+    });
+    table.appendChild(headerRow);
+  
+    var body = document.createElement("tbody");
+    var totalDays = daysInMonth[monthName];
+    var startDate = new Date(months.indexOf(monthName), 1).getDay();
+  
+    var numRows = Math.ceil((totalDays + startDate) / 7);
+    var dayCounter = 1;
+  
+    for (var i = 0; i < numRows; i++) {
+      var row = document.createElement("tr");
+      for (var j = 0; j < 7; j++) {
+        var cell = document.createElement("td");
+        if (i === 0 && j < startDate) {
+          // Empty cells before the start date
+          cell.textContent = "";
+        } else if (dayCounter <= totalDays) {
+          // Fill in the days of the month
+          cell.textContent = dayCounter;
+          cell.className = "day" + dayCounter;
+          dayCounter++;
+        }
+        row.appendChild(cell);
+      }
+      body.appendChild(row);
+    }
+    table.appendChild(body);
+  
+    calendarDiv.appendChild(table);
+    
+    calendar.appendChild(calendarDiv);
+  });
+}
+
+//Open and Close Calendar
+const calendarScreen = document.getElementById("calendarScreen");
+
+let calendarBtn = document.createElement("button");
+calendarBtn.setAttribute("id", "calendarBtn");
+navBtnGroup.appendChild(calendarBtn);
+
+calendarBtn.addEventListener("click", ()=>{
+  if(calendarScreen.classList.contains("displayNone")){
+    generateCalendar();
+    calendarScreen.classList.remove("displayNone");
+
+    //Click events for making a happening
+    const pickableDays = [...document.querySelectorAll("td")];
+
+    pickableDays.forEach((e)=>{
+      e.addEventListener("click", ()=> {
+        console.log(e.parentElement.parentElement.parentElement.id); //find the month
+        console.log(e.classList[0].slice(3)); // find the day
+      })
+    });
+  } else {
+    calendarScreen.innerHTML = "";
+    calendarScreen.classList.add("displayNone");
+  }
+})
+
+//Generate calendar objects
+let monthsObjects = [
+  {
+    name: "January",
+    days: generateDaysObject(31)
+  },
+  {
+    name: "February",
+    days: generateDaysObject(29)
+  },
+  {
+    name: "March",
+    days: generateDaysObject(31)
+  },
+  {
+    name: "April",
+    days: generateDaysObject(30)
+  },
+  {
+    name: "May",
+    days: generateDaysObject(31)
+  },
+  {
+    name: "June",
+    days: generateDaysObject(30)
+  },
+  {
+    name: "July",
+    days: generateDaysObject(31)
+  },
+  {
+    name: "August",
+    days: generateDaysObject(31)
+  },
+  {
+    name: "September",
+    days: generateDaysObject(30)
+  },
+  {
+    name: "October",
+    days: generateDaysObject(31)
+  },
+  {
+    name: "November",
+    days: generateDaysObject(30)
+  },
+  {
+    name: "December",
+    days: generateDaysObject(31)
+  }
+];
+
+//Function to generate days object for a given month
+function generateDaysObject(numDays) {
+  var daysObject = {};
+  for (var i = 1; i <= numDays; i++) {
+    daysObject[i] = { dayOfWeek: getDayOfWeek(i) };
+  }
+  return daysObject;
+}
+
+//Function to get the day of the week for a given day of the month
+function getDayOfWeek(day) {
+  var date = new Date(0, day);
+  var dayIndex = date.getDay();
+  var daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  return daysOfWeek[dayIndex];
+}
+
+
+
+
+
+
+
+
+
+
