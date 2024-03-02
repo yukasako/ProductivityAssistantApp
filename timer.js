@@ -14,6 +14,8 @@ if (localStorage.getItem("loggedInUser")) {
   navBtnGroup.insertBefore(openTimerBtn, logOutBtn);
 }
 const extractMinutesAndSeconds = (ms) => {
+  let hours = Math.floor((ms % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
   let m = Math.floor(ms % (1000 * 60 * 60)) / (1000 * 60);
   m = Math.floor(m);
   let s = Math.floor((ms % (1000 * 60)) / 1000);
@@ -21,6 +23,10 @@ const extractMinutesAndSeconds = (ms) => {
 
   if (m < 10) {
     m = "0" + m;
+  }
+
+  if (hours > 0) {
+    m = 60;
   }
 
   if (s < 10) {
@@ -35,7 +41,11 @@ const getCustomTime = () => {
   let customTimeInput = document.querySelector("#customTime");
 
   customTimeInput.addEventListener("keyup", () => {
-    let minutes = customTimeInput.value;
+    let minutes;
+
+    customTimeInput.value > 60
+      ? (minutes = 60)
+      : (minutes = customTimeInput.value);
     if (minutes > 0) {
       setTimer(minutes);
       setTimeContent.dataset.time = minutes;
@@ -84,7 +94,7 @@ timerOptions.forEach((option) => {
 let customTimeDiv = document.createElement("div");
 customTimeDiv.classList.add("flex", "customTimeDiv");
 customTimeDiv.innerHTML =
-  "<input id='customTime' type='number' min='1' max='60'><label for='customTime'>minutes</label>";
+  "<input id='customTime' type='number' min='1' max='60'><label for='customTime'>minutes (1-60)</label>";
 
 let setTimeContent = document.createElement("p");
 setTimeContent.classList.add("timeDisplay");
@@ -212,6 +222,10 @@ const startTimer = (time) => {
 
       // Find the distance between now and the count down date
       let distance = goalTime - now;
+
+      let hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
 
       let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       let seconds = Math.floor((distance % (1000 * 60)) / 1000);
