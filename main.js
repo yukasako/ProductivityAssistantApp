@@ -578,7 +578,9 @@ let generateCalendar = () => {
 }
 
 //Create local Happening storage
-let happenings = [];
+let happenings = [  
+
+];
 localStorage.setItem("happenings", JSON.stringify(happenings));
 
 //Open and Close Calendar
@@ -635,9 +637,6 @@ let createHappeningsContent = ()=> {
   listHappenings.setAttribute("id", "listHappenings");
   addHappening.appendChild(listHappenings);
 }
-
-
-
 
 //Generate calendar objects
 let monthsObjects = [
@@ -708,7 +707,12 @@ function getDayOfWeek(day) {
   return daysOfWeek[dayIndex];
 }
 
-
+//template
+/* let happening = {
+  date: "january24",
+  time: "14:20",
+  happening: "blablabla",
+} */
 
 
 
