@@ -802,3 +802,10 @@ table{
 .day31 {
   background-color: #778899;
 }
+
+
+/* Calendar Modal */
+#addHappeningBtn{
+  width:1rem;
+  height:1rem;
+}

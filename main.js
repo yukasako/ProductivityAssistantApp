@@ -595,15 +595,29 @@ calendarBtn.addEventListener("click", ()=>{
     generateCalendar();
     calendarScreen.classList.remove("displayNone");
 
-    //Click events for making a happening
+    //Click events for opening a date
     const pickableDays = [...document.querySelectorAll("td")];
 
     pickableDays.forEach((e)=>{
       e.addEventListener("click", ()=> {
-        console.log(e.parentElement.parentElement.parentElement.id); //find the month
-        console.log(e.classList[0].slice(3)); // find the day
         createModal();
         createHappeningsContent();
+
+        //Add Happening
+        let date = e.parentElement.parentElement.parentElement.id + e.classList[0].slice(3);
+        let happeningsStorage = JSON.parse(localStorage.getItem('happenings')) || [];
+        document.getElementById("addHappeningBtn").addEventListener("click", ()=>{
+          
+          let happening = {
+            date: date, 
+            time: document.getElementById("happeningTime").value,
+            happening: document.getElementById("happeningText").value,
+          }
+
+          happeningsStorage.push(happening);
+          localStorage.setItem("happenings", JSON.stringify(happenings));
+          console.log(happening);
+        })
       })
     });
   } else {
@@ -611,6 +625,9 @@ calendarBtn.addEventListener("click", ()=>{
     calendarScreen.classList.add("displayNone");
   }
 })
+
+//Add happening
+
 
 let createHappeningsContent = ()=> {
   const modal = document.getElementById("modal");
