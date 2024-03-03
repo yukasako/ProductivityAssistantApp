@@ -156,8 +156,8 @@ nav .wrapper {
   margin: 1rem;
 }
 
-#userDetails label{
-  width:25%;
+#userDetails label {
+  width: 25%;
 }
 
 #userDetails input {
@@ -242,8 +242,17 @@ nav .wrapper {
   margin-right: 0.5rem;
 }
 
+.todoInfo {
+  align-items: center;
+}
+
 .todoInfo i {
   margin-right: 0.5rem;
+}
+
+.todoDeadline {
+  font-size: 0.7rem;
+  margin-left: 0.5rem;
 }
 
 .todoActions {
