@@ -139,7 +139,11 @@ const createTodoCard = (todo, id) => {
   todoInfo.classList.add("flex", "todoInfo");
   let icon = setIcon(todo.category);
   todoInfo.append(icon);
-  todoInfo.innerHTML += `<h3 class="todoTitle">${todo.title}</h3>`;
+  todoInfo.innerHTML += `<h3 class="todoTitle">${
+    todo.title
+  }</h3><span class="todoDeadline">${
+    todo.deadline !== "9999-12-31" ? todo.deadline : ""
+  }</span>`;
 
   // complete checkbox and archive icon (if completed)
   let actionDiv = document.createElement("div");
@@ -355,7 +359,7 @@ const editTodo = (i) => {
   editForm.id = "editTodoModal";
   editForm.innerHTML =
     `<h2>Edit Todo</h2>` +
-    `<div class="flex flex-column requiredField"><label for="editTodoTitle">Title</label><input id="editTodoTitle" value="${todo.title}"type="text"/><span class="required">*</span></div>` +
+    `<div class="flex flex-column requiredField"><label for="editTodoTitle">Title</label><div><input id="editTodoTitle" value="${todo.title}"type="text"/><span class="required">*</span></div></div>` +
     `<div class="flex flex-column"><label for="editTodoDesc">Description</label><textarea id="editTodoDesc">${todo.description}</textarea></div>`;
 
   let editStatusDiv = document.createElement("div");
