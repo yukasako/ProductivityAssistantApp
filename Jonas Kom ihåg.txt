@@ -1,13 +1,1 @@
-
-fixa h på edit habit och edit todo
-
-create todo modal description texten ligger fel. htmlen är fel.
-
-description edit och create är olika types
-
-
-login section
-modal bugg
-
-skapa calender knapp
-pastea in koden genererad i separat fil
+skapa happening object utav modal input
