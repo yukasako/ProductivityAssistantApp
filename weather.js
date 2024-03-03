@@ -8,22 +8,22 @@ let getData = async (url) => {
   }
 };
 
-let getWeatherData = async () => {
+let getWeatherData = async (latitude, longitude) => {
   // Get weather data
   let params = new URLSearchParams();
-  params.append("latitude", 59.3293);
-  params.append("longitude", 18.0685);
+  params.append("latitude", latitude);
+  params.append("longitude", longitude);
   params.append("current", ["weather_code", "temperature_2m"]);
 
   let weatherData = await getData(
     `https://api.open-meteo.com/v1/forecast?` + params
   );
-  console.log(weatherData);
 
-  //DOM
-  let temperature = weatherData.current.temperature_2m;
+  //Put the weatherData to DOM
+  weatherDiv.innerHTML = "";
+  weatherIcon.classList = "";
+  let temperatureData = weatherData.current.temperature_2m;
   let weatherCode = weatherData.current.weather_code;
-  let weatherIcon = document.createElement("i");
   switch (weatherCode) {
     // 0	Clear sky
     // 1, 2, 3	Mainly clear, partly cloudy, and overcast
@@ -81,14 +81,38 @@ let getWeatherData = async () => {
       weatherIcon.classList.add("fa-solid", "fa-cloud-bolt");
       break;
   }
-
-  let weatherDiv = document.createElement("div");
-  weatherDiv.id = "weatherDiv";
-  weatherDiv.innerHTML = `Stockholm \n ${temperature}℃`;
-  weatherDiv.append(weatherIcon);
+  temperature.innerText = `${temperatureData}℃`;
+  weatherDiv.append(location, temperature, weatherIcon);
   navBtnGroup.prepend(weatherDiv);
 };
 
+let weatherDiv = document.createElement("div");
+weatherDiv.id = "weatherDiv";
+let temperature = document.createElement("span");
+let weatherIcon = document.createElement("i");
+
+// Choose location
+let location = document.createElement("select");
+location.id = "location";
+location.innerHTML = `
+<option value="stockholm" selected="selected">Stockholm</option>
+<option value="tokyo">Tokyo</option>
+<option value="newyork">New York</option>
+<option value="london">London</option>
+`;
+location.addEventListener("change", () => {
+  if (location.value == "tokyo") {
+    getWeatherData(-23.5505, -46.6333);
+  } else if (location.value == "newyork") {
+    getWeatherData(40.7127, -74.0059);
+  } else if (location.value == "london") {
+    getWeatherData(51.5073, -0.1277);
+  } else if (location.value == "stockholm") {
+    getWeatherData(59.3293, 18.0685);
+  }
+});
+
+// When logged in
 if (localStorage.getItem("loggedInUser")) {
-  getWeatherData();
+  getWeatherData(59.3293, 18.0685);
 }
