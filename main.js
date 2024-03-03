@@ -577,6 +577,10 @@ let generateCalendar = () => {
   });
 }
 
+//Create local Happening storage
+let happenings = [];
+localStorage.setItem("happenings", JSON.stringify(happenings));
+
 //Open and Close Calendar
 const calendarScreen = document.getElementById("calendarScreen");
 
@@ -596,6 +600,8 @@ calendarBtn.addEventListener("click", ()=>{
       e.addEventListener("click", ()=> {
         console.log(e.parentElement.parentElement.parentElement.id); //find the month
         console.log(e.classList[0].slice(3)); // find the day
+        createModal();
+        createHappeningsContent();
       })
     });
   } else {
@@ -603,6 +609,35 @@ calendarBtn.addEventListener("click", ()=>{
     calendarScreen.classList.add("displayNone");
   }
 })
+
+let createHappeningsContent = ()=> {
+  const modal = document.getElementById("modal");
+
+  let addHappening = document.createElement("div");
+  addHappening.setAttribute("id", "addHappeningModal");
+  modal.appendChild(addHappening);
+
+  let happeningTimeInput = document.createElement("input");
+  happeningTimeInput.setAttribute("id", "happeningTime");
+  happeningTimeInput.setAttribute("type", "time");
+  addHappening.appendChild(happeningTimeInput);
+
+  let happeningTextInput = document.createElement("textarea");
+  happeningTextInput.setAttribute("id", "happeningText");
+  happeningTextInput.setAttribute("name", "happeningText");
+  addHappening.appendChild(happeningTextInput);
+
+  let addHappeningBtn = document.createElement("button");
+  addHappeningBtn.setAttribute("id", "addHappeningBtn");
+  addHappening.appendChild(addHappeningBtn);
+
+  let listHappenings = document.createElement("div");
+  listHappenings.setAttribute("id", "listHappenings");
+  addHappening.appendChild(listHappenings);
+}
+
+
+
 
 //Generate calendar objects
 let monthsObjects = [
