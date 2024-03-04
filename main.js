@@ -223,7 +223,6 @@ const generateId = (arr) => {
 
 // register and log in user logic
 const registerUser = () => {
-  userDetailsMsg.innerText = "";
   let username = usernameInput.value;
   let password = passwordInput.value;
 
@@ -273,7 +272,6 @@ const registerUser = () => {
 };
 
 const logInUser = () => {
-  userDetailsMsg.innerText = "";
   let username = usernameInput.value;
   let password = passwordInput.value;
 
@@ -310,9 +308,15 @@ const logInUser = () => {
       } else {
         // if no matching user
         userDetailsMsg.innerText = "User with matching credentials not found!";
+        setTimeout(() => {
+          userDetailsMsg.classList.toggle("hidden");
+        }, 2000);
       }
     } else {
       userDetailsMsg.innerText = "User with matching credentials not found!";
+      setTimeout(() => {
+        userDetailsMsg.classList.toggle("hidden");
+      }, 2000);
     }
   }
 
@@ -492,18 +496,25 @@ const getToday = () => {
   return today;
 };
 
-
-
 //CALENDAR
 
 //Generate calendar
 let generateCalendar = () => {
   const months = [
-    "January", "February", "March", "April",
-    "May", "June", "July", "August",
-    "September", "October", "November", "December"
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
-  
+
   let daysInMonth = {
     January: 31,
     February: 29,
@@ -516,7 +527,7 @@ let generateCalendar = () => {
     September: 30,
     October: 31,
     November: 30,
-    December: 31
+    December: 31,
   };
 
   //Create Calendar Element
@@ -524,34 +535,33 @@ let generateCalendar = () => {
   calendar.setAttribute("id", "calendar");
   document.getElementById("calendarScreen").appendChild(calendar);
 
-  
   // Create calendar for each month
-  months.forEach(function(monthName) {
+  months.forEach(function (monthName) {
     const calendarDiv = document.createElement("div");
     calendarDiv.className = "calendarMonth";
-  
+
     const table = document.createElement("table");
     table.id = monthName;
-  
+
     const header = document.createElement("h2");
     header.textContent = monthName;
     table.appendChild(header);
-  
+
     const headerRow = document.createElement("tr");
-    ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(function(day) {
+    ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(function (day) {
       const th = document.createElement("th");
       th.textContent = day;
       headerRow.appendChild(th);
     });
     table.appendChild(headerRow);
-  
+
     const body = document.createElement("tbody");
     const totalDays = daysInMonth[monthName];
     const startDate = new Date(months.indexOf(monthName), 1).getDay();
-  
+
     const numRows = Math.ceil((totalDays + startDate) / 7);
     let dayCounter = 1;
-  
+
     for (let i = 0; i < numRows; i++) {
       var row = document.createElement("tr");
       for (let x = 0; x < 7; x++) {
@@ -570,17 +580,15 @@ let generateCalendar = () => {
       body.appendChild(row);
     }
     table.appendChild(body);
-  
+
     calendarDiv.appendChild(table);
-    
+
     calendar.appendChild(calendarDiv);
   });
-}
+};
 
 //Create local Happening storage
-let happenings = [  
-
-];
+let happenings = [];
 localStorage.setItem("happenings", JSON.stringify(happenings));
 
 //Open and Close Calendar
@@ -590,46 +598,49 @@ const calendarBtn = document.createElement("button");
 calendarBtn.setAttribute("id", "calendarBtn");
 navBtnGroup.appendChild(calendarBtn);
 
-calendarBtn.addEventListener("click", ()=>{
-  if(calendarScreen.classList.contains("displayNone")){
+calendarBtn.addEventListener("click", () => {
+  if (calendarScreen.classList.contains("displayNone")) {
     generateCalendar();
     calendarScreen.classList.remove("displayNone");
 
     //Click events for opening a date
     const pickableDays = [...document.querySelectorAll("td")];
 
-    pickableDays.forEach((e)=>{
-      e.addEventListener("click", ()=> {
+    pickableDays.forEach((e) => {
+      e.addEventListener("click", () => {
         createModal();
         createHappeningsContent();
 
         //Add Happening
-        let date = e.parentElement.parentElement.parentElement.id + e.classList[0].slice(3);
-        let happeningsStorage = JSON.parse(localStorage.getItem('happenings')) || [];
-        document.getElementById("addHappeningBtn").addEventListener("click", ()=>{
-          
-          let happening = {
-            date: date, 
-            time: document.getElementById("happeningTime").value,
-            happening: document.getElementById("happeningText").value,
-          }
+        let date =
+          e.parentElement.parentElement.parentElement.id +
+          e.classList[0].slice(3);
+        let happeningsStorage =
+          JSON.parse(localStorage.getItem("happenings")) || [];
+        document
+          .getElementById("addHappeningBtn")
+          .addEventListener("click", () => {
+            let happening = {
+              date: date,
+              time: document.getElementById("happeningTime").value,
+              happening: document.getElementById("happeningText").value,
+            };
 
-          happeningsStorage.push(happening);
-          localStorage.setItem("happenings", JSON.stringify(happenings));
-          console.log(happening);
-        })
-      })
+            happeningsStorage.push(happening);
+            localStorage.setItem("happenings", JSON.stringify(happenings));
+            console.log(happening);
+          });
+      });
     });
   } else {
     calendarScreen.innerHTML = "";
     calendarScreen.classList.add("displayNone");
   }
-})
+});
 
 //Add happening
 
-
-let createHappeningsContent = ()=> {
+let createHappeningsContent = () => {
   const modal = document.getElementById("modal");
 
   let addHappening = document.createElement("div");
@@ -653,58 +664,58 @@ let createHappeningsContent = ()=> {
   let listHappenings = document.createElement("div");
   listHappenings.setAttribute("id", "listHappenings");
   addHappening.appendChild(listHappenings);
-}
+};
 
 //Generate calendar objects
 let monthsObjects = [
   {
     name: "January",
-    days: generateDaysObject(31)
+    days: generateDaysObject(31),
   },
   {
     name: "February",
-    days: generateDaysObject(29)
+    days: generateDaysObject(29),
   },
   {
     name: "March",
-    days: generateDaysObject(31)
+    days: generateDaysObject(31),
   },
   {
     name: "April",
-    days: generateDaysObject(30)
+    days: generateDaysObject(30),
   },
   {
     name: "May",
-    days: generateDaysObject(31)
+    days: generateDaysObject(31),
   },
   {
     name: "June",
-    days: generateDaysObject(30)
+    days: generateDaysObject(30),
   },
   {
     name: "July",
-    days: generateDaysObject(31)
+    days: generateDaysObject(31),
   },
   {
     name: "August",
-    days: generateDaysObject(31)
+    days: generateDaysObject(31),
   },
   {
     name: "September",
-    days: generateDaysObject(30)
+    days: generateDaysObject(30),
   },
   {
     name: "October",
-    days: generateDaysObject(31)
+    days: generateDaysObject(31),
   },
   {
     name: "November",
-    days: generateDaysObject(30)
+    days: generateDaysObject(30),
   },
   {
     name: "December",
-    days: generateDaysObject(31)
-  }
+    days: generateDaysObject(31),
+  },
 ];
 
 //Function to generate days object for a given month
@@ -730,11 +741,3 @@ function getDayOfWeek(day) {
   time: "14:20",
   happening: "blablabla",
 } */
-
-
-
-
-
-
-
-
