@@ -112,9 +112,12 @@ let todoContentH2 = document.createElement("h2");
 todoContentH2.innerText = "Things To Do";
 todoContent.append(todoContentH2);
 
+let habitWrapper = document.createElement("div");
+habitsContent.append(habitWrapper);
+
 let habitsContentH2 = document.createElement("h2");
 habitsContentH2.innerText = "Routines";
-habitsContent.append(habitsContentH2);
+habitWrapper.append(habitsContentH2);
 
 let createTodoBtn = document.createElement("button");
 createTodoBtn.classList.add("addNew");
@@ -223,6 +226,7 @@ const generateId = (arr) => {
 
 // register and log in user logic
 const registerUser = () => {
+  userDetailsMsg.innerText = "";
   let username = usernameInput.value;
   let password = passwordInput.value;
 
@@ -272,6 +276,7 @@ const registerUser = () => {
 };
 
 const logInUser = () => {
+  userDetailsMsg.innerText = "";
   let username = usernameInput.value;
   let password = passwordInput.value;
 
@@ -303,20 +308,15 @@ const logInUser = () => {
             getQuote();
             toggleUserActions();
             toggleContent();
+            completeRatio();
           }
         });
       } else {
         // if no matching user
         userDetailsMsg.innerText = "User with matching credentials not found!";
-        setTimeout(() => {
-          userDetailsMsg.classList.toggle("hidden");
-        }, 2000);
       }
     } else {
       userDetailsMsg.innerText = "User with matching credentials not found!";
-      setTimeout(() => {
-        userDetailsMsg.classList.toggle("hidden");
-      }, 2000);
     }
   }
 
@@ -371,7 +371,7 @@ const toggleUserActions = (ms = 0) => {
 const toggleContent = async () => {
   if (localStorage.getItem("loggedInUser")) {
     todoContent.append(todoContainer, createTodoBtn);
-    habitsContent.append(habitContainer, createNewHabitDiv);
+    habitWrapper.append(habitContainer, createNewHabitDiv);
 
     appScreen.append(highlights, content);
 
