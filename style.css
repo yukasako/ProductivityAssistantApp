@@ -1,13 +1,22 @@
+/* digital clock font */
 @import url("https://fonts.googleapis.com/css2?family=Chakra+Petch&display=swap");
+/* Jost */
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap");
+/* Quicksand */
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+/* Outfit */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+/* Assistant */
+@import url("https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap");
 
 :root {
   --color-1: #ffffff;
-  --color-2: #F7F1F3;
-  --color-3: #F4625C;
-  --color-4: #5855D6;
+  --color-2: #f7f1f3;
+  --color-3: #f4625c;
+  --color-4: #5855d6;
   --color-5: #000000;
   --color-6: #feb7b7;
-  --color-7: #899CF7;
+  --color-7: #899cf7;
   --color-modal: hsla(0, 0%, 0%, 0.8);
   --shadow-1: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   --shadow-2: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
@@ -20,8 +29,8 @@
 }
 
 body {
-  /* background: linear-gradient(0deg, #f1ebf2 0%, #ffffff 70%); */
   background: var(--color-2);
+  font-family: Assistant;
 }
 
 .flex {
