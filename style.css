@@ -337,7 +337,8 @@ nav .wrapper {
 }
 
 .subInfo {
-  margin: 0.5rem 1rem;
+  margin: 0.5rem;
+  gap: 0.5rem;
 }
 
 .habit button {
@@ -561,19 +562,6 @@ nav .wrapper {
   font-size: 1.1rem;
 }
 
-i {
-  &.danger {
-    color: #fb370d;
-  }
-
-  &.warning {
-    color: #f2cb05;
-  }
-  &.success {
-    color: #14a662;
-  }
-}
-
 #openTimerBtn {
   padding: 0.3em 0.6em;
   font-size: 1.2rem;
@@ -656,34 +644,33 @@ i {
   border-radius: 4px;
 }
 
-
 /* Calendar */
-#calendarScreen{
-  width:100%;
+#calendarScreen {
+  width: 100%;
   background-color: red;
-  min-height:100vh;
-  position:absolute;
+  min-height: 100vh;
+  position: absolute;
 }
 
-#calendar{
-  width:75%;
-  margin:5rem auto;
+#calendar {
+  width: 75%;
+  margin: 5rem auto;
 }
 
-#calendarBtn{
-  width:2rem;
-  height:2rem;
+#calendarBtn {
+  width: 2rem;
+  height: 2rem;
 }
 
 .calendarMonth {
   font-family: Arial, sans-serif;
   text-align: center;
-  margin:1rem;
-  width:100%;
+  margin: 1rem;
+  width: 100%;
 }
 
-table{
-  padding:1rem;
+table {
+  padding: 1rem;
   table-layout: fixed;
 }
 
@@ -693,7 +680,7 @@ table{
 
 .calendarMonth table {
   width: 100%;
-  padding:2rem;
+  padding: 2rem;
   border: solid 1px black;
   border-radius: 1rem;
 }
@@ -706,7 +693,7 @@ table{
   cursor: pointer;
 }
 
-.calendarMonth td:hover{
+.calendarMonth td:hover {
   border: 1px solid black;
 }
 .day1 {
@@ -803,9 +790,8 @@ table{
   background-color: #778899;
 }
 
-
 /* Calendar Modal */
-#addHappeningBtn{
-  width:1rem;
-  height:1rem;
+#addHappeningBtn {
+  width: 1rem;
+  height: 1rem;
 }

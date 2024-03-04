@@ -13,9 +13,9 @@ const createHabitCard = (habit, id) => {
   subInfo.classList.add("subInfo", "flex");
   subInfo.innerHTML = `<p>Priority: ${
     habit.priority === "low"
-      ? "Low <i class='fa-solid fa-circle success'></i>"
+      ? "Low <i class='fa-regular fa-circle'></i>"
       : habit.priority === "medium"
-      ? "Medium <i class='fa-solid fa-circle warning'></i>"
+      ? "Medium <i class='fa-solid fa-circle-half-stroke'></i>"
       : "High <i class='fa-solid fa-circle danger'></i>"
   }</p><p>Streak: ${habit.streak.length} ${
     habit.streak.length > 1 ? "days" : habit.streak.length === 1 ? "day" : ""
