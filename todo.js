@@ -423,7 +423,7 @@ const editTodo = (i) => {
   let deleteBtn = document.createElement("button");
   deleteBtn.id = "deleteTodo";
   deleteBtn.classList.add("modalBtn", "danger");
-  deleteBtn.innerText = "Delete Todo";
+  deleteBtn.innerText = "Delete";
   deleteBtn.addEventListener("click", () => {
     //delete todo
     deleteTodo(todo);
