@@ -64,9 +64,9 @@ const createNewHabit = () => {
   // Create input form
   habitInput.innerHTML = `
  <h2>New Habit</h2>
- <div class="flex requiredField"><label for="habitTitle">Title</label>
+ <div class="flex flex-row requiredField"><label for="habitTitle">Title</label>
  <input type="text" name="habitTitle" id="habitTitle"><span class="required">*</span></div>
- <div class="flex"><label for="priority">Priority</label>
+ <div class="flex flex-row"><label for="priority">Priority</label>
  <select id="priority">
  <option value="low" selected="selected">Low</option>
  <option value="medium">Medium</option>
@@ -259,7 +259,7 @@ const editHabit = (i) => {
   editForm.innerHTML = `<h2>Edit Habit</h2><div class="flex flex-column requiredField"><label for="editHabitTitle">Title</label><div class="flex"><input id="editHabitTitle" value="${habit.title}"type="text"/><span class="required">*</span></div></div>`;
 
   let prioDiv = document.createElement("div");
-  prioDiv.classList.add("flex");
+  prioDiv.classList.add("flex", "flex-row");
   prioDiv.innerHTML = "<label for='editHabitPrio'>Priority</label>";
   let prioSelect = document.createElement("select");
   prioSelect.id = "editHabitPrio";
@@ -277,7 +277,7 @@ const editHabit = (i) => {
 
   // container for resetting streak action
   let resetDiv = document.createElement("div");
-  resetDiv.classList.add("flex");
+  resetDiv.classList.add("flex", "flex-row");
   resetDiv.innerHTML = `<p class="currentStreak">${habit.streak.length}</p>`;
   let resetBtn = document.createElement("button");
   resetBtn.id = "resetStreak";

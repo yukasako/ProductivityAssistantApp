@@ -6,7 +6,7 @@ const createNewTodo = () => {
     // Create input form
 
     let categoryDiv = document.createElement("div");
-    categoryDiv.classList.add("flex");
+    categoryDiv.classList.add("flex", "flex-row");
     let categoryLabel = document.createElement("label");
     categoryLabel.innerText = "Category";
     categoryLabel.setAttribute("for", "categorySelect");
@@ -22,15 +22,15 @@ const createNewTodo = () => {
     categoryDiv.append(categoryLabel, categorySelect);
     todoInput.innerHTML = `
     <h2>New Todo</h2>
-    <div class="flex requiredField"><label for="todoTitle">Title</label>
+    <div class="flex flex-row requiredField"><label for="todoTitle">Title</label>
     <input type="text" name="todoTitle" id="todoTitle"><span class="required">*</span></div>
     <div class="flex>"<label for="description">Description</label>
     <textarea name="description" id="description"></textarea>
     </div>
-    <div class="flex"><label for="deadline">Deadline</label>
+    <div class="flex flex-row"><label for="deadline">Deadline</label>
     <input type="date" name="deadline" id="deadline" min="${getToday()}">
     </div>
-    <div class="flex"><label for="timeEstimate">Time Estimate</label>
+    <div class="flex flex-row"><label for="timeEstimate">Time Estimate</label>
     <input type="time" name="timeEstimate" id="timeEstimate">
     </div>
     `;
@@ -363,7 +363,7 @@ const editTodo = (i) => {
     `<div class="flex flex-column"><label for="editTodoDesc">Description</label><textarea id="editTodoDesc">${todo.description}</textarea></div>`;
 
   let editStatusDiv = document.createElement("div");
-  editStatusDiv.classList.add("flex");
+  editStatusDiv.classList.add("flex", "flex-row");
   let statusLabel = document.createElement("label");
   statusLabel.setAttribute("for", "editTodoStatus");
   statusLabel.innerText = "Status";
@@ -379,15 +379,15 @@ const editTodo = (i) => {
   editForm.append(editStatusDiv);
 
   editForm.innerHTML +=
-    `<div class="flex"><label for="editDeadline">Deadline</label>
+    `<div class="flex flex-row"><label for="editDeadline">Deadline</label>
   <input type="date" min="${getToday()}" name="editDeadline" id="editDeadline" value="${
       todo.deadline == "9999-12-31" ? "" : todo.deadline
     }"></div>` +
-    `<div class="flex"><label for="editTimeEstimate">Time Estimate</label>
+    `<div class="flex flex-row"><label for="editTimeEstimate">Time Estimate</label>
   <input type="time" name="editTimeEstimate" id="editTimeEstimate" value="${todo.timeEstimate.hours}:${todo.timeEstimate.minutes}"></div>`;
 
   let editCategoryDiv = document.createElement("div");
-  editCategoryDiv.classList.add("flex");
+  editCategoryDiv.classList.add("flex", "flex-row");
   editCategoryDiv.innerHTML += "<label for='editCategory'>Category</label>";
   let categorySelect = document.createElement("select");
   categorySelect.name = "editCategory";
