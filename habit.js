@@ -309,7 +309,7 @@ const editHabit = (i) => {
   let deleteBtn = document.createElement("button");
   deleteBtn.id = "deleteHabit";
   deleteBtn.classList.add("modalBtn", "danger");
-  deleteBtn.innerText = "Delete Habit";
+  deleteBtn.innerText = "Delete";
   deleteBtn.addEventListener("click", () => {
     //delete habit
     deleteHabit(habit);
