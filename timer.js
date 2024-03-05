@@ -94,7 +94,7 @@ timerOptions.forEach((option) => {
 let customTimeDiv = document.createElement("div");
 customTimeDiv.classList.add("flex", "customTimeDiv");
 customTimeDiv.innerHTML =
-  "<input id='customTime' type='number' min='1' max='60'><label for='customTime'>minutes (1-60)</label>";
+  "<input id='customTime' type='text' inputmode='numeric' min='1' max='60'><label for='customTime'>minutes (1-60)</label>";
 
 let setTimeContent = document.createElement("p");
 setTimeContent.classList.add("timeDisplay");

@@ -316,6 +316,7 @@ nav .wrapper {
   margin: 0.5rem 0rem;
   width: 100%;
   height: 2rem;
+  font-weight: 600;
   border-radius: 0.3rem;
   color: var(--color-1);
   background-color: var(--color-4);
@@ -411,6 +412,7 @@ nav .wrapper {
   width: 100%;
   height: 2rem;
   margin: 0.5rem 0rem;
+  font-weight: 600;
   border-radius: 0.3rem;
   color: var(--color-5);
   background-color: var(--color-3);
