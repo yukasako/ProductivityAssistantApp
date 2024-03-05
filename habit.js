@@ -32,6 +32,7 @@ const createHabitCard = (habit, id) => {
   let completedBtn = document.createElement("button");
   if (completedToday) {
     completedBtn.innerHTML = `<span>Completed</span><i class="fa-solid fa-check"></i>`;
+    completedBtn.style.cursor = "default";
   } else {
     completedBtn.innerHTML = `<span>Complete</span>`;
   }
