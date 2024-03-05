@@ -492,6 +492,7 @@ nav .wrapper {
 #createHabitModal button {
   height: 2rem;
   border-radius: 0.3rem;
+  background-color: var(--color-3);
 }
 
 #editHabitModal {
@@ -580,6 +581,8 @@ nav .wrapper {
 
 #createTodoModal button {
   height: 2rem;
+  background-color: var(--color-4);
+  color: var(--color-1);
 }
 
 #editTodoModal {
