@@ -308,7 +308,7 @@ const logInUser = () => {
             getQuote();
             toggleUserActions();
             toggleContent();
-            completeRatio();
+            completeRatio(false);
           }
         });
       } else {

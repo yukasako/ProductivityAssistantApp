@@ -1,4 +1,4 @@
-let completeRatio = () => {
+let completeRatio = (toggle) => {
   let previousChart = document.querySelector("#myChart");
   if (previousChart) {
     previousChart.remove();
@@ -20,7 +20,7 @@ let completeRatio = () => {
   let uncompleteRatio = 1 - complete / uncomplete;
 
   let text = "";
-  if (completeRatio === 1) {
+  if (completeRatio === 1 && toggle === true) {
     text = "Routine Done!";
     confetti({
       particleCount: 100,
@@ -125,7 +125,7 @@ const createHabitCard = (habit, id) => {
     let currentHabit = user.habits.find((item) => item.id === habit.id);
     streakIncrementer(currentHabit);
     e.stopPropagation();
-    completeRatio();
+    completeRatio(true);
   });
 
   li.addEventListener("click", (e) => {
@@ -170,7 +170,7 @@ const createNewHabit = () => {
 
   saveHabitBtn.addEventListener("click", () => {
     saveNewHabit();
-    completeRatio();
+    completeRatio(false);
   });
 };
 
@@ -397,7 +397,7 @@ const editHabit = (i) => {
   deleteBtn.addEventListener("click", () => {
     //delete habit
     deleteHabit(habit);
-    completeRatio();
+    completeRatio(false);
   });
 
   actionButtons.append(saveEditsBtn, deleteBtn);
@@ -440,7 +440,7 @@ const saveHabitEdits = (habit) => {
     let updatedList = user.habits;
 
     renderHabitCards(updatedList, false);
-    completeRatio();
+    completeRatio(false);
     destroyModal();
   } else {
     requiredMsg.innerText = "Title is required";
@@ -546,5 +546,5 @@ const resetHabitFilterAndSorting = () => {
 
 if (localStorage.getItem("loggedInUser")) {
   renderHabitCards(emptyArr, true);
-  completeRatio();
+  completeRatio(false);
 }
