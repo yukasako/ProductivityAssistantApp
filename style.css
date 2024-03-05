@@ -26,11 +26,11 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: Quicksand;
 }
 
 body {
   background: var(--color-2);
-  font-family: Assistant;
 }
 
 .flex {
