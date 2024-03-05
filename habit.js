@@ -22,6 +22,11 @@ let completeRatio = () => {
   let text = "";
   if (completeRatio === 1) {
     text = "Routine Done!";
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
   } else if (completeRatio === 0) {
     text = "Start your day";
   } else {
