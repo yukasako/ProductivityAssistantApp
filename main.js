@@ -250,6 +250,10 @@ const registerUser = () => {
         localStorage.setItem("users", JSON.stringify(newUserList));
       } else {
         userDetailsMsg.innerText = "User already exists!";
+        userDetailsMsg.classList.remove("hidden");
+        setTimeout(() => {
+          userDetailsMsg.classList.add("hidden");
+        }, 2000);
       }
     } else {
       let newUser = {
@@ -308,14 +312,16 @@ const logInUser = () => {
       } else {
         // if no matching user
         userDetailsMsg.innerText = "User with matching credentials not found!";
+        userDetailsMsg.classList.remove("hidden");
         setTimeout(() => {
-          userDetailsMsg.classList.toggle("hidden");
+          userDetailsMsg.classList.add("hidden");
         }, 2000);
       }
     } else {
       userDetailsMsg.innerText = "User with matching credentials not found!";
+      userDetailsMsg.classList.remove("hidden");
       setTimeout(() => {
-        userDetailsMsg.classList.toggle("hidden");
+        userDetailsMsg.classList.add("hidden");
       }, 2000);
     }
   }

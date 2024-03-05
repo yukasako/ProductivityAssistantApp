@@ -185,6 +185,7 @@ nav .wrapper {
 #userDetails {
   background-color: var(--color-2);
   padding: 1rem;
+  padding-top: 2rem;
   border-radius: 0.5rem;
   font-size: 1.1rem;
 }
@@ -222,6 +223,12 @@ nav .wrapper {
   &:focus-visible {
     background-color: #4341b0;
   }
+}
+
+.statusMsg {
+  display: block;
+  text-align: center;
+  margin: 0 auto;
 }
 
 #appScreen {
