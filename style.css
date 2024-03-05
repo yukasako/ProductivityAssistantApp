@@ -12,7 +12,7 @@
 :root {
   --color-1: #ffffff;
   --color-2: #f7f1f3;
-  --color-3: #F4625D;
+  --color-3: #f4625d;
   --color-4: #5855d6;
   --color-5: #000000;
   --color-6: #feb7b7;
@@ -58,6 +58,7 @@ button {
   border: none;
   border-radius: 16px;
   cursor: pointer;
+  transition: background-color linear 250ms;
 }
 
 main {
@@ -214,7 +215,6 @@ nav .wrapper {
   font-size: 1.1rem;
   margin: 0.5rem 1rem;
   padding: 0.4em 0.7em;
-  transition: background-color linear 250ms;
 
   &:hover {
     background-color: #4341b0;
@@ -326,7 +326,6 @@ nav .wrapper {
 .todoContent .addNew:hover,
 .todoContent .addNew:focus-visible {
   border: 2px solid #302e97;
-  transition: border linear 250ms;
 }
 
 .todoContent .addNew i {
@@ -421,7 +420,6 @@ nav .wrapper {
 .habitsContent .addNew:hover,
 .habitsContent .addNew:focus-visible {
   border: 2px solid #a83733;
-  transition: border linear 250ms;
 }
 
 .habitsContent .addNew i {
@@ -494,6 +492,11 @@ nav .wrapper {
   height: 2rem;
   border-radius: 0.3rem;
   background-color: var(--color-3);
+
+  &:hover,
+  &:focus-visible {
+    background-color: #f4625d;
+  }
 }
 
 #editHabitModal {
@@ -521,11 +524,9 @@ nav .wrapper {
 }
 
 #editHabitModal button {
-  /* width: 100%; */
   height: 2rem;
   background-color: var(--color-6);
   color: var(--color-5);
-  transition: background-color linear 250ms;
 }
 
 #editHabitModal .actionButtons button {
@@ -584,6 +585,11 @@ nav .wrapper {
   height: 2rem;
   background-color: var(--color-4);
   color: var(--color-1);
+
+  &:hover,
+  &:focus-visible {
+    background-color: #3c3ab7;
+  }
 }
 
 #editTodoModal {
@@ -625,7 +631,6 @@ nav .wrapper {
   height: 2rem;
   color: var(--color-5);
   background-color: var(--color-7);
-  transition: background-color linear 205ms;
 
   &:hover {
     background-color: #6c7edd;
@@ -651,7 +656,6 @@ nav .wrapper {
   color: var(--color-5);
   background-color: var(--color-7);
   padding: 0.2em 0.4em;
-  transition: background-color linear 250ms;
 
   &:hover {
     background-color: #6c7edd;
@@ -741,11 +745,9 @@ nav .wrapper {
   padding: 0.5em 0.8em;
   background-color: var(--color-4);
   color: var(--color-2);
-  transition: background-color linear 250ms;
 }
 
 .timerOptionBtn:disabled {
-  /* background-color: hsl(0, 0%, 30%); */
   opacity: 0.6;
   cursor: default;
 }
@@ -773,7 +775,6 @@ nav .wrapper {
   border-radius: 0.5rem;
   background-color: var(--color-4);
   color: var(--color-2);
-  transition: background-color linear 250ms;
 }
 
 #toggleTimer {
