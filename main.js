@@ -514,6 +514,96 @@ const getToday = () => {
 };
 
 
+//Create Happening Article
+const article = document.createElement('article');
+article.id = 'happeningsContent';
+
+const heading = document.createElement('h2');
+heading.textContent = 'Happenings';
+
+const container = document.createElement('div');
+container.id = 'HappeningsContainer';
+
+const passedDiv = document.createElement('div');
+passedDiv.id = 'happeningsPassed';
+
+const upcomingDiv = document.createElement('div');
+upcomingDiv.id = 'happeningsUpcoming';
+
+const button = document.createElement('button');
+button.type = 'button';
+button.id = 'addHappening';
+
+container.appendChild(passedDiv);
+container.appendChild(upcomingDiv);
+container.appendChild(button);
+
+article.appendChild(heading);
+article.appendChild(container);
+
+appScreen.appendChild(article);
+
+//Create HappeningModal
+const addHappeningModal = ()=> {
+const form = document.createElement('form');
+form.id = 'createHappeningForm';
+
+const dateLabel = document.createElement('label');
+dateLabel.setAttribute('for', 'happeningDate');
+dateLabel.textContent = 'Date:';
+form.appendChild(dateLabel);
+const dateInput = document.createElement('input');
+dateInput.setAttribute('type', 'date');
+dateInput.id = 'happeningDate';
+dateInput.name = 'date';
+form.appendChild(dateInput);
+
+const timeLabel = document.createElement('label');
+timeLabel.setAttribute('for', 'happeningTime');
+timeLabel.textContent = 'Time:';
+form.appendChild(timeLabel);
+const timeInput = document.createElement('input');
+timeInput.setAttribute('type', 'time');
+timeInput.id = 'happeningTime';
+timeInput.name = 'time';
+form.appendChild(timeInput);
+
+const descriptionLabel = document.createElement('label');
+descriptionLabel.setAttribute('for', 'happeningText');
+descriptionLabel.textContent = 'Description:';
+form.appendChild(descriptionLabel);
+const descriptionInput = document.createElement('input');
+descriptionInput.setAttribute('type', 'text');
+descriptionInput.id = 'happeningText';
+descriptionInput.name = 'description';
+form.appendChild(descriptionInput);
+
+const submitButton = document.createElement('button');
+submitButton.setAttribute('type', 'submit');
+submitButton.id = 'happeningAddBtn';
+submitButton.textContent = 'Add';
+form.appendChild(submitButton);
+
+modal.appendChild(form);
+}
+
+//Open Modal
+const happeningAddBtn = document.getElementById("addHappening");
+happeningAddBtn.addEventListener("click", ()=>{
+  createModal();
+  addHappeningModal();
+})
+
+//Store in local storage
+const happeningsArr = [];
+const happeningsArrString = JSON.stringify(happeningsArr);
+localStorage.setItem('happeningsArr', happeningsArrString);
+
+const happening = {
+  txt: "value1",
+  date: "value2",
+  time: "value3",
+};
 
 
 
