@@ -253,7 +253,7 @@ const registerUser = () => {
         userDetailsMsg.classList.remove("hidden");
         setTimeout(() => {
           userDetailsMsg.classList.add("hidden");
-        }, 2000);
+        }, 2500);
       }
     } else {
       let newUser = {
@@ -268,6 +268,12 @@ const registerUser = () => {
       users.push(newUser);
       localStorage.setItem("users", JSON.stringify(users));
     }
+  } else {
+    userDetailsMsg.innerText = "Please enter username and password";
+    userDetailsMsg.classList.remove("hidden");
+    setTimeout(() => {
+      userDetailsMsg.classList.add("hidden");
+    }, 2500);
   }
 
   // clearing input fields
@@ -315,16 +321,21 @@ const logInUser = () => {
         userDetailsMsg.classList.remove("hidden");
         setTimeout(() => {
           userDetailsMsg.classList.add("hidden");
-        }, 2000);
+        }, 2500);
       }
     } else {
       userDetailsMsg.innerText = "User with matching credentials not found!";
       userDetailsMsg.classList.remove("hidden");
       setTimeout(() => {
         userDetailsMsg.classList.add("hidden");
-      }, 2000);
+      }, 2500);
     }
   }
+  userDetailsMsg.innerText = "Please enter username and password";
+  userDetailsMsg.classList.remove("hidden");
+  setTimeout(() => {
+    userDetailsMsg.classList.add("hidden");
+  }, 2500);
 
   // clearing input fields
   usernameInput.value = "";

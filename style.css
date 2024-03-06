@@ -500,9 +500,12 @@ nav .wrapper {
   border-radius: 0.3rem;
   background-color: var(--color-3);
 
-  &:hover,
+  &:hover {
+    background-color: #f24640;
+  }
+
   &:focus-visible {
-    background-color: #f4625d;
+    background-color: #f24640;
   }
 }
 
