@@ -223,7 +223,6 @@ const generateId = (arr) => {
 
 // register and log in user logic
 const registerUser = () => {
-  userDetailsMsg.innerText = "";
   let username = usernameInput.value;
   let password = passwordInput.value;
 
@@ -251,6 +250,10 @@ const registerUser = () => {
         localStorage.setItem("users", JSON.stringify(newUserList));
       } else {
         userDetailsMsg.innerText = "User already exists!";
+        userDetailsMsg.classList.remove("hidden");
+        setTimeout(() => {
+          userDetailsMsg.classList.add("hidden");
+        }, 2500);
       }
     } else {
       let newUser = {
@@ -265,6 +268,12 @@ const registerUser = () => {
       users.push(newUser);
       localStorage.setItem("users", JSON.stringify(users));
     }
+  } else {
+    userDetailsMsg.innerText = "Please enter username and password";
+    userDetailsMsg.classList.remove("hidden");
+    setTimeout(() => {
+      userDetailsMsg.classList.add("hidden");
+    }, 2500);
   }
 
   // clearing input fields
@@ -273,7 +282,6 @@ const registerUser = () => {
 };
 
 const logInUser = () => {
-  userDetailsMsg.innerText = "";
   let username = usernameInput.value;
   let password = passwordInput.value;
 
@@ -310,11 +318,24 @@ const logInUser = () => {
       } else {
         // if no matching user
         userDetailsMsg.innerText = "User with matching credentials not found!";
+        userDetailsMsg.classList.remove("hidden");
+        setTimeout(() => {
+          userDetailsMsg.classList.add("hidden");
+        }, 2500);
       }
     } else {
       userDetailsMsg.innerText = "User with matching credentials not found!";
+      userDetailsMsg.classList.remove("hidden");
+      setTimeout(() => {
+        userDetailsMsg.classList.add("hidden");
+      }, 2500);
     }
   }
+  userDetailsMsg.innerText = "Please enter username and password";
+  userDetailsMsg.classList.remove("hidden");
+  setTimeout(() => {
+    userDetailsMsg.classList.add("hidden");
+  }, 2500);
 
   // clearing input fields
   usernameInput.value = "";
@@ -491,8 +512,6 @@ const getToday = () => {
 
   return today;
 };
-
-
 
 
 

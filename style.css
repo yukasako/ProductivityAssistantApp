@@ -1,26 +1,37 @@
+/* digital clock font */
 @import url("https://fonts.googleapis.com/css2?family=Chakra+Petch&display=swap");
+/* Jost */
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap");
+/* Quicksand */
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+/* Outfit */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+/* Assistant */
+@import url("https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap");
 
 :root {
   --color-1: #ffffff;
-  --color-2: #ededed;
-  --color-3: #bdbdbd;
-  --color-4: #000000;
+  --color-2: #f7f1f3;
+  --color-3: #f4625d;
+  --color-4: #5855d6;
   --color-5: #000000;
+  --color-6: #feb7b7;
+  --color-7: #899cf7;
+  --color-8: #f2f1f7;
   --color-modal: hsla(0, 0%, 0%, 0.8);
-
-  /* pattern1
-  --color-1: #FFFFFF;
-  --color-2: #FFF4E1;
-  --color-3: #9DDCDC;
-  --color-4: #E67A7A;
-  --color-5: #000000;
-  --color-modal: hsla(0, 0%, 0%, 0.8); */
+  --shadow-1: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  --shadow-2: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: Quicksand;
+}
+
+body {
+  background: var(--color-8);
 }
 
 .flex {
@@ -44,9 +55,10 @@ ul {
 }
 
 button {
-  background-color: var(--color-3);
+  border: none;
   border-radius: 16px;
   cursor: pointer;
+  transition: background-color linear 250ms;
 }
 
 main {
@@ -56,12 +68,34 @@ main {
 nav {
   height: 5rem;
   width: 100%;
-  border-bottom: solid 1px var(--color-5);
   align-items: center;
   justify-content: space-between;
   padding: 1rem 3rem;
   position: fixed;
-  background-color: var(--color-3);
+  background: linear-gradient(to right, var(--color-3), var(--color-4));
+  color: var(--color-1);
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="number"],
+textarea {
+  border-radius: 4px;
+  border: none;
+  outline: 1px solid hsl(60, 0%, 59%);
+  padding: 0.2rem 0.5rem;
+}
+
+textarea {
+  margin-top: 0.3rem;
+}
+
+select {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid hsl(60, 0%, 75%);
+  border-radius: 4px;
+  background-color: var(--color-1);
 }
 
 .clickable {
@@ -77,7 +111,6 @@ nav .wrapper {
 }
 
 #logo {
-  background-color: var(--color-5);
   width: 3rem;
   height: 100%;
 }
@@ -98,6 +131,8 @@ nav .wrapper {
 #logOut {
   width: 3rem;
   height: 3rem;
+  background-color: transparent;
+  color: var(--color-1);
 }
 
 #logOut i,
@@ -114,10 +149,13 @@ nav .wrapper {
 }
 
 #location {
-  background-color: var(--color-3);
+  background-color: transparent;
+  color: var(--color-1);
+  border: none;
 }
 
 #loginScreen {
+  background-color: var(--color-1);
   width: 100%;
   height: 100vh;
   align-items: center;
@@ -145,9 +183,11 @@ nav .wrapper {
 }
 
 #userDetails {
-  border: solid 1px var(--color-5);
+  background-color: var(--color-2);
   padding: 1rem;
+  padding-top: 2rem;
   border-radius: 0.5rem;
+  font-size: 1.1rem;
 }
 
 #userDetails .wrapper {
@@ -161,14 +201,34 @@ nav .wrapper {
 }
 
 #userDetails input {
-  margin: 0rem 1rem;
-  width: 100%;
+  margin: 0rem 2rem;
+  min-width: 2rem;
+  border-radius: 4px;
+  border: none;
+  outline: 1px solid hsl(60, 0%, 59%);
+  padding: 0.4rem 0.6rem;
 }
 
 #userDetails button {
+  background-color: var(--color-4);
+  color: var(--color-1);
   width: 33%;
-  margin: 0rem 1rem;
-  border-radius: 0.3rem;
+  font-size: 1.1rem;
+  margin: 0.5rem 1rem;
+  padding: 0.4em 0.7em;
+
+  &:hover {
+    background-color: #4341b0;
+  }
+  &:focus-visible {
+    background-color: #4341b0;
+  }
+}
+
+.statusMsg {
+  display: block;
+  text-align: center;
+  margin: 0 auto;
 }
 
 #appScreen {
@@ -195,7 +255,6 @@ nav .wrapper {
 }
 
 .todoContent {
-  border: solid 1px var(--color-5);
   padding: 1rem;
   margin: 1rem;
   min-width: 50%;
@@ -219,23 +278,20 @@ nav .wrapper {
 
 .todoList {
   margin: 0.5rem 0rem;
-  border: solid 1px var(--color-5);
-  background-color: var(--color-2);
-  border: solid 1px black;
   border-radius: 0.3rem;
 }
 
 .todo {
   padding: 0.5rem;
-  margin: 1rem 2rem;
-  border: solid 1px var(--color-5);
+  margin: 1rem 0rem;
   background-color: var(--color-1);
+  box-shadow: var(--shadow-1);
   border-radius: 0.3rem;
   justify-content: space-between;
 }
 
 .disabled {
-  background-color: var(--color-2);
+  background-color: var(--color-8);
 }
 
 .todo > * {
@@ -267,9 +323,16 @@ nav .wrapper {
   margin: 0.5rem 0rem;
   width: 100%;
   height: 2rem;
+  font-weight: 600;
   border-radius: 0.3rem;
   color: var(--color-1);
   background-color: var(--color-4);
+  box-shadow: var(--shadow-2);
+}
+
+.todoContent .addNew:hover,
+.todoContent .addNew:focus-visible {
+  border: 2px solid #302e97;
 }
 
 .todoContent .addNew i {
@@ -302,7 +365,6 @@ nav .wrapper {
 
 .habitsContent {
   min-width: 50%;
-  border: solid 1px var(--color-5);
   padding: 1rem;
   border-radius: 0.5rem;
 }
@@ -317,17 +379,15 @@ nav .wrapper {
 
 .habitList {
   margin: 0.5rem 0rem;
-  border: solid 1px var(--color-5);
-  background-color: var(--color-2);
   border-radius: 0.3rem;
 }
 
 .habit {
   padding: 0.5rem;
   border-radius: 0.3rem;
-  border: solid 1px var(--color-5);
+  box-shadow: var(--shadow-1);
   background-color: var(--color-1);
-  margin: 1rem 2rem;
+  margin: 1rem 0rem;
   justify-content: space-between;
   align-items: flex-end;
 }
@@ -337,14 +397,16 @@ nav .wrapper {
 }
 
 .subInfo {
-  margin: 0.5rem 1rem;
+  margin: 0.5rem;
+  gap: 0.5rem;
 }
 
 .habit button {
-  border-radius: 1rem;
   width: 10rem;
   height: 2rem;
   margin: 0.5rem 0rem;
+  background-color: var(--color-2);
+  box-shadow: var(--shadow-2);
 }
 
 .habit button i {
@@ -355,9 +417,16 @@ nav .wrapper {
   width: 100%;
   height: 2rem;
   margin: 0.5rem 0rem;
+  font-weight: 600;
   border-radius: 0.3rem;
-  color: var(--color-1);
-  background-color: var(--color-4);
+  color: var(--color-5);
+  background-color: var(--color-3);
+  box-shadow: var(--shadow-2);
+}
+
+.habitsContent .addNew:hover,
+.habitsContent .addNew:focus-visible {
+  border: 2px solid #a83733;
 }
 
 .habitsContent .addNew i {
@@ -423,11 +492,21 @@ nav .wrapper {
 
 #habitTitle {
   width: 100%;
+  margin-top: 0;
 }
 
 #createHabitModal button {
   height: 2rem;
   border-radius: 0.3rem;
+  background-color: var(--color-3);
+
+  &:hover {
+    background-color: #f24640;
+  }
+
+  &:focus-visible {
+    background-color: #f24640;
+  }
 }
 
 #editHabitModal {
@@ -447,11 +526,7 @@ nav .wrapper {
 }
 
 #editHabitModal > * > * {
-  margin: 0rem 0.3rem;
-}
-
-#editHabitModal .actionButtons button {
-  height: 2rem;
+  margin: 0.2rem 0.3rem;
 }
 
 #editHabitTitle {
@@ -459,7 +534,35 @@ nav .wrapper {
 }
 
 #editHabitModal button {
+  height: 2rem;
+  background-color: var(--color-6);
+  color: var(--color-5);
+}
+
+#editHabitModal .actionButtons button {
+  height: 2rem;
   width: 100%;
+
+  &:hover {
+    background-color: hsl(0, 97%, 75%);
+  }
+
+  &:focus-visible {
+    background-color: hsl(0, 97%, 75%);
+  }
+}
+
+#resetStreak {
+  height: 2rem;
+  padding: 0.5em 0.8em;
+
+  &:hover {
+    background-color: hsl(0, 97%, 75%);
+  }
+
+  &:focus-visible {
+    background-color: hsl(0, 97%, 75%);
+  }
 }
 
 /* Todo Modal */
@@ -481,6 +584,7 @@ nav .wrapper {
 
 #todoTitle {
   width: 100%;
+  margin-top: 0;
 }
 
 #description {
@@ -489,6 +593,13 @@ nav .wrapper {
 
 #createTodoModal button {
   height: 2rem;
+  background-color: var(--color-4);
+  color: var(--color-1);
+
+  &:hover,
+  &:focus-visible {
+    background-color: #3c3ab7;
+  }
 }
 
 #editTodoModal {
@@ -515,8 +626,9 @@ nav .wrapper {
   width: 100%;
 }
 
-#editTodoModal :nth-child(2) {
+#editTodoModal :nth-child(2):not(button) {
   flex-direction: row;
+  margin-top: 0.2rem;
 }
 
 #editTodoModal :nth-child(2) textarea {
@@ -527,7 +639,52 @@ nav .wrapper {
 #editTodoModal button {
   width: 100%;
   height: 2rem;
-  border-radius: 0.3rem;
+  color: var(--color-5);
+  background-color: var(--color-7);
+
+  &:hover {
+    background-color: #6c7edd;
+  }
+
+  &:focus-visible {
+    background-color: #6c7edd;
+  }
+}
+
+#archiveTodoModal {
+  align-items: center;
+  gap: 1rem;
+}
+
+#archiveTodoModal .actionButtons {
+  width: 50%;
+}
+
+#archiveTodoModal button {
+  height: 2rem;
+  width: 100%;
+  color: var(--color-5);
+  background-color: var(--color-7);
+  padding: 0.2em 0.4em;
+
+  &:hover {
+    background-color: #6c7edd;
+  }
+
+  &:focus-visible {
+    background-color: #6c7edd;
+  }
+}
+
+.actionButtons {
+  align-items: center;
+}
+
+#createTodoModal .flex-row,
+#editTodoModal .flex-row,
+#createHabitModal .flex-row,
+#editHabitModal .flex-row {
+  align-items: center;
 }
 
 /* Animation for Welcome Quote */
@@ -557,24 +714,15 @@ nav .wrapper {
 }
 
 .required {
-  color: #fb370d;
   font-size: 1.1rem;
-}
-
-i {
-  &.danger {
-    color: #fb370d;
-  }
-
-  &.warning {
-    color: #f2cb05;
-  }
-  &.success {
-    color: #14a662;
-  }
+  color: #fb370d;
+  vertical-align: middle;
+  margin-inline: 0.2rem;
 }
 
 #openTimerBtn {
+  background-color: transparent;
+  color: var(--color-1);
   padding: 0.3em 0.6em;
   font-size: 1.2rem;
 
@@ -594,8 +742,7 @@ i {
 }
 
 #timerModal button:not(:disabled):hover {
-  background-color: var(--color-3);
-  color: var(--color-4);
+  background-color: #4341b0;
 }
 
 .timerOptions {
@@ -603,14 +750,14 @@ i {
   padding: 1rem;
 }
 .timerOptionBtn {
+  font-size: 1.1rem;
   border-radius: 0.5rem;
-  padding: 0.3em 0.6em;
+  padding: 0.5em 0.8em;
   background-color: var(--color-4);
   color: var(--color-2);
 }
 
 .timerOptionBtn:disabled {
-  /* background-color: hsl(0, 0%, 30%); */
   opacity: 0.6;
   cursor: default;
 }
@@ -620,7 +767,7 @@ i {
 }
 
 .timeDisplay {
-  font-size: 4.5rem;
+  font-size: 5rem;
   font-family: "Chakra Petch", sans-serif;
   margin-bottom: 1.5rem;
 }
@@ -633,7 +780,8 @@ i {
 #pauseTimerBtn,
 #stopTimerBtn,
 #playTimerBtn {
-  padding: 0.3em 0.6em;
+  font-size: 1.1rem;
+  padding: 0.5em 0.7em;
   border-radius: 0.5rem;
   background-color: var(--color-4);
   color: var(--color-2);
@@ -654,4 +802,5 @@ i {
 .customTimeDiv input {
   padding: 0.3em 0.5rem;
   border-radius: 4px;
+  max-width: 3rem;
 }
