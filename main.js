@@ -514,6 +514,9 @@ const getToday = () => {
 };
 
 
+
+//CALENDAR
+
 //Create Happening Article
 const article = document.createElement('article');
 article.id = 'happeningsContent';
@@ -543,7 +546,7 @@ article.appendChild(container);
 
 appScreen.appendChild(article);
 
-//Create HappeningModal
+//Create Happening Modal
 const addHappeningModal = ()=> {
 const form = document.createElement('form');
 form.id = 'createHappeningForm';
@@ -579,7 +582,7 @@ descriptionInput.name = 'description';
 form.appendChild(descriptionInput);
 
 const submitButton = document.createElement('button');
-submitButton.setAttribute('type', 'submit');
+submitButton.setAttribute('type', 'button');
 submitButton.id = 'happeningAddBtn';
 submitButton.textContent = 'Add';
 form.appendChild(submitButton);
@@ -587,23 +590,39 @@ form.appendChild(submitButton);
 modal.appendChild(form);
 }
 
-//Open Modal
-const happeningAddBtn = document.getElementById("addHappening");
-happeningAddBtn.addEventListener("click", ()=>{
-  createModal();
-  addHappeningModal();
-})
 
-//Store in local storage
+//Array for happeningstorage in local storage.
 const happeningsArr = [];
 const happeningsArrString = JSON.stringify(happeningsArr);
 localStorage.setItem('happeningsArr', happeningsArrString);
 
+//Happening template
 const happening = {
-  txt: "value1",
-  date: "value2",
-  time: "value3",
+  txt: null,
+  date: null,
+  time: null,
 };
+
+//Open Modal and submit happening
+const happeningAddBtn = document.getElementById("addHappening");
+happeningAddBtn.addEventListener("click", ()=>{
+  createModal();
+  addHappeningModal();
+  const submitHappeningBtn = document.querySelector("#happeningAddBtn");
+
+  //Submit click event
+  submitHappeningBtn.addEventListener("click", ()=>{
+    happening.txt = document.getElementById("happeningText").value;
+    happening.date = document.getElementById("happeningDate").value;
+    happening.time = document.getElementById("happeningTime").value;
+
+    //Push to local storage
+    let happeningsArr = JSON.parse(localStorage.getItem('happeningsArr')) || [];
+    happeningsArr.push(happening);
+    localStorage.setItem('happeningsArr', JSON.stringify(happeningsArr));
+  })
+})
+
 
 
 
