@@ -1,15 +1,2 @@
-retrieve happening from local storage, display happenings
-
-loopa arrayen och leta efter match med klickat datum -> printa happenings
-
-deletea happening
-
-happenings for Each, if happening.date === picked date -> function
-
-year selector on calendar
-
-
-skrota hela och börja om
-
-pickers + lista på happenings
-
+stylea modal
+fixa containers

@@ -885,7 +885,15 @@ nav .wrapper {
 #happeningDeleteBtn{
   width:2rem;
   height:2rem;
-  
+}
+
+#createHappeningForm{
+  display: flex;
+  flex-direction: column;
+}
+
+#createHappeningForm > *{
+  margin:0.5rem;
 }
 
 
