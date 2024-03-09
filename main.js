@@ -276,11 +276,6 @@ const registerUser = () => {
     }, 2500);
   }
 
-  //Make an array to store happenings
-  const happeningsArr = [];
-  const happeningsArrString = JSON.stringify(happeningsArr);
-  localStorage.setItem('happeningsArr', happeningsArrString);
-
   // clearing input fields
   usernameInput.value = "";
   passwordInput.value = "";
@@ -521,6 +516,13 @@ const getToday = () => {
 
 
 //CALENDAR
+//IF ARR DOESNT EXIST
+  //Make an array to store happening
+  if(!localStorage.getItem('happeningsArr')){
+    const happeningsArr = [];
+    const happeningsArrString = JSON.stringify(happeningsArr);
+    localStorage.setItem('happeningsArr', happeningsArrString);
+  }
 
 //Create Happening Article
 const article = document.createElement('article');
@@ -541,6 +543,8 @@ upcomingDiv.id = 'happeningsUpcoming';
 const button = document.createElement('button');
 button.type = 'button';
 button.id = 'addHappening';
+button.innerText = "New Event";
+
 
 container.appendChild(passedDiv);
 container.appendChild(upcomingDiv);
@@ -560,7 +564,43 @@ const happening = {
   time: null,
 };
 
+  //Delete Happening
+  let deleteHappening = ()=>{
+    const happeningLis = document.getElementById("happeningsContainer").querySelectorAll("li");
+    happeningLis.forEach((e)=>{
+      e.addEventListener("click", ()=>{
+        createModal();
+        //Add Delete Button
+        const deleteBtn = document.createElement("button");
+        deleteBtn.innerText = "Delete";
+        deleteBtn.setAttribute("type", "button");
+        deleteBtn.setAttribute("id", "happeningDeleteBtn");
+        document.getElementById("modal").appendChild(deleteBtn);
+
+        
+          let happeningsArr = JSON.parse(localStorage.getItem("happeningsArr"));
+          document.getElementById("happeningDeleteBtn").addEventListener("click", ()=>{
+            e.parentNode.removeChild(e);
+            
+            const searchDate = e.children[0].innerText;
+            const searchTime = e.children[1].innerText;
+
+            happeningsArr = happeningsArr.filter(item => !(item.date === searchDate && item.time === searchTime));
+
+            localStorage.setItem('happeningsArr', JSON.stringify(happeningsArr));
+
+            appendHappenings();
+          })
+      })
+    })
+  }
+
+
+
 let appendHappenings = () => {
+  document.getElementById("happeningsPassed").innerHTML = "";
+  document.getElementById("happeningsUpcoming").innerHTML = "";
+
   const happenings = JSON.parse(localStorage.getItem('happeningsArr'));
   const passedHappenings = [];
   const upcomingHappenings = [];
@@ -635,29 +675,10 @@ let appendHappenings = () => {
 
     document.getElementById("happeningsUpcoming").appendChild(happening);
   })
-
-  //Add EventListener to edit happening
-  const happeningLis = document.getElementById("happeningsContainer").querySelectorAll("li");
-  happeningLis.forEach((e)=>{
-    e.addEventListener("click", ()=>{
-      //Use existing Modal Template
-      createModal();
-      addHappeningModal();
-
-      //Set Coresponding values
-      document.getElementById("happeningDate").value = e.children[0].innerText;
-      document.getElementById("happeningTime").value = e.children[1].innerText;
-      document.getElementById("happeningText").value = e.children[2].innerText;
-
-      //Add Delete Button
-      const deleteBtn = document.createElement("button");
-      deleteBtn.innerText = "Delete";
-      deleteBtn.setAttribute("type", "button");
-      deleteBtn.setAttribute("id", "happeningDeleteBtn");
-      document.getElementById("createHappeningForm").appendChild(deleteBtn);
-    })
-  })
+  
+  deleteHappening();
 };
+appendHappenings();
 
 //Create Happening Modal
 const addHappeningModal = ()=> {
@@ -692,20 +713,16 @@ const addHappeningModal = ()=> {
   descriptionInput.setAttribute('type', 'text');
   descriptionInput.id = 'happeningText';
   descriptionInput.name = 'description';
+  descriptionInput.maxLength = '50';
   form.appendChild(descriptionInput);
 
   const submitButton = document.createElement('button');
   submitButton.setAttribute('type', 'button');
   submitButton.id = 'happeningAddBtn';
-  submitButton.textContent = 'Add';
+  submitButton.textContent = 'Save';
   form.appendChild(submitButton);
 
   modal.appendChild(form);
-}
-
-//Edit Happening Modal
-const editHappeningModel = ()=>{
-  
 }
 
 //Open Modal and submit happening
@@ -714,36 +731,32 @@ happeningAddBtn.addEventListener("click", ()=>{
   createModal();
   addHappeningModal();
   const submitHappeningBtn = document.querySelector("#happeningAddBtn");
+  let happeningsArr = JSON.parse(localStorage.getItem('happeningsArr')) || [];
 
   //Submit click event
   submitHappeningBtn.addEventListener("click", ()=>{
+    const searchDate = document.getElementById("happeningDate").value;
+    const searchTime = document.getElementById("happeningTime").value;
 
-    //If Edit
-    if(document.getElementById("happeningDeleteBtn")){
-      //Chech for Match
-      //Push
+    const duplicateExists = happeningsArr.some(item => item.date === searchDate && item.time === searchTime);
 
-      //Repeat for Delete
-    }
+    if (duplicateExists) {
+      alert("conflict");} 
+      
+    else {
+        happening.date = document.getElementById("happeningDate").value;
+        happening.time = document.getElementById("happeningTime").value;
+        happening.text = document.getElementById("happeningText").value;
+        //Push to local storage
+        
+        happeningsArr.push(happening);
+        localStorage.setItem('happeningsArr', JSON.stringify(happeningsArr));
+    
+        appendHappenings();
+      }
 
-    //If new addition
+
     happening.txt = document.getElementById("happeningText").value;
-    happening.date = document.getElementById("happeningDate").value;
-    happening.time = document.getElementById("happeningTime").value;
 
-    //Push to local storage
-    let happeningsArr = JSON.parse(localStorage.getItem('happeningsArr')) || [];
-    happeningsArr.push(happening);
-    localStorage.setItem('happeningsArr', JSON.stringify(happeningsArr));
-
-    document.getElementById("happeningsPassed").innerHTML = "";
-    document.getElementById("happeningsUpcoming").innerHTML = "";
-    appendHappenings();
   })
 })
-
-
-//
-
-
-
