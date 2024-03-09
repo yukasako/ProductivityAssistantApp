@@ -534,8 +534,18 @@ heading.textContent = 'Happenings';
 const container = document.createElement('div');
 container.id = 'happeningsContainer';
 
+const showOld = document.createElement("i");
+showOld.classList.add("fa-solid", "fa-angle-down");
+container.appendChild(showOld);
+
+showOld.addEventListener("click", ()=>{
+  passedDiv.classList.toggle("displayNone");
+})
+
 const passedDiv = document.createElement('ul');
 passedDiv.id = 'happeningsPassed';
+passedDiv.classList.add("displayNone");
+
 
 const upcomingDiv = document.createElement('ul');
 upcomingDiv.id = 'happeningsUpcoming';
@@ -543,7 +553,12 @@ upcomingDiv.id = 'happeningsUpcoming';
 const addHappeningBtn = document.createElement('button');
 addHappeningBtn.type = 'button';
 addHappeningBtn.id = 'addHappening';
-addHappeningBtn.innerText = "New Event";
+
+
+const addHappeningSpan = document.createElement('span');
+addHappeningSpan.innerText = "New Event";
+addHappeningBtn.appendChild(addHappeningSpan);
+
 
 const addHappeningIcon = document.createElement("i");
 addHappeningIcon.classList.add("fa-solid", "fa-plus");
@@ -652,6 +667,7 @@ let appendHappenings = () => {
     const time = document.createElement("span");
     const date = document.createElement("span");
     const text = document.createElement("p");
+  
 
     date.innerText = e.date;
     time.innerText = e.time;
