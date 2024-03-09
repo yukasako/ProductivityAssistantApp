@@ -540,15 +540,20 @@ passedDiv.id = 'happeningsPassed';
 const upcomingDiv = document.createElement('ul');
 upcomingDiv.id = 'happeningsUpcoming';
 
-const button = document.createElement('button');
-button.type = 'button';
-button.id = 'addHappening';
-button.innerText = "New Event";
+const addHappeningBtn = document.createElement('button');
+addHappeningBtn.type = 'button';
+addHappeningBtn.id = 'addHappening';
+addHappeningBtn.innerText = "New Event";
+
+const addHappeningIcon = document.createElement("i");
+addHappeningIcon.classList.add("fa-solid", "fa-plus");
+addHappeningIcon.setAttribute("aria-hidden", "true");
+addHappeningBtn.appendChild(addHappeningIcon);
 
 
 container.appendChild(passedDiv);
 container.appendChild(upcomingDiv);
-container.appendChild(button);
+container.appendChild(addHappeningBtn);
 
 article.appendChild(heading);
 article.appendChild(container);
@@ -737,11 +742,17 @@ happeningAddBtn.addEventListener("click", ()=>{
   submitHappeningBtn.addEventListener("click", ()=>{
     const searchDate = document.getElementById("happeningDate").value;
     const searchTime = document.getElementById("happeningTime").value;
+    const searchText = document.getElementById("happeningText").value;
 
     const duplicateExists = happeningsArr.some(item => item.date === searchDate && item.time === searchTime);
 
     if (duplicateExists) {
-      alert("conflict");} 
+      alert("conflict");
+    } 
+
+    else if(searchDate === "" || searchTime === "" || searchText === ""){
+      alert("empty");
+    }
       
     else {
         happening.date = document.getElementById("happeningDate").value;

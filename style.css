@@ -831,8 +831,6 @@ nav .wrapper {
 
 #happeningsPassed{
   width:100%;
-  min-height:3rem;
-  border: solid 1px black;
   margin:0.5rem 0rem;
   padding:0.5rem;
 }
@@ -842,9 +840,7 @@ nav .wrapper {
 }
 
 #happeningsUpcoming{
-  border:solid 1px black;
   width:100%;
-  min-height:3rem;
   margin: 0.5rem 0rem;
   padding:0.5rem;
 }
@@ -856,18 +852,30 @@ nav .wrapper {
 
 #happeningsContainer li{
   margin:0.5rem;
+  cursor: pointer;
 }
 
 #happeningsContainer p{
-  border: solid 1px black;
+  border-radius: 0.3rem;
+  box-shadow: var(--shadow-1);
   padding: 0.5rem;
   margin: 0.5rem 1rem;
 }
 
+#happeningDeleteBtn{
+  width:100% !important;
+  margin: 2rem 0rem;
+}
+
+#happeningsContainer span{
+  margin-right:0.5rem;
+}
+
 #addHappening{
-  width:3rem;
-  height:3rem;
+  width:100%;
+  height:2rem;
   border: solid 1px black;
+  border-radius: 0.3rem;
 }
 
 #happeningDeleteBtn{
