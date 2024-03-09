@@ -276,6 +276,11 @@ const registerUser = () => {
     }, 2500);
   }
 
+  //Make an array to store happenings
+  const happeningsArr = [];
+  const happeningsArrString = JSON.stringify(happeningsArr);
+  localStorage.setItem('happeningsArr', happeningsArrString);
+
   // clearing input fields
   usernameInput.value = "";
   passwordInput.value = "";
@@ -525,12 +530,12 @@ const heading = document.createElement('h2');
 heading.textContent = 'Happenings';
 
 const container = document.createElement('div');
-container.id = 'HappeningsContainer';
+container.id = 'happeningsContainer';
 
-const passedDiv = document.createElement('div');
+const passedDiv = document.createElement('ul');
 passedDiv.id = 'happeningsPassed';
 
-const upcomingDiv = document.createElement('div');
+const upcomingDiv = document.createElement('ul');
 upcomingDiv.id = 'happeningsUpcoming';
 
 const button = document.createElement('button');
@@ -546,55 +551,7 @@ article.appendChild(container);
 
 appScreen.appendChild(article);
 
-//Create Happening Modal
-const addHappeningModal = ()=> {
-const form = document.createElement('form');
-form.id = 'createHappeningForm';
-
-const dateLabel = document.createElement('label');
-dateLabel.setAttribute('for', 'happeningDate');
-dateLabel.textContent = 'Date:';
-form.appendChild(dateLabel);
-const dateInput = document.createElement('input');
-dateInput.setAttribute('type', 'date');
-dateInput.id = 'happeningDate';
-dateInput.name = 'date';
-form.appendChild(dateInput);
-
-const timeLabel = document.createElement('label');
-timeLabel.setAttribute('for', 'happeningTime');
-timeLabel.textContent = 'Time:';
-form.appendChild(timeLabel);
-const timeInput = document.createElement('input');
-timeInput.setAttribute('type', 'time');
-timeInput.id = 'happeningTime';
-timeInput.name = 'time';
-form.appendChild(timeInput);
-
-const descriptionLabel = document.createElement('label');
-descriptionLabel.setAttribute('for', 'happeningText');
-descriptionLabel.textContent = 'Description:';
-form.appendChild(descriptionLabel);
-const descriptionInput = document.createElement('input');
-descriptionInput.setAttribute('type', 'text');
-descriptionInput.id = 'happeningText';
-descriptionInput.name = 'description';
-form.appendChild(descriptionInput);
-
-const submitButton = document.createElement('button');
-submitButton.setAttribute('type', 'button');
-submitButton.id = 'happeningAddBtn';
-submitButton.textContent = 'Add';
-form.appendChild(submitButton);
-
-modal.appendChild(form);
-}
-
-
-//Array for happeningstorage in local storage.
-const happeningsArr = [];
-const happeningsArrString = JSON.stringify(happeningsArr);
-localStorage.setItem('happeningsArr', happeningsArrString);
+//Append Happenings (also sorts them first)
 
 //Happening template
 const happening = {
@@ -602,6 +559,154 @@ const happening = {
   date: null,
   time: null,
 };
+
+let appendHappenings = () => {
+  const happenings = JSON.parse(localStorage.getItem('happeningsArr'));
+  const passedHappenings = [];
+  const upcomingHappenings = [];
+
+  // Sort the array based on time and date
+  happenings.sort((a, b) => {
+    // Compare dates
+    const dateComparison = new Date(a.date) - new Date(b.date);
+    if (dateComparison !== 0) {
+        return dateComparison;
+    }
+
+    // If dates are equal, compare times
+    const timeA = a.time.split(':');
+    const timeB = b.time.split(':');
+    const timeComparison = new Date(0, 0, 0, timeA[0], timeA[1]) - new Date(0, 0, 0, timeB[0], timeB[1]);
+    return timeComparison;
+  });
+
+  //Separate old and new
+  //Get today
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  //Split passed and upcoming
+  happenings.forEach(function(obj) {
+    var dateParts = obj.date.split('-');
+    var year = parseInt(dateParts[0], 10);
+    var month = parseInt(dateParts[1], 10) - 1;
+    var day = parseInt(dateParts[2], 10);
+    
+    var objDate = new Date(year, month, day);
+    
+    if (objDate < today) {
+        passedHappenings.push(obj);
+    } else {
+        upcomingHappenings.push(obj);
+    }
+  });
+
+  //Append Happenings 
+  passedHappenings.forEach((e)=>{
+    const happening = document.createElement("li");
+    const time = document.createElement("span");
+    const date = document.createElement("span");
+    const text = document.createElement("p");
+
+    date.innerText = e.date;
+    time.innerText = e.time;
+    text.innerText = e.txt;
+
+    happening.appendChild(date);
+    happening.appendChild(time);
+    happening.appendChild(text);
+    
+    document.getElementById("happeningsPassed").appendChild(happening);
+  })
+
+  upcomingHappenings.forEach((e)=>{
+    const happening = document.createElement("li");
+    const time = document.createElement("span");
+    const date = document.createElement("span");
+    const text = document.createElement("p");
+
+    date.innerText = e.date;
+    time.innerText = e.time;
+    text.innerText = e.txt;
+
+    happening.appendChild(date);
+    happening.appendChild(time);
+    happening.appendChild(text);
+
+    document.getElementById("happeningsUpcoming").appendChild(happening);
+  })
+
+  //Add EventListener to edit happening
+  const happeningLis = document.getElementById("happeningsContainer").querySelectorAll("li");
+  happeningLis.forEach((e)=>{
+    e.addEventListener("click", ()=>{
+      //Use existing Modal Template
+      createModal();
+      addHappeningModal();
+
+      //Set Coresponding values
+      document.getElementById("happeningDate").value = e.children[0].innerText;
+      document.getElementById("happeningTime").value = e.children[1].innerText;
+      document.getElementById("happeningText").value = e.children[2].innerText;
+
+      //Add Delete Button
+      const deleteBtn = document.createElement("button");
+      deleteBtn.innerText = "Delete";
+      deleteBtn.setAttribute("type", "button");
+      deleteBtn.setAttribute("id", "happeningDeleteBtn");
+      document.getElementById("createHappeningForm").appendChild(deleteBtn);
+    })
+  })
+};
+
+//Create Happening Modal
+const addHappeningModal = ()=> {
+  const form = document.createElement('form');
+  form.id = 'createHappeningForm';
+
+  const dateLabel = document.createElement('label');
+  dateLabel.setAttribute('for', 'happeningDate');
+  dateLabel.textContent = 'Date:';
+  form.appendChild(dateLabel);
+  const dateInput = document.createElement('input');
+  dateInput.setAttribute('type', 'date');
+  dateInput.id = 'happeningDate';
+  dateInput.name = 'date';
+  form.appendChild(dateInput);
+
+  const timeLabel = document.createElement('label');
+  timeLabel.setAttribute('for', 'happeningTime');
+  timeLabel.textContent = 'Time:';
+  form.appendChild(timeLabel);
+  const timeInput = document.createElement('input');
+  timeInput.setAttribute('type', 'time');
+  timeInput.id = 'happeningTime';
+  timeInput.name = 'time';
+  form.appendChild(timeInput);
+
+  const descriptionLabel = document.createElement('label');
+  descriptionLabel.setAttribute('for', 'happeningText');
+  descriptionLabel.textContent = 'Description:';
+  form.appendChild(descriptionLabel);
+  const descriptionInput = document.createElement('input');
+  descriptionInput.setAttribute('type', 'text');
+  descriptionInput.id = 'happeningText';
+  descriptionInput.name = 'description';
+  form.appendChild(descriptionInput);
+
+  const submitButton = document.createElement('button');
+  submitButton.setAttribute('type', 'button');
+  submitButton.id = 'happeningAddBtn';
+  submitButton.textContent = 'Add';
+  form.appendChild(submitButton);
+
+  modal.appendChild(form);
+}
+
+//Edit Happening Modal
+const editHappeningModel = ()=>{
+  
+}
 
 //Open Modal and submit happening
 const happeningAddBtn = document.getElementById("addHappening");
@@ -612,6 +717,16 @@ happeningAddBtn.addEventListener("click", ()=>{
 
   //Submit click event
   submitHappeningBtn.addEventListener("click", ()=>{
+
+    //If Edit
+    if(document.getElementById("happeningDeleteBtn")){
+      //Chech for Match
+      //Push
+
+      //Repeat for Delete
+    }
+
+    //If new addition
     happening.txt = document.getElementById("happeningText").value;
     happening.date = document.getElementById("happeningDate").value;
     happening.time = document.getElementById("happeningTime").value;
@@ -620,9 +735,15 @@ happeningAddBtn.addEventListener("click", ()=>{
     let happeningsArr = JSON.parse(localStorage.getItem('happeningsArr')) || [];
     happeningsArr.push(happening);
     localStorage.setItem('happeningsArr', JSON.stringify(happeningsArr));
+
+    document.getElementById("happeningsPassed").innerHTML = "";
+    document.getElementById("happeningsUpcoming").innerHTML = "";
+    appendHappenings();
   })
 })
 
+
+//
 
 
 
