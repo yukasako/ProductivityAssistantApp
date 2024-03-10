@@ -892,8 +892,38 @@ nav .wrapper {
   flex-direction: column;
 }
 
+#createHappeningForm h2{
+  margin-bottom:1rem;
+}
+
 #createHappeningForm > *{
   margin:0.5rem;
+}
+
+/* CALENDAR MODALS */
+#createHappeningForm label{
+  margin-right:0.5rem;
+}
+
+#happeningAddBtn{
+  height:2rem;
+  border-radius: 0.3rem;
+}
+
+#happeningDeleteBtn{
+  height:2rem;
+  border-radius: 0.3rem;
+}
+
+#descriptionWrapper{
+  display: flex;
+  flex-direction: column;
+}
+
+#happeningText{
+  width:100%;
+  min-height:10rem;
+  padding:0.5rem;
 }
 
 

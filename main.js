@@ -529,7 +529,7 @@ const article = document.createElement('article');
 article.id = 'happeningsContent';
 
 const heading = document.createElement('h2');
-heading.textContent = 'Happenings';
+heading.textContent = 'Events';
 
 const container = document.createElement('div');
 container.id = 'happeningsContainer';
@@ -590,14 +590,17 @@ const happening = {
     happeningLis.forEach((e)=>{
       e.addEventListener("click", ()=>{
         createModal();
-        //Add Delete Button
+        //Add Delete Button & h2
+        const deleteHappeningH2 = document.createElement("h2");
+        deleteHappeningH2.innerText = "Delete Event";
+        document.getElementById("modal").appendChild(deleteHappeningH2);
+
         const deleteBtn = document.createElement("button");
         deleteBtn.innerText = "Delete";
         deleteBtn.setAttribute("type", "button");
         deleteBtn.setAttribute("id", "happeningDeleteBtn");
         document.getElementById("modal").appendChild(deleteBtn);
 
-        
           let happeningsArr = JSON.parse(localStorage.getItem("happeningsArr"));
           document.getElementById("happeningDeleteBtn").addEventListener("click", ()=>{
             e.parentNode.removeChild(e);
@@ -706,36 +709,53 @@ const addHappeningModal = ()=> {
   const form = document.createElement('form');
   form.id = 'createHappeningForm';
 
+  const happeningH2 = document.createElement("h2");
+  happeningH2.innerText = "New Event";
+  form.appendChild(happeningH2);
+
+
+  const dateWrapper = document.createElement("div");
+  dateWrapper.setAttribute("id", "dateWrapper");
+  form.appendChild(dateWrapper);
+
+  const timeWrapper = document.createElement("div");
+  timeWrapper.setAttribute("id", "timeWrapper");
+  form.appendChild(timeWrapper);
+
+  const descriptionWrapper = document.createElement("div");
+  descriptionWrapper.setAttribute("id", "descriptionWrapper");
+  form.appendChild(descriptionWrapper);
+
+
   const dateLabel = document.createElement('label');
   dateLabel.setAttribute('for', 'happeningDate');
-  dateLabel.textContent = 'Date:';
-  form.appendChild(dateLabel);
+  dateLabel.textContent = 'Date';
+  dateWrapper.appendChild(dateLabel);
   const dateInput = document.createElement('input');
   dateInput.setAttribute('type', 'date');
   dateInput.id = 'happeningDate';
   dateInput.name = 'date';
-  form.appendChild(dateInput);
+  dateWrapper.appendChild(dateInput);
 
   const timeLabel = document.createElement('label');
   timeLabel.setAttribute('for', 'happeningTime');
-  timeLabel.textContent = 'Time:';
-  form.appendChild(timeLabel);
+  timeLabel.textContent = 'Time';
+  timeWrapper.appendChild(timeLabel);
   const timeInput = document.createElement('input');
   timeInput.setAttribute('type', 'time');
   timeInput.id = 'happeningTime';
   timeInput.name = 'time';
-  form.appendChild(timeInput);
+  timeWrapper.appendChild(timeInput);
 
   const descriptionLabel = document.createElement('label');
   descriptionLabel.setAttribute('for', 'happeningText');
-  descriptionLabel.textContent = 'Description:';
-  form.appendChild(descriptionLabel);
-  const descriptionInput = document.createElement('input');
-  descriptionInput.setAttribute('type', 'text');
+  descriptionLabel.textContent = 'Event';
+  descriptionWrapper.appendChild(descriptionLabel);
+  const descriptionInput = document.createElement('textarea');
   descriptionInput.id = 'happeningText';
   descriptionInput.name = 'description';
-  descriptionInput.maxLength = '50';
-  form.appendChild(descriptionInput);
+  descriptionInput.maxLength = '250'; 
+  descriptionWrapper.appendChild(descriptionInput);
 
   const submitButton = document.createElement('button');
   submitButton.setAttribute('type', 'button');
