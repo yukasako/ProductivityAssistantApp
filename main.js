@@ -613,6 +613,7 @@ const happening = {
             localStorage.setItem('happeningsArr', JSON.stringify(happeningsArr));
 
             appendHappenings();
+            destroyModal();
           })
       })
     })
@@ -713,6 +714,8 @@ const addHappeningModal = ()=> {
   happeningH2.innerText = "New Event";
   form.appendChild(happeningH2);
 
+  const happeningWarning = document.createElement("span");
+  form.appendChild(happeningWarning);
 
   const dateWrapper = document.createElement("div");
   dateWrapper.setAttribute("id", "dateWrapper");
@@ -782,12 +785,14 @@ happeningAddBtn.addEventListener("click", ()=>{
 
     const duplicateExists = happeningsArr.some(item => item.date === searchDate && item.time === searchTime);
 
+    const warningSpan = document.getElementById("createHappeningForm").children[1];
+
     if (duplicateExists) {
-      alert("conflict");
+      warningSpan.innerText = "Event already exist on select date and time";
     } 
 
     else if(searchDate === "" || searchTime === "" || searchText === ""){
-      alert("empty");
+      warningSpan.innerText = "All fields are requried";
     }
       
     else {
@@ -800,6 +805,7 @@ happeningAddBtn.addEventListener("click", ()=>{
         localStorage.setItem('happeningsArr', JSON.stringify(happeningsArr));
     
         appendHappenings();
+        destroyModal();
       }
 
 

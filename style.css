@@ -839,7 +839,7 @@ nav .wrapper {
 #happeningsPassed{
   width:100%;
   margin:0.5rem 0rem;
-  color: rgba(128, 128, 128, 0.300) !important;
+  color: rgba(128, 128, 128, 0.800) !important;
 }
 
 #happeningsUpcoming{
@@ -892,15 +892,10 @@ nav .wrapper {
   flex-direction: column;
 }
 
-#createHappeningForm h2{
-  margin-bottom:1rem;
-}
-
 #createHappeningForm > *{
   margin:0.5rem;
 }
 
-/* CALENDAR MODALS */
 #createHappeningForm label{
   margin-right:0.5rem;
 }

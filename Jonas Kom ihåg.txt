@@ -1,3 +1,2 @@
-stylea modal
-fixa containers
 border-radius på blå knappt modal
+fixa span för requirements
