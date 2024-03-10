@@ -671,7 +671,7 @@ let appendHappenings = () => {
 
     date.innerText = e.date;
     time.innerText = e.time;
-    text.innerText = e.txt;
+    text.innerText = e.text;
 
     happening.appendChild(date);
     happening.appendChild(time);
@@ -688,7 +688,7 @@ let appendHappenings = () => {
 
     date.innerText = e.date;
     time.innerText = e.time;
-    text.innerText = e.txt;
+    text.innerText = e.text;
 
     happening.appendChild(date);
     happening.appendChild(time);
