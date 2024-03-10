@@ -804,3 +804,122 @@ nav .wrapper {
   border-radius: 4px;
   max-width: 3rem;
 }
+
+
+
+
+/* CALENDAR */
+#happeningsContent{
+  width:50%;
+  min-height:100vh;
+}
+
+#happeningsContent h2{
+  text-align: center;
+  border-bottom: solid 1px black;
+  padding:0.5rem;
+}
+
+#happeningsContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width:100%;
+  margin-top:1rem;
+}
+
+.fa-angle-down{
+  width:100%;
+  text-align: right;
+  margin-right:2rem;
+  cursor:pointer;
+}
+
+#happeningsPassed{
+  width:100%;
+  margin:0.5rem 0rem;
+  color: rgba(128, 128, 128, 0.800) !important;
+}
+
+#happeningsUpcoming{
+  width:100%;
+  margin: 0rem;
+  padding:0.5rem;
+}
+
+#happeningsContainer ul{
+  padding-left:1rem;
+}
+
+#happeningsContainer li{
+  margin:0.5rem;
+  cursor: pointer;
+}
+
+#happeningsContainer p{
+  border-radius: 0.3rem;
+  box-shadow: var(--shadow-1);
+  padding: 0.5rem;
+  margin: 0.5rem 1rem;
+}
+
+#happeningDeleteBtn{
+  width:100% !important;
+  margin: 2rem 0rem;
+}
+
+#happeningsContainer span{
+  margin-right:0.5rem;
+}
+
+#addHappening{
+  width:100%;
+  height:2rem;
+  border-radius: 0.3rem;
+  text-align: center;
+  padding:0.3rem;
+  box-shadow: var(--shadow-2);
+}
+
+#happeningDeleteBtn{
+  width:2rem;
+  height:2rem;
+}
+
+#createHappeningForm{
+  display: flex;
+  flex-direction: column;
+}
+
+#createHappeningForm > *{
+  margin:0.5rem;
+}
+
+#createHappeningForm label{
+  margin-right:0.5rem;
+}
+
+#happeningAddBtn{
+  height:2rem;
+  border-radius: 0.3rem;
+}
+
+#happeningDeleteBtn{
+  height:2rem;
+  border-radius: 0.3rem;
+}
+
+#descriptionWrapper{
+  display: flex;
+  flex-direction: column;
+}
+
+#happeningText{
+  width:100%;
+  min-height:10rem;
+  padding:0.5rem;
+}
+
+
+
