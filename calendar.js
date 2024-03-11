@@ -24,6 +24,7 @@ let createHappeningArticles = () =>{
   
   showOld.addEventListener("click", ()=>{
     passedDiv.classList.toggle("displayNone");
+    showOld.classList.toggle("fa-angle-up");
   })
   
   const passedDiv = document.createElement('ul');
@@ -66,9 +67,10 @@ createHappeningArticles();
   
   //Happening template
   const happening = {
-    txt: null,
+    text: null,
     date: null,
     time: null,
+    end: null,
   };
   
     //Delete Happening
@@ -157,9 +159,8 @@ createHappeningArticles();
       const date = document.createElement("span");
       const text = document.createElement("p");
     
-  
-      date.innerText = e.date;
-      time.innerText = e.time;
+      date.innerText = e.date +",";
+      time.innerText = e.time + " - " + e.end;
       text.innerText = e.text;
   
       happening.appendChild(date);
@@ -176,7 +177,7 @@ createHappeningArticles();
       const text = document.createElement("p");
   
       date.innerText = e.date;
-      time.innerText = e.time;
+      time.innerText = e.time + " - " + e.end;
       text.innerText = e.text;
   
       happening.appendChild(date);
@@ -227,14 +228,24 @@ createHappeningArticles();
   
     const timeLabel = document.createElement('label');
     timeLabel.setAttribute('for', 'happeningTime');
-    timeLabel.textContent = 'Time';
+    timeLabel.textContent = 'Start';
     timeWrapper.appendChild(timeLabel);
     const timeInput = document.createElement('input');
     timeInput.setAttribute('type', 'time');
     timeInput.id = 'happeningTime';
     timeInput.name = 'time';
     timeWrapper.appendChild(timeInput);
-  
+
+    const timeEndLabel = document.createElement('label');
+    timeEndLabel.setAttribute('for', 'happeningEnd');
+    timeEndLabel.textContent = 'End';
+    timeWrapper.appendChild(timeEndLabel);
+    const timeEndInput = document.createElement('input');
+    timeEndInput.setAttribute('type', 'time');
+    timeEndInput.id = 'happeningEnd';
+    timeEndInput.name = 'end';
+    timeWrapper.appendChild(timeEndInput);
+
     const descriptionLabel = document.createElement('label');
     descriptionLabel.setAttribute('for', 'happeningText');
     descriptionLabel.textContent = 'Event';
@@ -266,11 +277,16 @@ createHappeningArticles();
     submitHappeningBtn.addEventListener("click", ()=>{
       const searchDate = document.getElementById("happeningDate").value;
       const searchTime = document.getElementById("happeningTime").value;
+      const searchEnd = document.getElementById("happeningEnd").value
       const searchText = document.getElementById("happeningText").value;
   
-      const duplicateExists = happeningsArr.some(item => item.date === searchDate && item.time === searchTime);
+      const duplicateExists = happeningsArr.some(e => 
+        e.date === searchDate && 
+        e.time >= searchTime && 
+        e.time <= searchEnd
+    );
   
-      const warningSpan = document.getElementById("createHappeningForm").children[1];
+    const warningSpan = document.getElementById("createHappeningForm").children[1];
   
       if (duplicateExists) {
         warningSpan.innerText = "Event already exist on select date and time";
@@ -283,6 +299,7 @@ createHappeningArticles();
       else {
           happening.date = document.getElementById("happeningDate").value;
           happening.time = document.getElementById("happeningTime").value;
+          happening.end = document.getElementById("happeningTime").value;
           happening.text = document.getElementById("happeningText").value;
           //Push to local storage
           
@@ -291,10 +308,6 @@ createHappeningArticles();
       
           appendHappenings();
           destroyModal();
-        }
-  
-  
-      happening.txt = document.getElementById("happeningText").value;
-  
+        } 
     })
   })
