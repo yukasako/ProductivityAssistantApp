@@ -7,7 +7,10 @@ let completeRatio = (toggle) => {
   }
   let canvas = document.createElement("canvas");
   canvas.id = "myChart";
-  habitsContent.append(canvas);
+
+  if (habitList.childElementCount !== 0) {
+    habitsContent.append(canvas);
+  }
 
   let completeBtns = document.querySelectorAll(".completeBtn");
   let uncomplete = 0;
