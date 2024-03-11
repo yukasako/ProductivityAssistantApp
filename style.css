@@ -12,11 +12,12 @@
 :root {
   --color-1: #ffffff;
   --color-2: #f7f1f3;
-  --color-3: #f4625c;
+  --color-3: #f4625d;
   --color-4: #5855d6;
   --color-5: #000000;
   --color-6: #feb7b7;
   --color-7: #899cf7;
+  --color-8: #f2f1f7;
   --color-modal: hsla(0, 0%, 0%, 0.8);
   --shadow-1: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   --shadow-2: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
@@ -26,11 +27,11 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: Quicksand;
 }
 
 body {
-  background: var(--color-2);
-  font-family: Assistant;
+  background: var(--color-8);
 }
 
 .flex {
@@ -57,6 +58,7 @@ button {
   border: none;
   border-radius: 16px;
   cursor: pointer;
+  transition: background-color linear 250ms;
 }
 
 main {
@@ -183,6 +185,7 @@ nav .wrapper {
 #userDetails {
   background-color: var(--color-2);
   padding: 1rem;
+  padding-top: 2rem;
   border-radius: 0.5rem;
   font-size: 1.1rem;
 }
@@ -213,7 +216,6 @@ nav .wrapper {
   font-size: 1.1rem;
   margin: 0.5rem 1rem;
   padding: 0.4em 0.7em;
-  transition: background-color linear 250ms;
 
   &:hover {
     background-color: #4341b0;
@@ -221,6 +223,12 @@ nav .wrapper {
   &:focus-visible {
     background-color: #4341b0;
   }
+}
+
+.statusMsg {
+  display: block;
+  text-align: center;
+  margin: 0 auto;
 }
 
 #appScreen {
@@ -270,7 +278,6 @@ nav .wrapper {
 
 .todoList {
   margin: 0.5rem 0rem;
-  background-color: var(--color-2);
   border-radius: 0.3rem;
 }
 
@@ -284,7 +291,7 @@ nav .wrapper {
 }
 
 .disabled {
-  background-color: var(--color-2);
+  background-color: var(--color-8);
 }
 
 .todo > * {
@@ -316,6 +323,7 @@ nav .wrapper {
   margin: 0.5rem 0rem;
   width: 100%;
   height: 2rem;
+  font-weight: 600;
   border-radius: 0.3rem;
   color: var(--color-1);
   background-color: var(--color-4);
@@ -325,7 +333,6 @@ nav .wrapper {
 .todoContent .addNew:hover,
 .todoContent .addNew:focus-visible {
   border: 2px solid #302e97;
-  transition: border linear 250ms;
 }
 
 .todoContent .addNew i {
@@ -379,7 +386,6 @@ nav .wrapper {
 
 .habitList {
   margin: 0.5rem 0rem;
-  background-color: var(--color-2);
   border-radius: 0.3rem;
 }
 
@@ -418,6 +424,7 @@ nav .wrapper {
   width: 100%;
   height: 2rem;
   margin: 0.5rem 0rem;
+  font-weight: 600;
   border-radius: 0.3rem;
   color: var(--color-5);
   background-color: var(--color-3);
@@ -427,7 +434,6 @@ nav .wrapper {
 .habitsContent .addNew:hover,
 .habitsContent .addNew:focus-visible {
   border: 2px solid #a83733;
-  transition: border linear 250ms;
 }
 
 .habitsContent .addNew i {
@@ -499,6 +505,15 @@ nav .wrapper {
 #createHabitModal button {
   height: 2rem;
   border-radius: 0.3rem;
+  background-color: var(--color-3);
+
+  &:hover {
+    background-color: #f24640;
+  }
+
+  &:focus-visible {
+    background-color: #f24640;
+  }
 }
 
 #editHabitModal {
@@ -526,11 +541,9 @@ nav .wrapper {
 }
 
 #editHabitModal button {
-  /* width: 100%; */
   height: 2rem;
   background-color: var(--color-6);
   color: var(--color-5);
-  transition: background-color linear 250ms;
 }
 
 #editHabitModal .actionButtons button {
@@ -587,6 +600,13 @@ nav .wrapper {
 
 #createTodoModal button {
   height: 2rem;
+  background-color: var(--color-4);
+  color: var(--color-1);
+
+  &:hover,
+  &:focus-visible {
+    background-color: #3c3ab7;
+  }
 }
 
 #editTodoModal {
@@ -628,7 +648,6 @@ nav .wrapper {
   height: 2rem;
   color: var(--color-5);
   background-color: var(--color-7);
-  transition: background-color linear 205ms;
 
   &:hover {
     background-color: #6c7edd;
@@ -654,7 +673,6 @@ nav .wrapper {
   color: var(--color-5);
   background-color: var(--color-7);
   padding: 0.2em 0.4em;
-  transition: background-color linear 250ms;
 
   &:hover {
     background-color: #6c7edd;
@@ -744,11 +762,9 @@ nav .wrapper {
   padding: 0.5em 0.8em;
   background-color: var(--color-4);
   color: var(--color-2);
-  transition: background-color linear 250ms;
 }
 
 .timerOptionBtn:disabled {
-  /* background-color: hsl(0, 0%, 30%); */
   opacity: 0.6;
   cursor: default;
 }
@@ -776,7 +792,6 @@ nav .wrapper {
   border-radius: 0.5rem;
   background-color: var(--color-4);
   color: var(--color-2);
-  transition: background-color linear 250ms;
 }
 
 #toggleTimer {
@@ -794,158 +809,123 @@ nav .wrapper {
 .customTimeDiv input {
   padding: 0.3em 0.5rem;
   border-radius: 4px;
+  max-width: 3rem;
 }
 
-/* Calendar */
-#calendarScreen {
-  width: 100%;
-  background-color: red;
-  min-height: 100vh;
-  position: absolute;
+
+
+
+/* CALENDAR */
+#happeningsContent{
+  width:50%;
+  min-height:100vh;
 }
 
-#calendar {
-  width: 75%;
-  margin: 5rem auto;
-}
-
-#calendarBtn {
-  width: 2rem;
-  height: 2rem;
-}
-
-.calendarMonth {
-  font-family: Arial, sans-serif;
+#happeningsContent h2{
   text-align: center;
-  margin: 1rem;
-  width: 100%;
+  border-bottom: solid 1px black;
+  padding:0.5rem;
 }
 
-table {
-  padding: 1rem;
-  table-layout: fixed;
+#happeningsContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width:100%;
+  margin-top:1rem;
 }
 
-.calendarMonth h2 {
-  margin-bottom: 1rem;
+.fa-angle-down{
+  width:100%;
+  text-align: right;
+  margin-right:2rem;
+  cursor:pointer;
 }
 
-.calendarMonth table {
-  width: 100%;
-  padding: 2rem;
-  border: solid 1px black;
-  border-radius: 1rem;
+#happeningsPassed{
+  width:100%;
+  margin:0.5rem 0rem;
+  color: rgba(128, 128, 128, 0.800) !important;
 }
 
-.calendarMonth th,
-.calendarMonth td {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  height: 3rem;
+#happeningsUpcoming{
+  width:100%;
+  margin: 0rem;
+  padding:0.5rem;
+}
+
+#happeningsContainer ul{
+  padding-left:1rem;
+}
+
+#happeningsContainer li{
+  margin:0.5rem;
   cursor: pointer;
 }
 
-.calendarMonth td:hover {
-  border: 1px solid black;
-}
-.day1 {
-  background-color: #ffc0cb;
-}
-.day2 {
-  background-color: #ffa07a;
-}
-.day3 {
-  background-color: #ff7f50;
-}
-.day4 {
-  background-color: #ff6347;
-}
-.day5 {
-  background-color: #ff4500;
-}
-.day6 {
-  background-color: #ff8c00;
-}
-.day7 {
-  background-color: #ffa500;
-}
-.day8 {
-  background-color: #ffd700;
-}
-.day9 {
-  background-color: #ffff00;
-}
-.day10 {
-  background-color: #adff2f;
-}
-.day11 {
-  background-color: #7fff00;
-}
-.day12 {
-  background-color: #32cd32;
-}
-.day13 {
-  background-color: #00ff00;
-}
-.day14 {
-  background-color: #00fa9a;
-}
-.day15 {
-  background-color: #00ffff;
-}
-.day16 {
-  background-color: #00ced1;
-}
-.day17 {
-  background-color: #1e90ff;
-}
-.day18 {
-  background-color: #0000ff;
-}
-.day19 {
-  background-color: #8a2be2;
-}
-.day20 {
-  background-color: #9932cc;
-}
-.day21 {
-  background-color: #9400d3;
-}
-.day22 {
-  background-color: #8b008b;
-}
-.day23 {
-  background-color: #800080;
-}
-.day24 {
-  background-color: #4b0082;
-}
-.day25 {
-  background-color: #6a5acd;
-}
-.day26 {
-  background-color: #483d8b;
-}
-.day27 {
-  background-color: #7b68ee;
-}
-.day28 {
-  background-color: #9370db;
-}
-.day29 {
-  background-color: #a9a9a9;
-}
-.day30 {
-  background-color: #d3d3d3;
-}
-.day31 {
-  background-color: #778899;
+#happeningsContainer p{
+  border-radius: 0.3rem;
+  box-shadow: var(--shadow-1);
+  padding: 0.5rem;
+  margin: 0.5rem 1rem;
 }
 
-/* Calendar Modal */
-#addHappeningBtn {
-  width: 1rem;
-  height: 1rem;
+#happeningDeleteBtn{
+  width:100% !important;
+  margin: 2rem 0rem;
+}
+
+#happeningsContainer span{
+  margin-right:0.5rem;
+}
+
+#addHappening{
+  width:100%;
+  height:2rem;
+  border-radius: 0.3rem;
+  text-align: center;
+  padding:0.3rem;
+  box-shadow: var(--shadow-2);
+}
+
+#happeningDeleteBtn{
+  width:2rem;
+  height:2rem;
+}
+
+#createHappeningForm{
+  display: flex;
+  flex-direction: column;
+}
+
+#createHappeningForm > *{
+  margin:0.5rem;
+}
+
+#createHappeningForm label{
+  margin-right:0.5rem;
+}
+
+#happeningAddBtn{
+  height:2rem;
+  border-radius: 0.3rem;
+}
+
+#happeningDeleteBtn{
+  height:2rem;
+  border-radius: 0.3rem;
+}
+
+#descriptionWrapper{
+  display: flex;
+  flex-direction: column;
+}
+
+#happeningText{
+  width:100%;
+  min-height:10rem;
+  padding:0.5rem;
 }
 
 @media screen and (orientation:portrait) {

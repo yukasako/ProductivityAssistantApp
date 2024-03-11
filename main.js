@@ -33,6 +33,7 @@ import("/todo.js");
 import("/habit.js");
 import("/weather.js");
 import("/timer.js");
+import("/calendar.js");
 
 // globala variabler i main
 const main = document.querySelector("main");
@@ -255,6 +256,10 @@ const registerUser = () => {
         localStorage.setItem("users", JSON.stringify(newUserList));
       } else {
         userDetailsMsg.innerText = "User already exists!";
+        userDetailsMsg.classList.remove("hidden");
+        setTimeout(() => {
+          userDetailsMsg.classList.add("hidden");
+        }, 2500);
       }
     } else {
       let newUser = {
@@ -269,6 +274,12 @@ const registerUser = () => {
       users.push(newUser);
       localStorage.setItem("users", JSON.stringify(users));
     }
+  } else {
+    userDetailsMsg.innerText = "Please enter username and password";
+    userDetailsMsg.classList.remove("hidden");
+    setTimeout(() => {
+      userDetailsMsg.classList.add("hidden");
+    }, 2500);
   }
 
   // clearing input fields
@@ -315,11 +326,24 @@ const logInUser = () => {
       } else {
         // if no matching user
         userDetailsMsg.innerText = "User with matching credentials not found!";
+        userDetailsMsg.classList.remove("hidden");
+        setTimeout(() => {
+          userDetailsMsg.classList.add("hidden");
+        }, 2500);
       }
     } else {
       userDetailsMsg.innerText = "User with matching credentials not found!";
+      userDetailsMsg.classList.remove("hidden");
+      setTimeout(() => {
+        userDetailsMsg.classList.add("hidden");
+      }, 2500);
     }
   }
+  userDetailsMsg.innerText = "Please enter username and password";
+  userDetailsMsg.classList.remove("hidden");
+  setTimeout(() => {
+    userDetailsMsg.classList.add("hidden");
+  }, 2500);
 
   // clearing input fields
   usernameInput.value = "";
@@ -496,249 +520,3 @@ const getToday = () => {
 
   return today;
 };
-
-//CALENDAR
-
-//Generate calendar
-let generateCalendar = () => {
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  let daysInMonth = {
-    January: 31,
-    February: 29,
-    March: 31,
-    April: 30,
-    May: 31,
-    June: 30,
-    July: 31,
-    August: 31,
-    September: 30,
-    October: 31,
-    November: 30,
-    December: 31,
-  };
-
-  //Create Calendar Element
-  let calendar = document.createElement("article");
-  calendar.setAttribute("id", "calendar");
-  document.getElementById("calendarScreen").appendChild(calendar);
-
-  // Create calendar for each month
-  months.forEach(function (monthName) {
-    const calendarDiv = document.createElement("div");
-    calendarDiv.className = "calendarMonth";
-
-    const table = document.createElement("table");
-    table.id = monthName;
-
-    const header = document.createElement("h2");
-    header.textContent = monthName;
-    table.appendChild(header);
-
-    const headerRow = document.createElement("tr");
-    ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(function (day) {
-      const th = document.createElement("th");
-      th.textContent = day;
-      headerRow.appendChild(th);
-    });
-    table.appendChild(headerRow);
-
-    const body = document.createElement("tbody");
-    const totalDays = daysInMonth[monthName];
-    const startDate = new Date(months.indexOf(monthName), 1).getDay();
-
-    const numRows = Math.ceil((totalDays + startDate) / 7);
-    let dayCounter = 1;
-
-    for (let i = 0; i < numRows; i++) {
-      var row = document.createElement("tr");
-      for (let x = 0; x < 7; x++) {
-        const cell = document.createElement("td");
-        if (i === 0 && x < startDate) {
-          // Empty cells before the start date
-          cell.textContent = "";
-        } else if (dayCounter <= totalDays) {
-          // Fill in the days of the month
-          cell.textContent = dayCounter;
-          cell.className = "day" + dayCounter;
-          dayCounter++;
-        }
-        row.appendChild(cell);
-      }
-      body.appendChild(row);
-    }
-    table.appendChild(body);
-
-    calendarDiv.appendChild(table);
-
-    calendar.appendChild(calendarDiv);
-  });
-};
-
-//Create local Happening storage
-let happenings = [];
-localStorage.setItem("happenings", JSON.stringify(happenings));
-
-//Open and Close Calendar
-const calendarScreen = document.getElementById("calendarScreen");
-
-const calendarBtn = document.createElement("button");
-calendarBtn.setAttribute("id", "calendarBtn");
-navBtnGroup.appendChild(calendarBtn);
-
-calendarBtn.addEventListener("click", () => {
-  if (calendarScreen.classList.contains("displayNone")) {
-    generateCalendar();
-    calendarScreen.classList.remove("displayNone");
-
-    //Click events for opening a date
-    const pickableDays = [...document.querySelectorAll("td")];
-
-    pickableDays.forEach((e) => {
-      e.addEventListener("click", () => {
-        createModal();
-        createHappeningsContent();
-
-        //Add Happening
-        let date =
-          e.parentElement.parentElement.parentElement.id +
-          e.classList[0].slice(3);
-        let happeningsStorage =
-          JSON.parse(localStorage.getItem("happenings")) || [];
-        document
-          .getElementById("addHappeningBtn")
-          .addEventListener("click", () => {
-            let happening = {
-              date: date,
-              time: document.getElementById("happeningTime").value,
-              happening: document.getElementById("happeningText").value,
-            };
-
-            happeningsStorage.push(happening);
-            localStorage.setItem("happenings", JSON.stringify(happenings));
-            console.log(happening);
-          });
-      });
-    });
-  } else {
-    calendarScreen.innerHTML = "";
-    calendarScreen.classList.add("displayNone");
-  }
-});
-
-//Add happening
-
-let createHappeningsContent = () => {
-  const modal = document.getElementById("modal");
-
-  let addHappening = document.createElement("div");
-  addHappening.setAttribute("id", "addHappeningModal");
-  modal.appendChild(addHappening);
-
-  let happeningTimeInput = document.createElement("input");
-  happeningTimeInput.setAttribute("id", "happeningTime");
-  happeningTimeInput.setAttribute("type", "time");
-  addHappening.appendChild(happeningTimeInput);
-
-  let happeningTextInput = document.createElement("textarea");
-  happeningTextInput.setAttribute("id", "happeningText");
-  happeningTextInput.setAttribute("name", "happeningText");
-  addHappening.appendChild(happeningTextInput);
-
-  let addHappeningBtn = document.createElement("button");
-  addHappeningBtn.setAttribute("id", "addHappeningBtn");
-  addHappening.appendChild(addHappeningBtn);
-
-  let listHappenings = document.createElement("div");
-  listHappenings.setAttribute("id", "listHappenings");
-  addHappening.appendChild(listHappenings);
-};
-
-//Generate calendar objects
-let monthsObjects = [
-  {
-    name: "January",
-    days: generateDaysObject(31),
-  },
-  {
-    name: "February",
-    days: generateDaysObject(29),
-  },
-  {
-    name: "March",
-    days: generateDaysObject(31),
-  },
-  {
-    name: "April",
-    days: generateDaysObject(30),
-  },
-  {
-    name: "May",
-    days: generateDaysObject(31),
-  },
-  {
-    name: "June",
-    days: generateDaysObject(30),
-  },
-  {
-    name: "July",
-    days: generateDaysObject(31),
-  },
-  {
-    name: "August",
-    days: generateDaysObject(31),
-  },
-  {
-    name: "September",
-    days: generateDaysObject(30),
-  },
-  {
-    name: "October",
-    days: generateDaysObject(31),
-  },
-  {
-    name: "November",
-    days: generateDaysObject(30),
-  },
-  {
-    name: "December",
-    days: generateDaysObject(31),
-  },
-];
-
-//Function to generate days object for a given month
-function generateDaysObject(numDays) {
-  var daysObject = {};
-  for (var i = 1; i <= numDays; i++) {
-    daysObject[i] = { dayOfWeek: getDayOfWeek(i) };
-  }
-  return daysObject;
-}
-
-//Function to get the day of the week for a given day of the month
-function getDayOfWeek(day) {
-  var date = new Date(0, day);
-  var dayIndex = date.getDay();
-  var daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  return daysOfWeek[dayIndex];
-}
-
-//template
-/* let happening = {
-  date: "january24",
-  time: "14:20",
-  happening: "blablabla",
-} */

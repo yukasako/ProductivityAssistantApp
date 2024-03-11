@@ -42,24 +42,18 @@
             <input type="password" name="password" id="password" />
           </div>
           <div class="flex wrapper">
-            <button id="register">Register</button>
-            <button id="logIn">Log In</button>
+            <button id="register" type="button">Register</button>
+            <button id="logIn" type="button">Log In</button>
           </div>
-          <span class="statusMsg"></span>
+          <span class="statusMsg hidden">Status Message</span>
         </form>
       </section>
       <section id="loadingScreen" class="flex displayNone"></section>
       <section id="appScreen" class="flex flex-column displayNone">
         <!-- containing all locked content -->
       </section>
-      <section id="calendarScreen" class="displayNone"></section>
     </main>
     <footer></footer>
     <script src="main.js" defer></script>
   </body>
 </html>
-
-<div>
-  <input id="happeningTime" type="time" />
-  <input id="happeningText" type="text" />
-</div>

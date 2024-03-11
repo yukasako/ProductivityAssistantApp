@@ -1,1 +1,2 @@
-skapa happening object utav modal input
+border-radius på blå knappt modal
+fixa span för requirements
