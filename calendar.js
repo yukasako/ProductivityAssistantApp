@@ -1,6 +1,7 @@
 //CALENDAR
 //If Arr don exist
 //Make an array to store happening
+
 if(!localStorage.getItem('happeningsArr')){
     const happeningsArr = [];
     const happeningsArrString = JSON.stringify(happeningsArr);
@@ -58,7 +59,7 @@ let createHappeningArticles = () =>{
   article.appendChild(heading);
   article.appendChild(container);
   
-  appScreen.appendChild(article);
+  document.getElementById("content").appendChild(article);
 }
 
 createHappeningArticles();
