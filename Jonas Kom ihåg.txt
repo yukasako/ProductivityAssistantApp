@@ -1,2 +1,3 @@
 border-radius på blå knappt modal
 fixa span för requirements
+fixa slut tid
