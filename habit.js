@@ -1,11 +1,13 @@
+// Chart
 let completeRatio = (toggle) => {
+  // Clear the previous chart
   let previousChart = document.querySelector("#myChart");
   if (previousChart) {
     previousChart.remove();
   }
   let canvas = document.createElement("canvas");
   canvas.id = "myChart";
-  habitsContent.prepend(canvas);
+  habitsContent.append(canvas);
 
   let completeBtns = document.querySelectorAll(".completeBtn");
   let uncomplete = 0;
@@ -19,6 +21,7 @@ let completeRatio = (toggle) => {
   let completeRatio = complete / uncomplete;
   let uncompleteRatio = 1 - complete / uncomplete;
 
+  // Text inside the chart
   let text = "";
   if (completeRatio === 1 && toggle === true) {
     text = "Routine Done!";

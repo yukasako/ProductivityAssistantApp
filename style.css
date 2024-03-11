@@ -947,3 +947,10 @@ table {
   width: 1rem;
   height: 1rem;
 }
+
+@media screen and (orientation:portrait) {
+  .habitsContent {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}

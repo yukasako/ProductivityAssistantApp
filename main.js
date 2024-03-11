@@ -114,6 +114,7 @@ todoContent.append(todoContentH2);
 
 let habitWrapper = document.createElement("div");
 habitsContent.append(habitWrapper);
+habitWrapper.id = "habitWrapper";
 
 let habitsContentH2 = document.createElement("h2");
 habitsContentH2.innerText = "Routines";
