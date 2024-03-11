@@ -857,8 +857,7 @@ nav .wrapper {
 
 #happeningsUpcoming{
   width:100%;
-  margin: 0rem;
-  padding:0.5rem;
+  margin: 0.5rem;
 }
 
 #happeningsContainer ul{
@@ -869,6 +868,15 @@ nav .wrapper {
   margin:0.5rem;
   cursor: pointer;
 }
+
+#happeningsContainer span:first-child{
+  font-weight: bold;
+}
+
+#happeningsContainer span:not(:first-child){
+  font-size: 0.7rem;
+}
+
 
 #happeningsContainer p{
   border-radius: 0.3rem;
