@@ -18,6 +18,8 @@
   --color-6: #feb7b7;
   --color-7: #899cf7;
   --color-8: #f2f1f7;
+  --color-9: #7c4293;
+  --color-10: #b881ce;
   --color-modal: hsla(0, 0%, 0%, 0.8);
   --shadow-1: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   --shadow-2: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
@@ -545,6 +547,7 @@ nav .wrapper {
   height: 2rem;
   background-color: var(--color-6);
   color: var(--color-5);
+  border-radius: 0.3rem;
 }
 
 #editHabitModal .actionButtons button {
@@ -603,6 +606,7 @@ nav .wrapper {
   height: 2rem;
   background-color: var(--color-4);
   color: var(--color-1);
+  border-radius: 0.3rem;
 
   &:hover,
   &:focus-visible {
@@ -649,6 +653,7 @@ nav .wrapper {
   height: 2rem;
   color: var(--color-5);
   background-color: var(--color-7);
+  border-radius: 0.3rem;
 
   &:hover {
     background-color: #6c7edd;
@@ -875,6 +880,7 @@ nav .wrapper {
 #happeningDeleteBtn{
   width:100% !important;
   margin: 2rem 0rem;
+  background-color: var(--color-10);
 }
 
 #happeningsContainer span{
@@ -888,11 +894,17 @@ nav .wrapper {
   text-align: center;
   padding:0.3rem;
   box-shadow: var(--shadow-2);
+  background-color: var(--color-9);
+  color: var(--color-1);
+  font-weight: 600;
 }
 
 #happeningDeleteBtn{
   width:2rem;
   height:2rem;
+  background-color: var(--color-10);
+  color: var(--color-1);
+  font-weight: 600;
 }
 
 #createHappeningForm{
@@ -911,6 +923,8 @@ nav .wrapper {
 #happeningAddBtn{
   height:2rem;
   border-radius: 0.3rem;
+  background-color: var(--color-9);
+  font-weight: 600;
 }
 
 #happeningDeleteBtn{
@@ -927,6 +941,10 @@ nav .wrapper {
   width:100%;
   min-height:10rem;
   padding:0.5rem;
+}
+
+#timeWrapper :nth-child(3){
+  margin-left:0.5rem;
 }
 
 @media screen and (orientation:portrait) {

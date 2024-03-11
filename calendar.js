@@ -159,7 +159,6 @@ createHappeningArticles();
       const date = document.createElement("span");
       const text = document.createElement("p");
     
-  
       date.innerText = e.date +",";
       time.innerText = e.time + " - " + e.end;
       text.innerText = e.text;
@@ -178,7 +177,7 @@ createHappeningArticles();
       const text = document.createElement("p");
   
       date.innerText = e.date;
-      time.innerText = e.time;
+      time.innerText = e.time + " - " + e.end;
       text.innerText = e.text;
   
       happening.appendChild(date);
