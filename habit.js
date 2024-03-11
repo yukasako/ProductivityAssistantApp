@@ -1,3 +1,87 @@
+// Chart
+let completeRatio = (toggle) => {
+  // Clear the previous chart
+  let previousChart = document.querySelector("#myChart");
+  if (previousChart) {
+    previousChart.remove();
+  }
+  let canvas = document.createElement("canvas");
+  canvas.id = "myChart";
+  habitsContent.append(canvas);
+
+  let completeBtns = document.querySelectorAll(".completeBtn");
+  let uncomplete = 0;
+  let complete = 0;
+  uncomplete = completeBtns.length;
+  completeBtns.forEach((btn) => {
+    if (btn.childElementCount == 2) {
+      complete += 1;
+    }
+  });
+  let completeRatio = complete / uncomplete;
+  let uncompleteRatio = 1 - complete / uncomplete;
+
+  // Text inside the chart
+  let text = "";
+  if (completeRatio === 1 && toggle === true) {
+    text = "Routine Done!";
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
+  } else if (completeRatio === 0) {
+    text = "Start your day";
+  } else {
+    text = `${Math.floor((completeRatio / 1) * 100)}% Done`;
+  }
+
+  let chartText = {
+    beforeDraw(chart) {
+      let {
+        ctx,
+        chartArea: { top, width, height },
+      } = chart;
+      ctx.fillStyle = "black";
+      ctx.fillRect(width / 2, top + height / 2, 0, 0);
+      ctx.font = "24px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(`${text}`, width / 2, top + height / 2);
+    },
+  };
+
+  window.myChart = new Chart(canvas, {
+    type: "doughnut",
+    data: {
+      labels: ["complete", "uncomplete"],
+      datasets: [
+        {
+          label: "Habit complete ratio",
+          data: [completeRatio, uncompleteRatio],
+          borderWidth: 0,
+          backgroundColor: ["rgb(244, 98, 92)", "rgb(254, 183, 183)"],
+          hoverBackgroundColor: ["rgb(244, 98, 92)", "rgb(254, 183, 183)"],
+        },
+      ],
+    },
+    options: {
+      plugins: {
+        legend: false,
+        tooltip: false,
+      },
+      animation: {
+        animateRotate: true,
+      },
+      responsive: false,
+      cutout: 120,
+      tooltips: {
+        enabled: false,
+      },
+    },
+    plugins: [chartText],
+  });
+};
+
 // function that creates habit card
 // called upon in both renderHabitList function and createHabitBtn event listener
 const createHabitCard = (habit, id) => {
@@ -30,6 +114,7 @@ const createHabitCard = (habit, id) => {
   let completedToday = today === latestDayInStreak;
 
   let completedBtn = document.createElement("button");
+  completedBtn.classList = "completeBtn";
   if (completedToday) {
     completedBtn.innerHTML = `<span>Completed</span><i class="fa-solid fa-check"></i>`;
     completedBtn.style.cursor = "default";
@@ -44,6 +129,7 @@ const createHabitCard = (habit, id) => {
     let currentHabit = user.habits.find((item) => item.id === habit.id);
     streakIncrementer(currentHabit);
     e.stopPropagation();
+    completeRatio(true);
   });
 
   li.addEventListener("click", (e) => {
@@ -64,16 +150,16 @@ const createNewHabit = () => {
 
   // Create input form
   habitInput.innerHTML = `
- <h2>New Habit</h2>
- <div class="flex flex-row requiredField"><label for="habitTitle">Title</label>
- <input type="text" name="habitTitle" id="habitTitle"><span class="required">*</span></div>
- <div class="flex flex-row"><label for="priority">Priority</label>
- <select id="priority">
- <option value="low" selected="selected">Low</option>
- <option value="medium">Medium</option>
- <option value="high">High</option>
- </select></div>
-`;
+   <h2>New Habit</h2>
+   <div class="flex requiredField"><label for="habitTitle">Title</label>
+   <input type="text" name="habitTitle" id="habitTitle"><span class="required">*</span></div>
+   <div class="flex"><label for="priority">Priority</label>
+   <select id="priority">
+   <option value="low" selected="selected">Low</option>
+   <option value="medium">Medium</option>
+   <option value="high">High</option>
+   </select></div>
+  `;
 
   let saveHabitBtn = document.createElement("button");
   saveHabitBtn.innerText = "Save";
@@ -88,6 +174,7 @@ const createNewHabit = () => {
 
   saveHabitBtn.addEventListener("click", () => {
     saveNewHabit();
+    completeRatio(false);
   });
 };
 
@@ -260,7 +347,7 @@ const editHabit = (i) => {
   editForm.innerHTML = `<h2>Edit Habit</h2><div class="flex flex-column requiredField"><label for="editHabitTitle">Title</label><div class="flex"><input id="editHabitTitle" value="${habit.title}"type="text"/><span class="required">*</span></div></div>`;
 
   let prioDiv = document.createElement("div");
-  prioDiv.classList.add("flex", "flex-row");
+  prioDiv.classList.add("flex");
   prioDiv.innerHTML = "<label for='editHabitPrio'>Priority</label>";
   let prioSelect = document.createElement("select");
   prioSelect.id = "editHabitPrio";
@@ -278,7 +365,7 @@ const editHabit = (i) => {
 
   // container for resetting streak action
   let resetDiv = document.createElement("div");
-  resetDiv.classList.add("flex", "flex-row");
+  resetDiv.classList.add("flex");
   resetDiv.innerHTML = `<p class="currentStreak">${habit.streak.length}</p>`;
   let resetBtn = document.createElement("button");
   resetBtn.id = "resetStreak";
@@ -310,10 +397,11 @@ const editHabit = (i) => {
   let deleteBtn = document.createElement("button");
   deleteBtn.id = "deleteHabit";
   deleteBtn.classList.add("modalBtn", "danger");
-  deleteBtn.innerText = "Delete";
+  deleteBtn.innerText = "Delete Habit";
   deleteBtn.addEventListener("click", () => {
     //delete habit
     deleteHabit(habit);
+    completeRatio(false);
   });
 
   actionButtons.append(saveEditsBtn, deleteBtn);
@@ -356,6 +444,7 @@ const saveHabitEdits = (habit) => {
     let updatedList = user.habits;
 
     renderHabitCards(updatedList, false);
+    completeRatio(false);
     destroyModal();
   } else {
     requiredMsg.innerText = "Title is required";
@@ -461,4 +550,5 @@ const resetHabitFilterAndSorting = () => {
 
 if (localStorage.getItem("loggedInUser")) {
   renderHabitCards(emptyArr, true);
+  completeRatio(false);
 }

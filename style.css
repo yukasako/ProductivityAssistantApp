@@ -364,6 +364,13 @@ nav .wrapper {
 /* Habits */
 
 .habitsContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5rem;
+}
+
+.habitWrapper {
   min-width: 50%;
   padding: 1rem;
   border-radius: 0.5rem;
@@ -921,5 +928,9 @@ nav .wrapper {
   padding:0.5rem;
 }
 
-
-
+@media screen and (orientation:portrait) {
+  .habitsContent {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
