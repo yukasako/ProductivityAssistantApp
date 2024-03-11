@@ -857,24 +857,29 @@ nav .wrapper {
 
 #happeningsUpcoming{
   width:100%;
-  margin: 0rem;
-  padding:0.5rem;
-}
-
-#happeningsContainer ul{
-  padding-left:1rem;
+  margin: 0.5rem;
 }
 
 #happeningsContainer li{
   margin:0.5rem;
   cursor: pointer;
+  margin:1rem 0rem;
 }
+
+#happeningsContainer span:first-child{
+  font-weight: bold;
+}
+
+#happeningsContainer span:not(:first-child){
+  font-size: 0.7rem;
+}
+
 
 #happeningsContainer p{
   border-radius: 0.3rem;
   box-shadow: var(--shadow-1);
   padding: 0.5rem;
-  margin: 0.5rem 1rem;
+  margin-top:0.3rem;
 }
 
 #happeningDeleteBtn{

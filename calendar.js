@@ -1,6 +1,7 @@
 //CALENDAR
 //If Arr don exist
 //Make an array to store happening
+
 if(!localStorage.getItem('happeningsArr')){
     const happeningsArr = [];
     const happeningsArrString = JSON.stringify(happeningsArr);
@@ -58,7 +59,7 @@ let createHappeningArticles = () =>{
   article.appendChild(heading);
   article.appendChild(container);
   
-  appScreen.appendChild(article);
+  document.getElementById("content").appendChild(article);
 }
 
 createHappeningArticles();
@@ -96,6 +97,7 @@ createHappeningArticles();
               
               const searchDate = e.children[0].innerText;
               const searchTime = e.children[1].innerText;
+              console.log(e);
   
               happeningsArr = happeningsArr.filter(item => !(item.date === searchDate && item.time === searchTime));
   
@@ -156,16 +158,23 @@ createHappeningArticles();
     passedHappenings.forEach((e)=>{
       const happening = document.createElement("li");
       const time = document.createElement("span");
+      const divide = document.createElement("span");
+      const end = document.createElement("span");
       const date = document.createElement("span");
       const text = document.createElement("p");
     
-      date.innerText = e.date +",";
-      time.innerText = e.time + " - " + e.end;
+      date.innerText = e.date;
+      time.innerText = e.time;
+      end.innerText = e.end;
+      divide.innerText = "-";
       text.innerText = e.text;
   
       happening.appendChild(date);
       happening.appendChild(time);
+      happening.appendChild(divide);
+      happening.appendChild(end);
       happening.appendChild(text);
+
       
       document.getElementById("happeningsPassed").appendChild(happening);
     })
@@ -173,16 +182,23 @@ createHappeningArticles();
     upcomingHappenings.forEach((e)=>{
       const happening = document.createElement("li");
       const time = document.createElement("span");
+      const divide = document.createElement("span");
+      const end = document.createElement("span");
       const date = document.createElement("span");
       const text = document.createElement("p");
   
       date.innerText = e.date;
-      time.innerText = e.time + " - " + e.end;
+      time.innerText = e.time;
+      end.innerText = e.end;
+      divide.innerText = "-";
       text.innerText = e.text;
   
       happening.appendChild(date);
       happening.appendChild(time);
+      happening.appendChild(divide);
+      happening.appendChild(end);
       happening.appendChild(text);
+
   
       document.getElementById("happeningsUpcoming").appendChild(happening);
     })
@@ -276,30 +292,44 @@ createHappeningArticles();
     //Submit click event
     submitHappeningBtn.addEventListener("click", ()=>{
       const searchDate = document.getElementById("happeningDate").value;
-      const searchTime = document.getElementById("happeningTime").value;
-      const searchEnd = document.getElementById("happeningEnd").value
+      const searchTime = parseInt(document.getElementById("happeningTime").value.replace(":", ""));
+      const searchEnd = parseInt(document.getElementById("happeningEnd").value.replace(":", ""));
       const searchText = document.getElementById("happeningText").value;
-  
-      const duplicateExists = happeningsArr.some(e => 
-        e.date === searchDate && 
-        e.time >= searchTime && 
-        e.time <= searchEnd
-    );
-  
-    const warningSpan = document.getElementById("createHappeningForm").children[1];
+      
+      console.log(happeningsArr);
+      
+      const duplicateExists = happeningsArr.some((e) => {
+        const time = parseInt(e.time.replace(":", ""));
+        const end = parseInt(e.end.replace(":", ""));
+      
+        if (e.date === searchDate) {
+          if (time <= searchTime && end >= searchEnd) {
+            return true;
+          }
+        }
+        return false;
+      });
+
+      console.log(duplicateExists);
+      
+      const warningSpan = document.getElementById("createHappeningForm").children[1];
+      
+      if (duplicateExists) {
+        warningSpan.innerText = "Event already exists on selected date and time";
+      }
   
       if (duplicateExists) {
         warningSpan.innerText = "Event already exist on select date and time";
       } 
   
-      else if(searchDate === "" || searchTime === "" || searchText === ""){
+      else if(searchDate === "" || searchTime === "" || searchEnd === "" || searchText === ""){
         warningSpan.innerText = "All fields are requried";
       }
         
       else {
           happening.date = document.getElementById("happeningDate").value;
           happening.time = document.getElementById("happeningTime").value;
-          happening.end = document.getElementById("happeningTime").value;
+          happening.end = document.getElementById("happeningEnd").value;
           happening.text = document.getElementById("happeningText").value;
           //Push to local storage
           
