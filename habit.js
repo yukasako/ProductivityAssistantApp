@@ -27,7 +27,7 @@ let completeRatio = (toggle) => {
   // Text inside the chart
   let text = "";
   if (completeRatio === 1 && toggle === true) {
-    text = "Routine Done!";
+    text = "Routines Done!";
     confetti({
       particleCount: 100,
       spread: 70,

@@ -317,7 +317,6 @@ const logInUser = () => {
             // appending the log out button
             toggleUserActions();
             toggleContent();
-            completeRatio(false);
           }
         });
       } else {
