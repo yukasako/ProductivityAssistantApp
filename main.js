@@ -88,10 +88,8 @@ const getQuote = async () => {
     console.error("Error fetching quote:", error);
   }
 };
+getQuote();
 
-if (!JSON.parse(localStorage.getItem("shouldGetQuote") === false)) {
-  getQuote();
-}
 
 let highlights = document.createElement("article");
 highlights.id = "highlights";
@@ -312,12 +310,10 @@ const logInUser = () => {
             localStorage.setItem("users", JSON.stringify(newUserList));
 
             localStorage.setItem("loggedInUser", matchingUser.id);
-            localStorage.setItem("shouldGetQuote", false);
 
             logOutBtn.dataset.id = matchingUser.id;
 
             // appending the log out button
-            getQuote();
             toggleUserActions();
             toggleContent();
             completeRatio(false);
@@ -364,8 +360,6 @@ const logOutUser = () => {
 
   let newUserList = [...users];
 
-  localStorage.removeItem("shouldGetQuote");
-
   //   updating local storage
   localStorage.setItem("users", JSON.stringify(newUserList));
   localStorage.removeItem("loggedInUser");
@@ -399,7 +393,6 @@ const toggleContent = async () => {
     habitWrapper.append(habitContainer, createNewHabitDiv);
 
     appScreen.append(highlights, content);
-
     //cycle from login screen -> loadin screen -> app screen
     if (JSON.parse(localStorage.getItem("shouldQuote")) === true) {
       loginScreen.classList.add("displayNone");
@@ -410,15 +403,15 @@ const toggleContent = async () => {
           appScreen.classList.remove("displayNone");
         }, 5000);
       }, 1000);
+
       localStorage.removeItem("shouldQuote");
     } else {
       loginScreen.classList.add("displayNone");
       appScreen.classList.remove("displayNone");
     }
-  } else {
-    content.innerHTML = "";
-    appScreen.innerHTML = "";
 
+  } else {
+    appScreen.innerHTML = "";
     //Cycle back to login screen
     appScreen.classList.add("displayNone");
     loginScreen.classList.remove("displayNone");
@@ -483,14 +476,16 @@ const destroyModal = () => {
 
 //Trigger Login
 loginBtn.addEventListener("click", async () => {
-  logInUser();
   localStorage.setItem("shouldQuote", true);
+  logInUser();
+  
 });
 
 document.addEventListener("keydown", function (event) {
   if (event.keyCode === 13) {
-    logInUser();
     localStorage.setItem("shouldQuote", true);
+    logInUser();
+    
   }
 });
 
