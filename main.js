@@ -419,16 +419,6 @@ happeningAddBtn.addEventListener("click", ()=>{
 
         localStorage.setItem("users", JSON.stringify(userListC));
 
-        
-
-
-
-        
-        
-        
-
-
-    
         appendHappenings();
         destroyModal();
       } 
