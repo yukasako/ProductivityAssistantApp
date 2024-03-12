@@ -52,6 +52,8 @@ let logInRegisterContent = document.querySelector("#userDetails");
 let userDetailsMsg = logInRegisterContent.querySelector(".statusMsg");
 
 let navBtnGroup = document.querySelector("nav .btnGroup");
+let openTimerBtn = document.createElement("button");
+let weatherDiv = document.createElement("div");
 
 let requiredMsg = document.createElement("span");
 
@@ -89,7 +91,6 @@ const getQuote = async () => {
   }
 };
 getQuote();
-
 
 let highlights = document.createElement("article");
 highlights.id = "highlights";
@@ -391,6 +392,7 @@ const toggleContent = async () => {
   if (localStorage.getItem("loggedInUser")) {
     todoContent.append(todoContainer, createTodoBtn);
     habitWrapper.append(habitContainer, createNewHabitDiv);
+    navBtnGroup.prepend(weatherDiv, openTimerBtn);
 
     appScreen.append(highlights, content);
     //cycle from login screen -> loadin screen -> app screen
@@ -409,7 +411,6 @@ const toggleContent = async () => {
       loginScreen.classList.add("displayNone");
       appScreen.classList.remove("displayNone");
     }
-
   } else {
     appScreen.innerHTML = "";
     //Cycle back to login screen
@@ -478,14 +479,12 @@ const destroyModal = () => {
 loginBtn.addEventListener("click", async () => {
   localStorage.setItem("shouldQuote", true);
   logInUser();
-  
 });
 
 document.addEventListener("keydown", function (event) {
   if (event.keyCode === 13) {
     localStorage.setItem("shouldQuote", true);
     logInUser();
-    
   }
 });
 
