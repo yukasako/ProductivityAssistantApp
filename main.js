@@ -81,10 +81,11 @@ if(!localStorage.getItem('happeningsArr')){
   localStorage.setItem('happeningsArr', happeningsArrString);
 }
 
-const userNo = JSON.parse(localStorage.getItem("loggedInUser"));
-const userList = JSON.parse(localStorage.getItem("users"));
-const userObj = userList.find(obj => obj.id === userNo);
-const userHappenings = userObj.happenings;
+let userNo = JSON.parse(localStorage.getItem("loggedInUser"));
+let userList = JSON.parse(localStorage.getItem("users"));
+let userObjIndex = userList.findIndex(obj => obj.id === userNo);
+let userObj = userList[userObjIndex];
+let userHappenings = userObj.happenings;
 
 let createHappeningArticles = () =>{
     //Create Happening Article
@@ -374,8 +375,6 @@ happeningAddBtn.addEventListener("click", ()=>{
     const searchEnd = parseInt(document.getElementById("happeningEnd").value.replace(":", ""));
     const searchText = document.getElementById("happeningText").value;
     
-    console.log(happeningsArr);
-    
     const duplicateExists = happeningsArr.some((e) => {
       const time = parseInt(e.time.replace(":", ""));
       const end = parseInt(e.end.replace(":", ""));
@@ -410,19 +409,25 @@ happeningAddBtn.addEventListener("click", ()=>{
         happening.end = document.getElementById("happeningEnd").value;
         happening.text = document.getElementById("happeningText").value;
         //Push to local storage
-        
-        userHappenings.push(happening);
+        let userNoC = JSON.parse(localStorage.getItem("loggedInUser"));
+        let userListC = JSON.parse(localStorage.getItem("users"));
+        let userObjC = userListC.find(obj => obj.id === userNoC);
+        let userHappeningsC = userObjC.happenings;
+
+
+        userHappeningsC.push(happening);
+
+        localStorage.setItem("users", JSON.stringify(userListC));
+
         
 
 
+
         
         
         
 
-/*         const userNo = JSON.parse(localStorage.getItem("loggedInUser"));
-const userList = JSON.parse(localStorage.getItem("users"));
-const userObj = userList.find(obj => obj.id === userNo);
-const userHappenings = userObj.happenings; */
+
     
         appendHappenings();
         destroyModal();
