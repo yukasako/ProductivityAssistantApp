@@ -241,7 +241,7 @@ nav .wrapper {
 }
 
 #content {
-  width: 100%;
+  width: 60%;
   height: 100%;
   align-items: center;
   justify-content: center;
@@ -258,17 +258,18 @@ nav .wrapper {
 }
 
 .todoContent {
-  padding: 1rem;
   margin: 1rem;
   min-width: 50%;
   border-radius: 0.5rem;
+  width: 100%;
 }
 
 .todosFilters {
   flex-direction: row-reverse;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-end;
   padding: 0.5rem 0rem;
+  gap: 1rem;
 }
 
 #todosFilterSelect {
@@ -370,13 +371,12 @@ nav .wrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 5rem;
+  gap: 2rem;
+  width: 100%;
 }
 
-.habitWrapper {
-  min-width: 50%;
-  padding: 1rem;
-  border-radius: 0.5rem;
+#habitWrapper {
+  width: 100%;
 }
 
 .habitsFilters {
@@ -823,7 +823,7 @@ nav .wrapper {
 
 /* CALENDAR */
 #happeningsContent{
-  width:50%;
+  width: 100%;
   min-height:100vh;
 }
 
@@ -952,9 +952,17 @@ nav .wrapper {
   margin-left:0.5rem;
 }
 
-@media screen and (orientation:portrait) {
+@media screen and (max-width: 1024px) {
+  #content{
+    min-width: 480px;
+  }
+
   .habitsContent {
     flex-direction: column;
     gap: 2rem;
+  }
+
+  .todosFilters {
+    flex-direction: column;
   }
 }
