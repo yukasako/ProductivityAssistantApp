@@ -374,6 +374,7 @@ happeningAddBtn.addEventListener("click", ()=>{
     const searchTime = parseInt(document.getElementById("happeningTime").value.replace(":", ""));
     const searchEnd = parseInt(document.getElementById("happeningEnd").value.replace(":", ""));
     const searchText = document.getElementById("happeningText").value;
+
     
     const duplicateExists = happeningsArr.some((e) => {
       const time = parseInt(e.time.replace(":", ""));
@@ -419,6 +420,16 @@ happeningAddBtn.addEventListener("click", ()=>{
 
         localStorage.setItem("users", JSON.stringify(userListC));
 
+        
+
+
+
+        
+        
+        
+
+
+    
         appendHappenings();
         destroyModal();
       } 
