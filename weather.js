@@ -86,7 +86,6 @@ let getWeatherData = async (latitude, longitude) => {
   navBtnGroup.prepend(weatherDiv);
 };
 
-let weatherDiv = document.createElement("div");
 weatherDiv.id = "weatherDiv";
 let temperature = document.createElement("span");
 let weatherIcon = document.createElement("i");

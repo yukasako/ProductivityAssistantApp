@@ -1,4 +1,3 @@
-let openTimerBtn = document.createElement("button");
 openTimerBtn.id = "openTimerBtn";
 openTimerBtn.classList.add("clickable");
 let timerBtnSpan = document.createElement("span");
