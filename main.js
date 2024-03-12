@@ -593,6 +593,7 @@ const registerUser = () => {
           loggedIn: false,
           habits: [],
           todos: [],
+          happeings: [],
           archivedTodos: [],
         };
         users.push(newUser);
@@ -615,6 +616,7 @@ const registerUser = () => {
         loggedIn: false,
         habits: [],
         todos: [],
+        happenings:[],
         archivedTodos: [],
       };
       users.push(newUser);
