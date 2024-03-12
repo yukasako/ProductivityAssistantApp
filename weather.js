@@ -81,7 +81,7 @@ let getWeatherData = async (latitude, longitude) => {
       weatherIcon.classList.add("fa-solid", "fa-cloud-bolt");
       break;
   }
-  temperature.innerText = `${temperatureData}℃`;
+  temperature.innerText = `${temperatureData}°C`;
   weatherDiv.append(location, weatherIcon, temperature);
   navBtnGroup.prepend(weatherDiv);
 };
