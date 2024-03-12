@@ -365,7 +365,7 @@ happeningAddBtn.addEventListener("click", ()=>{
   createModal();
   addHappeningModal();
   const submitHappeningBtn = document.querySelector("#happeningAddBtn");
-  let happeningsArr = JSON.parse(localStorage.getItem('happeningsArr')) || [];
+  let happeningsArr = userHappenings || [];
 
   //Submit click event
   submitHappeningBtn.addEventListener("click", ()=>{
@@ -411,8 +411,18 @@ happeningAddBtn.addEventListener("click", ()=>{
         happening.text = document.getElementById("happeningText").value;
         //Push to local storage
         
-        happeningsArr.push(happening);
-        localStorage.setItem('happeningsArr', JSON.stringify(happeningsArr));
+        userHappenings.push(happening);
+        
+
+
+        
+        
+        
+
+/*         const userNo = JSON.parse(localStorage.getItem("loggedInUser"));
+const userList = JSON.parse(localStorage.getItem("users"));
+const userObj = userList.find(obj => obj.id === userNo);
+const userHappenings = userObj.happenings; */
     
         appendHappenings();
         destroyModal();
