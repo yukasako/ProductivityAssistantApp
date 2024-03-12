@@ -83,7 +83,6 @@ let getWeatherData = async (latitude, longitude) => {
   }
   temperature.innerText = `${temperatureData}°C`;
   weatherDiv.append(location, weatherIcon, temperature);
-  navBtnGroup.prepend(weatherDiv);
 };
 
 weatherDiv.id = "weatherDiv";
