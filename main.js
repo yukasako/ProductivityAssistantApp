@@ -81,6 +81,11 @@ if(!localStorage.getItem('happeningsArr')){
   localStorage.setItem('happeningsArr', happeningsArrString);
 }
 
+const userNo = JSON.parse(localStorage.getItem("loggedInUser"));
+const userList = JSON.parse(localStorage.getItem("users"));
+const userObj = userList.find(obj => obj.id === userNo);
+const userHappenings = userObj.happenings;
+
 let createHappeningArticles = () =>{
     //Create Happening Article
 const article = document.createElement('article');
