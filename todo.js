@@ -628,6 +628,4 @@ const resetTodoFilterAndSorting = () => {
   });
 };
 
-if (localStorage.getItem("loggedInUser")) {
-  renderTodoCards(emptyArr, true);
-}
+renderTodoCards(emptyArr, true);
