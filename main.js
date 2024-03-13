@@ -69,8 +69,6 @@ let todoCategories = [
 
 let emptyArr = [];
 
-
-
 //Retrieve quote and create greeting
 let quote;
 const getQuote = async () => {
@@ -271,7 +269,7 @@ const registerUser = () => {
         loggedIn: false,
         habits: [],
         todos: [],
-        happenings:[],
+        happenings: [],
         archivedTodos: [],
       };
       users.push(newUser);
