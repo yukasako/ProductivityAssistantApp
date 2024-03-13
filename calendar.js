@@ -1,4 +1,3 @@
-
 let userNo = JSON.parse(localStorage.getItem("loggedInUser"));
 let userList = JSON.parse(localStorage.getItem("users"));
 let userObjIndex = userList.findIndex(obj => obj.id === userNo);
