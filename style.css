@@ -458,7 +458,7 @@ nav .wrapper {
 }
 
 #modal {
-  width: 33%;
+  width: 40%;
   background-color: var(--color-1);
   position: relative;
   border-radius: 0.5rem;
@@ -752,7 +752,7 @@ nav .wrapper {
 
 #timerModal {
   align-items: center;
-  padding-inline: 2rem;
+  /* padding-inline: 2rem; */
 }
 
 #timerModal button:not(:disabled):hover {
@@ -760,9 +760,13 @@ nav .wrapper {
 }
 
 .timerOptions {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
   gap: 0.5rem;
-  padding: 1rem;
+  padding-top: 1rem;
 }
+
 .timerOptionBtn {
   font-size: 1.1rem;
   border-radius: 0.5rem;
@@ -953,9 +957,39 @@ nav .wrapper {
   margin-left:0.5rem;
 }
 
-@media screen and (max-width: 1024px) {
+/* Mobile */
+@media screen and (max-width: 780px) {
   #content{
-    min-width: 480px;
+    width: 80vw;
+  }
+
+  nav {
+    justify-content: center;
+  }
+
+  /* Logo and title */
+  nav .wrapper.flex.flex-row{
+    display: none;
+  }
+
+  #location{
+    display: none;
+  }
+
+  .todosFilters div:first-child{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  #modal {
+    width: 80vw;
+  }
+}
+
+/* Tablet */
+@media screen and (max-width: 1024px) {
+  #logo{
+    display: none;
   }
 
   .habitsContent {
