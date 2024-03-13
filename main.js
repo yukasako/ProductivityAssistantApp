@@ -413,6 +413,13 @@ const toggleContent = async () => {
       loginScreen.classList.add("displayNone");
       appScreen.classList.remove("displayNone");
     }
+
+    //Append Habits
+    renderHabitCards(emptyArr, true);
+    completeRatio(false);
+
+    //Append Todos
+    renderTodoCards(emptyArr, true);
   } else {
     appScreen.innerHTML = "";
     //Cycle back to login screen
@@ -420,9 +427,6 @@ const toggleContent = async () => {
     loginScreen.classList.remove("displayNone");
   }
 };
-
-toggleUserActions();
-toggleContent();
 
 //Create a Modal or Destroy Modal Functions
 const modal = document.createElement("article");
@@ -516,3 +520,1194 @@ const getToday = () => {
 
   return today;
 };
+
+// Chart
+let completeRatio = (toggle) => {
+  // Clear the previous chart
+  let previousChart = document.querySelector("#myChart");
+  if (previousChart) {
+    previousChart.remove();
+  }
+  let canvas = document.createElement("canvas");
+  canvas.id = "myChart";
+
+  if (habitList.childElementCount !== 0) {
+    habitsContent.append(canvas);
+  }
+
+  let completeBtns = document.querySelectorAll(".completeBtn");
+  let uncomplete = 0;
+  let complete = 0;
+  uncomplete = completeBtns.length;
+  completeBtns.forEach((btn) => {
+    if (btn.childElementCount == 2) {
+      complete += 1;
+    }
+  });
+  let completeRatio = complete / uncomplete;
+  let uncompleteRatio = 1 - complete / uncomplete;
+
+  // Text inside the chart
+  let text = "";
+  if (completeRatio === 1 && toggle === true) {
+    text = "Routines Done!";
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
+  } else if (completeRatio === 0) {
+    text = "Start your day";
+  } else {
+    text = `${Math.floor((completeRatio / 1) * 100)}% Done`;
+  }
+
+  let chartText = {
+    beforeDraw(chart) {
+      let {
+        ctx,
+        chartArea: { top, width, height },
+      } = chart;
+      ctx.fillStyle = "black";
+      ctx.fillRect(width / 2, top + height / 2, 0, 0);
+      ctx.font = "24px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(`${text}`, width / 2, top + height / 2);
+    },
+  };
+
+  window.myChart = new Chart(canvas, {
+    type: "doughnut",
+    data: {
+      labels: ["complete", "uncomplete"],
+      datasets: [
+        {
+          label: "Habit complete ratio",
+          data: [completeRatio, uncompleteRatio],
+          borderWidth: 0,
+          backgroundColor: ["rgb(244, 98, 92)", "rgb(254, 183, 183)"],
+          hoverBackgroundColor: ["rgb(244, 98, 92)", "rgb(254, 183, 183)"],
+        },
+      ],
+    },
+    options: {
+      plugins: {
+        legend: false,
+        tooltip: false,
+      },
+      animation: {
+        animateRotate: true,
+      },
+      responsive: false,
+      cutout: 120,
+      tooltips: {
+        enabled: false,
+      },
+    },
+    plugins: [chartText],
+  });
+};
+
+// function that creates habit card
+// called upon in both renderHabitList function and createHabitBtn event listener
+const createHabitCard = (habit, id) => {
+  let li = document.createElement("li");
+  li.classList.add("habit", "clickable", "flex");
+  li.dataset.id = id;
+
+  // div containing the habit info
+  let infoDiv = document.createElement("div");
+  infoDiv.classList.add("flex", "flex-column", "habitInfo");
+  infoDiv.innerHTML = `<h3 class="itemTitle">${habit.title}</h3>`;
+  let subInfo = document.createElement("div");
+  subInfo.classList.add("subInfo", "flex");
+  subInfo.innerHTML = `<p>Priority: ${
+    habit.priority === "low"
+      ? "Low <i class='fa-regular fa-circle'></i>"
+      : habit.priority === "medium"
+      ? "Medium <i class='fa-solid fa-circle-half-stroke'></i>"
+      : "High <i class='fa-solid fa-circle danger'></i>"
+  }</p><p>Streak: ${habit.streak.length} ${
+    habit.streak.length > 1 ? "days" : habit.streak.length === 1 ? "day" : ""
+  }</p>`;
+
+  infoDiv.append(subInfo);
+
+  let today = new Date(getToday()).getTime();
+  let latestDayInStreak = new Date(
+    habit.streak[habit.streak.length - 1]
+  ).getTime();
+  let completedToday = today === latestDayInStreak;
+
+  let completedBtn = document.createElement("button");
+  completedBtn.classList = "completeBtn";
+  if (completedToday) {
+    completedBtn.innerHTML = `<span>Completed</span><i class="fa-solid fa-check"></i>`;
+    completedBtn.style.cursor = "default";
+  } else {
+    completedBtn.innerHTML = `<span>Complete</span>`;
+  }
+  completedBtn.addEventListener("click", (e) => {
+    // (Data)Get current user from local storage
+    let users = JSON.parse(localStorage.getItem("users"));
+    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+    let user = users.find((user) => user.id === loggedInUser);
+    let currentHabit = user.habits.find((item) => item.id === habit.id);
+    streakIncrementer(currentHabit);
+    e.stopPropagation();
+    completeRatio(true);
+  });
+
+  li.addEventListener("click", (e) => {
+    if (e.target !== completedBtn && e.target !== completedBtn.innerHTML) {
+      editHabit(id);
+    }
+  });
+
+  li.append(infoDiv, completedBtn);
+
+  return li;
+};
+
+let habitInput = document.createElement("div");
+habitInput.id = "createHabitModal";
+const createNewHabit = () => {
+  requiredMsg.innerText = "";
+
+  // Create input form
+  habitInput.innerHTML = `
+   <h2>New Habit</h2>
+   <div class="flex requiredField"><label for="habitTitle">Title</label>
+   <input type="text" name="habitTitle" id="habitTitle"><span class="required">*</span></div>
+   <div class="flex"><label for="priority">Priority</label>
+   <select id="priority">
+   <option value="low" selected="selected">Low</option>
+   <option value="medium">Medium</option>
+   <option value="high">High</option>
+   </select></div>
+  `;
+
+  let saveHabitBtn = document.createElement("button");
+  saveHabitBtn.innerText = "Save";
+
+  habitInput.append(saveHabitBtn);
+  modal.append(habitInput);
+
+  let required = habitInput.querySelector(".requiredField");
+  required.before(requiredMsg);
+
+  createModal();
+
+  saveHabitBtn.addEventListener("click", () => {
+    saveNewHabit();
+    completeRatio(false);
+  });
+};
+
+const saveNewHabit = () => {
+  // Save the input data to local storage.
+  let inputHabitTitle = document.querySelector("#habitTitle").value;
+  let inputPriority = document.querySelector("#priority").value;
+
+  // check if user entered a title
+  if (inputHabitTitle) {
+    // Get users array from local storage
+    let users = JSON.parse(localStorage.getItem("users"));
+    // Get logged users ID
+    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+    // Find the logged-in user by ID and push habit to their habits array
+    let user = users.find((user) => user.id === loggedInUser);
+
+    // generate random id
+    let habitId = generateId(user.habits);
+
+    // Create habit object
+    let habit = {
+      id: habitId,
+      title: inputHabitTitle,
+      streak: [],
+      priority: inputPriority,
+    };
+
+    user.habits.push(habit);
+
+    // Save updated users array back to local storage
+    localStorage.setItem("users", JSON.stringify(users));
+
+    renderHabitCards(user.habits, false);
+    resetHabitFilterAndSorting();
+    destroyModal();
+  } else {
+    requiredMsg.innerText = "Title is required";
+  }
+};
+
+createHabitBtn.addEventListener("click", () => {
+  createNewHabit();
+});
+
+// Generate habit-cards based on localStorage
+const renderHabitCards = (habitArr = [], onload = false) => {
+  resetStreak();
+  // clear previous content
+  habitList.innerHTML = "";
+  // Get current user's array from local storage
+  let users = JSON.parse(localStorage.getItem("users"));
+  let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+  let user = users.find((user) => user.id === loggedInUser);
+
+  if (habitArr.length === 0 && onload) {
+    // Generate from local storage
+    user.habits.forEach((habit) => {
+      habitList.append(createHabitCard(habit, habit.id));
+    });
+  } else {
+    // For editing and filtering
+    habitArr.forEach((habit) => {
+      habitList.append(createHabitCard(habit, habit.id));
+    });
+  }
+
+  habitContainer.append(habitList);
+};
+
+habitsSortSelect.addEventListener("change", () => {
+  filterAndSortHabits();
+});
+
+habitsPrioSelect.addEventListener("change", () => {
+  filterAndSortHabits();
+});
+
+const filterAndSortHabits = () => {
+  let chosenPriority = document.querySelector("#priorityFilter").value;
+  let selectedSortingOption = habitsSortSelect.value;
+
+  // getting current logged in user
+  let currentUserId = localStorage.getItem("loggedInUser");
+
+  // getting list of users
+  users = JSON.parse(localStorage.getItem("users"));
+
+  // matching current user
+  let currentUser = users.find((user) => +user.id === +currentUserId);
+
+  // array to hold the habits that match chosen filters
+  let chosenHabits = [];
+
+  // populating the chosenHabits array using filter method
+  chosenHabits = currentUser.habits.filter((habit) => {
+    return habit.priority === chosenPriority || chosenPriority === "";
+  });
+
+  let priorityValues = [
+    { name: "low", value: 1 },
+    { name: "medium", value: 2 },
+    { name: "high", value: 3 },
+  ];
+
+  switch (selectedSortingOption) {
+    case "":
+      break;
+    case "streakDesc":
+      chosenHabits.sort((a, b) => {
+        let aStreak = a.streak.length;
+        let bStreak = b.streak.length;
+        return aStreak > bStreak ? 1 : bStreak > aStreak ? -1 : 0;
+      });
+      break;
+    case "streakAsc":
+      chosenHabits.sort((a, b) => {
+        let aStreak = a.streak.length;
+        let bStreak = b.streak.length;
+        return aStreak < bStreak ? 1 : bStreak < aStreak ? -1 : 0;
+      });
+      break;
+    case "prioDesc":
+      chosenHabits.sort((a, b) => {
+        let aPrio = priorityValues.find((prio) => prio.name === a.priority);
+        aPrio = aPrio.value;
+        let bPrio = priorityValues.find((prio) => prio.name === b.priority);
+        bPrio = bPrio.value;
+
+        return aPrio - bPrio;
+      });
+      break;
+    case "prioAsc":
+      chosenHabits.sort((a, b) => {
+        let aPrio = priorityValues.find((prio) => prio.name === a.priority);
+        aPrio = aPrio.value;
+        let bPrio = priorityValues.find((prio) => prio.name === b.priority);
+        bPrio = bPrio.value;
+
+        return bPrio - aPrio;
+      });
+      break;
+  }
+
+  // clearing the current ul
+  habitList.innerHTML = "";
+  // generating new list based on new habit list
+  renderHabitCards(chosenHabits, false);
+};
+
+// filterHabitsBtn.addEventListener("click", () => {
+//   filterAndSortHabits();
+// });
+
+const editHabit = (i) => {
+  requiredMsg.innerText = "";
+
+  // priority options
+  let priorityLevels = ["Low", "Medium", "High"];
+  // getting current user
+  let users = JSON.parse(localStorage.getItem("users"));
+  let currentLoggedInId = localStorage.getItem("loggedInUser");
+  let user = users.find((user) => +user.id === +currentLoggedInId);
+
+  let habit = user.habits.find((habit) => habit.id === i);
+
+  let editForm = document.createElement("div");
+  editForm.classList.add("flex", "flex-column");
+  editForm.id = "editHabitModal";
+  editForm.innerHTML = `<h2>Edit Habit</h2><div class="flex flex-column requiredField"><label for="editHabitTitle">Title</label><div class="flex"><input id="editHabitTitle" value="${habit.title}"type="text"/><span class="required">*</span></div></div>`;
+
+  let prioDiv = document.createElement("div");
+  prioDiv.classList.add("flex");
+  prioDiv.innerHTML = "<label for='editHabitPrio'>Priority</label>";
+  let prioSelect = document.createElement("select");
+  prioSelect.id = "editHabitPrio";
+  priorityLevels.forEach((level) => {
+    if (level.toLowerCase() === habit.priority) {
+      prioSelect.innerHTML += `<option value="${habit.priority}" selected="selected">${level}</option>`;
+    } else {
+      prioSelect.innerHTML += `<option value="${level.toLowerCase()}">${level}</option>`;
+    }
+  });
+
+  prioDiv.append(prioSelect);
+
+  editForm.append(prioDiv);
+
+  // container for resetting streak action
+  let resetDiv = document.createElement("div");
+  resetDiv.classList.add("flex");
+  resetDiv.innerHTML = `<p class="currentStreak">${habit.streak.length}</p>`;
+  let resetBtn = document.createElement("button");
+  resetBtn.id = "resetStreak";
+  resetBtn.innerText = "Reset Streak";
+
+  resetBtn.addEventListener("click", () => {
+    habit = resetActiveHabitStreak(habit);
+    resetDiv.innerHTML = `<p class="currentStreak">${habit.streak.length}</p>`;
+    resetDiv.append(resetBtn);
+  });
+  resetDiv.append(resetBtn);
+  editForm.append(resetDiv);
+
+  // buttons
+  let actionButtons = document.createElement("div");
+  actionButtons.classList.add("actionButtons", "flex");
+
+  // save edits button
+  let saveEditsBtn = document.createElement("button");
+  saveEditsBtn.id = "saveHabitEdits";
+  saveEditsBtn.classList.add("modalBtn");
+  saveEditsBtn.innerText = "Save";
+  saveEditsBtn.addEventListener("click", () => {
+    // save changes
+    saveHabitEdits(habit);
+  });
+
+  // delete habit button
+  let deleteBtn = document.createElement("button");
+  deleteBtn.id = "deleteHabit";
+  deleteBtn.classList.add("modalBtn", "danger");
+  deleteBtn.innerText = "Delete Habit";
+  deleteBtn.addEventListener("click", () => {
+    //delete habit
+    deleteHabit(habit);
+    completeRatio(false);
+  });
+
+  actionButtons.append(saveEditsBtn, deleteBtn);
+
+  editForm.append(actionButtons);
+
+  modal.append(editForm);
+  let required = editForm.querySelector(".requiredField");
+  required.before(requiredMsg);
+
+  createModal();
+};
+
+const saveHabitEdits = (habit) => {
+  // 1, Save the input data to local storage.
+  let inputHabitTitle = document.querySelector("#editHabitTitle").value;
+  let inputPriority = document.querySelector("#editHabitPrio").value;
+
+  if (inputHabitTitle) {
+    // Create habit object
+    let editedHabit = {
+      id: habit.id,
+      title: inputHabitTitle,
+      streak: habit.streak,
+      priority: inputPriority,
+    };
+
+    // Get users array from local storage
+    let users = JSON.parse(localStorage.getItem("users"));
+    // Get logged users ID
+    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+    // Find the logged-in user by ID and push habit to their habits array
+    let user = users.find((user) => user.id === loggedInUser);
+    let activeHabit = user.habits.find((item) => +item.id === +habit.id);
+    let index = user.habits.indexOf(activeHabit);
+    user.habits[index] = editedHabit;
+    // Save updated users array back to local storage
+    localStorage.setItem("users", JSON.stringify(users));
+
+    let updatedList = user.habits;
+
+    renderHabitCards(updatedList, false);
+    completeRatio(false);
+    destroyModal();
+  } else {
+    requiredMsg.innerText = "Title is required";
+  }
+};
+
+const deleteHabit = (habit) => {
+  users = JSON.parse(localStorage.getItem("users"));
+
+  let loggedInUser = localStorage.getItem("loggedInUser");
+
+  let user = users.find((user) => +user.id === +loggedInUser);
+
+  let habitToDelete = user.habits.find((item) => +item.id === +habit.id);
+
+  // finding index of item
+  let index = user.habits.indexOf(habitToDelete);
+
+  // removing from array
+  user.habits.splice(index, 1);
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  renderHabitCards(user.habits, false);
+  destroyModal();
+};
+
+const streakIncrementer = (habit) => {
+  users = JSON.parse(localStorage.getItem("users"));
+
+  let loggedInUser = +localStorage.getItem("loggedInUser");
+  let user = users.find((user) => user.id === loggedInUser);
+  let currentHabit = user.habits.find((item) => item.id === habit.id);
+  let indexOfHabit = user.habits.indexOf(currentHabit);
+
+  let streakArray = currentHabit.streak;
+
+  let today = new Date(getToday());
+
+  let latestDayInStreak = new Date(streakArray[streakArray.length - 1]);
+
+  let previousDay = new Date(today);
+  previousDay.setDate(today.getDate() - 1);
+
+  if (
+    previousDay.getTime() === latestDayInStreak.getTime() ||
+    streakArray.length === 0
+  ) {
+    today = getToday();
+    user.habits[indexOfHabit].streak.push(today);
+  }
+
+  // updating local storage
+  localStorage.setItem("users", JSON.stringify(users));
+  // refreshing the list
+  renderHabitCards(user.habits, false);
+};
+
+const resetStreak = () => {
+  users = JSON.parse(localStorage.getItem("users"));
+  let loggedInUSer = +localStorage.getItem("loggedInUser");
+  let user = users.find((user) => user.id === loggedInUSer);
+
+  let today = new Date(getToday());
+  let previousDay = new Date(today);
+  previousDay.setDate(today.getDate() - 1);
+
+  user.habits.forEach((habit) => {
+    let latestDayInStreak = new Date(habit.streak[habit.streak.length - 1]);
+    // setting streak to zero if one day missed
+    if (
+      previousDay.getTime() !== latestDayInStreak.getTime() &&
+      today.getTime() !== latestDayInStreak.getTime()
+    ) {
+      habit.streak = [];
+    }
+  });
+
+  // updating local storage
+  localStorage.setItem("users", JSON.stringify(users));
+};
+
+const resetActiveHabitStreak = (habit) => {
+  users = JSON.parse(localStorage.getItem("users"));
+  let loggedInUSer = +localStorage.getItem("loggedInUser");
+  let user = users.find((user) => user.id === loggedInUSer);
+
+  let currentHabit = user.habits.find((item) => item.id === habit.id);
+  // ressetting current habit streak
+  currentHabit.streak = [];
+
+  // updating local storage
+  localStorage.setItem("users", JSON.stringify(users));
+
+  // returning new length of habit streak
+  return currentHabit;
+};
+
+const resetHabitFilterAndSorting = () => {
+  habitsPrioSelect.querySelector("[value='']").selected = true;
+  habitsSortSelect.querySelector("[value='']").selected = true;
+};
+
+if (localStorage.getItem("loggedInUser")) {
+  renderHabitCards(emptyArr, true);
+  completeRatio(false);
+}
+
+let todoInput = document.createElement("div");
+todoInput.id = "createTodoModal";
+const createNewTodo = () => {
+  requiredMsg.innerText = "";
+  if (todoInput.innerHTML === "") {
+    // Create input form
+
+    let categoryDiv = document.createElement("div");
+    categoryDiv.classList.add("flex", "flex-row");
+    let categoryLabel = document.createElement("label");
+    categoryLabel.innerText = "Category";
+    categoryLabel.setAttribute("for", "categorySelect");
+    let categorySelect = document.createElement("select");
+    categorySelect.name = "category";
+    categorySelect.id = "categorySelect";
+
+    todoCategories.forEach((cat) => {
+      categorySelect.innerHTML += `<option value="${cat.toLowerCase()}">${cat}</option>`;
+    });
+
+    categorySelect.append(todoCategories);
+    categoryDiv.append(categoryLabel, categorySelect);
+    todoInput.innerHTML = `
+    <h2>New Todo</h2>
+    <div class="flex flex-row requiredField"><label for="todoTitle">Title</label>
+    <input type="text" name="todoTitle" id="todoTitle"><span class="required">*</span></div>
+    <div class="flex>"<label for="description">Description</label>
+    <textarea name="description" id="description"></textarea>
+    </div>
+    <div class="flex flex-row"><label for="deadline">Deadline</label>
+    <input type="date" name="deadline" id="deadline" min="${getToday()}">
+    </div>
+    <div class="flex flex-row"><label for="timeEstimate">Time Estimate</label>
+    <input type="time" name="timeEstimate" id="timeEstimate">
+    </div>
+    `;
+
+    let saveTodoBtn = document.createElement("button");
+    saveTodoBtn.innerText = "Save";
+
+    todoInput.append(categoryDiv, saveTodoBtn);
+    modal.append(todoInput);
+
+    let required = todoInput.querySelector(".requiredField");
+    required.before(requiredMsg);
+
+    createModal();
+
+    saveTodoBtn.addEventListener("click", () => {
+      saveNewTodo();
+    });
+  } else {
+    todoInput.innerHTML = "";
+  }
+};
+
+const saveNewTodo = () => {
+  // Save the input data to local storage.
+  let inputTitle = document.querySelector("#todoTitle").value;
+  let inputDescription = document.querySelector("#description").value;
+  let inputDeadline = document.querySelector("#deadline").value;
+  let inputTimeEstimate = document.querySelector("#timeEstimate").value;
+  let inputCategory = document.querySelector("#categorySelect").value;
+
+  // if user didnt chose a category, set it to the first one
+  if (!inputCategory) {
+    inputCategory = document.querySelector("#categorySelect option").value;
+  }
+
+  // setting default date value if none entered
+  if (!inputDeadline) {
+    inputDeadline = "9999-12-31";
+  }
+
+  // Extract hours and minutes from inputTimeEstimate
+  let [hours, minutes] = inputTimeEstimate.split(":").map((num) => num);
+
+  let timeEstimate;
+  if (!inputTimeEstimate) {
+    timeEstimate = { hours: "00", minutes: "00" };
+  } else {
+    timeEstimate = { hours, minutes };
+  }
+
+  // Get users array from local storage
+  let users = JSON.parse(localStorage.getItem("users"));
+
+  // Get logged users ID
+  let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+
+  // Find the logged-in user by ID and push todo to their todos array
+  let user = users.find((user) => user.id === loggedInUser);
+
+  // generate random id
+  let todoId = generateId(user.todos);
+
+  // Generate a todo card to DOM.
+
+  //ensure user entered a title before creating new todo
+  if (inputTitle) {
+    // Create todo object
+    let todo = {
+      id: todoId,
+      title: inputTitle,
+      description: inputDescription,
+      completed: false,
+      deadline: inputDeadline,
+      timeEstimate,
+      category: inputCategory,
+    };
+
+    user.todos.push(todo);
+
+    // Save updated users array back to local storage
+    localStorage.setItem("users", JSON.stringify(users));
+    todoInput.innerHTML = "";
+
+    renderTodoCards(user.todos, false);
+    resetTodoFilterAndSorting();
+    destroyModal();
+  } else {
+    requiredMsg.innerText = "Title is required";
+  }
+};
+
+createTodoBtn.addEventListener("click", () => {
+  createNewTodo();
+});
+
+// function that creates todo card
+// called upon in both renderTodoList function and createTodoBtn event listener
+const createTodoCard = (todo, id) => {
+  let li = document.createElement("li");
+  li.dataset.id = id;
+  li.classList.add("todo", "clickable", "flex");
+
+  // icon + title html
+  let todoInfo = document.createElement("div");
+  todoInfo.classList.add("flex", "todoInfo");
+  let icon = setIcon(todo.category);
+  todoInfo.append(icon);
+  todoInfo.innerHTML += `<h3 class="todoTitle">${
+    todo.title
+  }</h3><span class="todoDeadline">${
+    todo.deadline !== "9999-12-31" ? todo.deadline : ""
+  }</span>`;
+
+  // complete checkbox and archive icon (if completed)
+  let actionDiv = document.createElement("div");
+  actionDiv.classList.add("flex", "todoActions");
+
+  let completedCheckbox = document.createElement("input");
+  completedCheckbox.type = "checkbox";
+  if (todo.completed == true || todo.completed == "true") {
+    li.classList.add("disabled");
+    completedCheckbox.checked = true;
+  }
+  actionDiv.append(completedCheckbox);
+
+  let archiveIcon = document.createElement("i");
+  archiveIcon.classList.add("fa-solid", "fa-box-archive", "clickable");
+
+  archiveIcon.addEventListener("click", () => {
+    verifyArchiving(todo);
+  });
+  archiveIcon.setAttribute("title", "Click to Archive Todo");
+
+  completedCheckbox.addEventListener("change", () => {
+    completedCheckbox.checked ? completeTodo(todo) : unCompleteTodo(todo);
+  });
+
+  li.addEventListener("click", (e) => {
+    if (
+      e.target !== completedCheckbox &&
+      (todo.completed == "false" || todo.completed == false)
+    ) {
+      editTodo(id);
+    }
+  });
+
+  li.append(todoInfo, actionDiv);
+  if (todo.completed.toString() === "true") {
+    actionDiv.append(archiveIcon);
+  }
+
+  return li;
+};
+
+// function that assigns icon based on category
+const setIcon = (cat) => {
+  let icon = document.createElement("i");
+
+  switch (cat.toLowerCase()) {
+    case "work":
+      icon.classList.add("fa-solid", "fa-briefcase");
+      break;
+    case "workout":
+      icon.classList.add("fa-solid", "fa-dumbbell");
+      break;
+    case "health":
+      icon.classList.add("fa-solid", "fa-heart-pulse");
+      break;
+    case "studying":
+      icon.classList.add("fa-solid", "fa-graduation-cap");
+      break;
+    case "home":
+      icon.classList.add("fa-solid", "fa-house-chimney");
+      break;
+    case "leasure":
+      icon.classList.add("fa-solid", "fa-icons");
+      break;
+  }
+  return icon;
+};
+
+// Generate Todo-cards based on localStorage
+const renderTodoCards = (todoArr = [], onload = false) => {
+  // clear previous content
+  todoList.innerHTML = "";
+  // Get current user's array from local storage
+  let users = JSON.parse(localStorage.getItem("users"));
+  let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+  let user = users.find((user) => user.id === loggedInUser);
+
+  if (todoArr.length === 0 && onload) {
+    // Generate from local storage
+    let userTodos = [...user.todos];
+    // sorting array by status
+    userTodos.sort(compareStatus);
+    // iterating through array to create cards
+    userTodos.forEach((todo) => {
+      todoList.append(createTodoCard(todo, todo.id));
+    });
+  } else {
+    // For editing and filtering
+    // sorting array by status
+    todoArr.sort(compareStatus);
+    // iterating through array to create cards
+    todoArr.forEach((todo) => {
+      todoList.append(createTodoCard(todo, todo.id));
+    });
+  }
+
+  todoContainer.append(todoList);
+};
+
+const filterAndSortTodos = () => {
+  let status = document.querySelector("#todosFilterSelect").value;
+  let checkedCategories = document.querySelectorAll(
+    "[name='category']:checked"
+  );
+
+  // array to hold values for chosen categories
+  let chosenCategories = [];
+
+  // retrieving the values from checked boxes
+  checkedCategories.forEach((checkbox) =>
+    chosenCategories.push(checkbox.value.toLowerCase())
+  );
+
+  // getting current logged in user
+  let currentUserId = localStorage.getItem("loggedInUser");
+
+  // getting list of users
+  users = JSON.parse(localStorage.getItem("users"));
+
+  // matching current user
+  let currentUser = users.find((user) => +user.id === +currentUserId);
+
+  // array to hold the todos that match chosen filters
+  let chosenTodos = [];
+
+  // populating the chosenTodos array using filter method
+  chosenTodos = currentUser.todos.filter((todo) => {
+    return (
+      (chosenCategories.includes(todo.category) ||
+        chosenCategories.length === 0) &&
+      (todo.completed.toString() === status || status === "")
+    );
+  });
+
+  let selectedSortingOption = todoSortingSelect.value;
+
+  switch (selectedSortingOption) {
+    case "":
+      break;
+    case "deadlineDesc":
+      chosenTodos.sort((a, b) => {
+        let aDeadline = new Date(a.deadline).getTime();
+        let bDeadline = new Date(b.deadline).getTime();
+        return aDeadline < bDeadline ? 1 : bDeadline < aDeadline ? -1 : 0;
+      });
+      break;
+    case "deadlineAsc":
+      chosenTodos.sort((a, b) => {
+        let aDeadline = new Date(a.deadline).getTime();
+        let bDeadline = new Date(b.deadline).getTime();
+        return aDeadline > bDeadline ? 1 : bDeadline > aDeadline ? -1 : 0;
+      });
+      break;
+    case "timeDesc":
+      chosenTodos.sort((a, b) => {
+        let aTime =
+          a.timeEstimate.hours.toString() + a.timeEstimate.minutes.toString();
+        let bTime =
+          b.timeEstimate.hours.toString() + b.timeEstimate.minutes.toString();
+
+        aTime = +aTime;
+        bTime = +bTime;
+
+        return aTime < bTime ? 1 : bTime < aTime ? -1 : 0;
+      });
+      break;
+    case "timeAsc":
+      chosenTodos.sort((a, b) => {
+        let aTime =
+          a.timeEstimate.hours.toString() + a.timeEstimate.minutes.toString();
+        let bTime =
+          b.timeEstimate.hours.toString() + b.timeEstimate.minutes.toString();
+
+        aTime = +aTime;
+        bTime = +bTime;
+
+        return bTime < aTime ? 1 : aTime < bTime ? -1 : 0;
+      });
+      break;
+  }
+
+  // clearing the current ul
+  todoList.innerHTML = "";
+  // generating new list based on new todo list
+  renderTodoCards(chosenTodos, false);
+};
+
+todosFilterSelect.addEventListener("change", () => {
+  filterAndSortTodos();
+});
+
+let categoryCheckboxes = todoCheckboxes.querySelectorAll("[name='category']");
+
+categoryCheckboxes.forEach((checkbox) => {
+  checkbox.addEventListener("change", () => {
+    filterAndSortTodos();
+  });
+});
+
+const editTodo = (i) => {
+  requiredMsg.innerText = "";
+
+  // getting current user
+  let users = JSON.parse(localStorage.getItem("users"));
+  let currentLoggedInId = localStorage.getItem("loggedInUser");
+  let user = users.find((user) => +user.id === +currentLoggedInId);
+
+  let todo = user.todos.find((todo) => todo.id === i);
+
+  let editForm = document.createElement("div");
+  editForm.classList.add("flex", "flex-column");
+  editForm.id = "editTodoModal";
+  editForm.innerHTML =
+    `<h2>Edit Todo</h2>` +
+    `<div class="flex flex-column requiredField"><label for="editTodoTitle">Title</label><div><input id="editTodoTitle" value="${todo.title}"type="text"/><span class="required">*</span></div></div>` +
+    `<div class="flex flex-column"><label for="editTodoDesc">Description</label><textarea id="editTodoDesc">${todo.description}</textarea></div>`;
+
+  let editStatusDiv = document.createElement("div");
+  editStatusDiv.classList.add("flex", "flex-row");
+  let statusLabel = document.createElement("label");
+  statusLabel.setAttribute("for", "editTodoStatus");
+  statusLabel.innerText = "Status";
+  let editStatus = document.createElement("select");
+  editStatus.id = "editTodoStatus";
+  if (todo.completed === true) {
+    editStatus.innerHTML += `<option value="${todo.completed}" selected="selected">Completed</option><option value="false">Uncompleted</option>`;
+  } else {
+    editStatus.innerHTML += `<option value="${todo.completed}" selected="selected">Uncompleted</option><option value="true">Completed</option>`;
+  }
+  editStatusDiv.append(statusLabel, editStatus);
+
+  editForm.append(editStatusDiv);
+
+  editForm.innerHTML +=
+    `<div class="flex flex-row"><label for="editDeadline">Deadline</label>
+  <input type="date" min="${getToday()}" name="editDeadline" id="editDeadline" value="${
+      todo.deadline == "9999-12-31" ? "" : todo.deadline
+    }"></div>` +
+    `<div class="flex flex-row"><label for="editTimeEstimate">Time Estimate</label>
+  <input type="time" name="editTimeEstimate" id="editTimeEstimate" value="${todo.timeEstimate.hours}:${todo.timeEstimate.minutes}"></div>`;
+
+  let editCategoryDiv = document.createElement("div");
+  editCategoryDiv.classList.add("flex", "flex-row");
+  editCategoryDiv.innerHTML += "<label for='editCategory'>Category</label>";
+  let categorySelect = document.createElement("select");
+  categorySelect.name = "editCategory";
+  categorySelect.id = "editCategory";
+
+  todoCategories.forEach((cat) => {
+    if (todo.category === cat.toLowerCase()) {
+      categorySelect.innerHTML += `<option value="${cat.toLowerCase()}" selected="selected">${cat}</option>`;
+    } else {
+      categorySelect.innerHTML += `<option value="${cat.toLowerCase()}">${cat}</option>`;
+    }
+  });
+
+  editCategoryDiv.append(categorySelect);
+
+  editForm.append(editCategoryDiv);
+
+  // buttons
+  let actionButtons = document.createElement("div");
+  actionButtons.classList.add("actionButtons", "flex");
+
+  // save edits button
+  let saveEditsBtn = document.createElement("button");
+  saveEditsBtn.id = "saveTodoEdits";
+  saveEditsBtn.classList.add("modalBtn");
+  saveEditsBtn.innerText = "Save";
+  saveEditsBtn.addEventListener("click", () => {
+    // save changes
+    saveTodoEdits(todo);
+  });
+
+  // delete todo button
+  let deleteBtn = document.createElement("button");
+  deleteBtn.id = "deleteTodo";
+  deleteBtn.classList.add("modalBtn", "danger");
+  deleteBtn.innerText = "Delete";
+  deleteBtn.addEventListener("click", () => {
+    //delete todo
+    deleteTodo(todo);
+  });
+
+  actionButtons.append(saveEditsBtn, deleteBtn);
+
+  editForm.append(actionButtons);
+
+  modal.append(editForm);
+
+  let required = editForm.querySelector(".requiredField");
+  required.before(requiredMsg);
+
+  createModal();
+};
+
+const saveTodoEdits = (todo) => {
+  // 1, Save the input data to local storage.
+  let inputTodoTitle = document.querySelector("#editTodoTitle").value;
+  let inputTodoDesc = document.querySelector("#editTodoDesc").value;
+  let inputStatus = document.querySelector("#editTodoStatus").value;
+  let inputDeadline = document.querySelector("#editDeadline").value;
+  let inputTimeEstimate = document.querySelector("#editTimeEstimate").value;
+  let inputCategory = document.querySelector("#editCategory").value;
+
+  inputDeadline == ""
+    ? (inputDeadline = "9999-12-31")
+    : (inputDeadline = inputDeadline);
+
+  // Extract hours and minutes from inputTimeEstimate
+  let [hours, minutes] = inputTimeEstimate.split(":").map((num) => num);
+
+  let timeEstimate;
+  if (!inputTimeEstimate) {
+    timeEstimate = { hours: "00", minutes: "00" };
+  } else {
+    timeEstimate = { hours, minutes };
+  }
+
+  if (inputTodoTitle) {
+    // Create todo object
+    let editedTodo = {
+      id: todo.id,
+      title: inputTodoTitle,
+      description: inputTodoDesc,
+      completed: inputStatus,
+      deadline: inputDeadline,
+      timeEstimate,
+      category: inputCategory,
+    };
+
+    // Get users array from local storage
+    let users = JSON.parse(localStorage.getItem("users"));
+    // Get logged users ID
+    let loggedInUser = parseInt(localStorage.getItem("loggedInUser"));
+    // Find the logged-in user by ID and push todo to their todos array
+    let user = users.find((user) => user.id === loggedInUser);
+    let activeTodo = user.todos.find((item) => +item.id === +todo.id);
+    let index = user.todos.indexOf(activeTodo);
+    user.todos[index] = editedTodo;
+    // Save updated users array back to local storage
+    localStorage.setItem("users", JSON.stringify(users));
+
+    let updatedList = user.todos;
+
+    renderTodoCards(updatedList, false);
+    destroyModal();
+  } else {
+    requiredMsg.innerText = "Title is required";
+  }
+};
+
+const deleteTodo = (todo) => {
+  users = JSON.parse(localStorage.getItem("users"));
+
+  let loggedInUser = localStorage.getItem("loggedInUser");
+
+  let user = users.find((user) => +user.id === +loggedInUser);
+
+  let todoToDelete = user.todos.find((item) => +item.id === +todo.id);
+
+  // finding index of item
+  let index = user.todos.indexOf(todoToDelete);
+
+  // removing from array
+  user.todos.splice(index, 1);
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  renderTodoCards(user.todos, false);
+  destroyModal();
+};
+
+const completeTodo = (todo) => {
+  users = JSON.parse(localStorage.getItem("users"));
+
+  let loggedInUser = +localStorage.getItem("loggedInUser");
+
+  let user = users.find((user) => user.id === loggedInUser);
+
+  for (let item of user.todos) {
+    if (item.id === todo.id) {
+      item.completed = true;
+    }
+  }
+  localStorage.setItem("users", JSON.stringify(users));
+
+  renderTodoCards(user.todos, false);
+};
+
+const unCompleteTodo = (todo) => {
+  users = JSON.parse(localStorage.getItem("users"));
+
+  let loggedInUser = +localStorage.getItem("loggedInUser");
+
+  let user = users.find((user) => user.id === loggedInUser);
+
+  for (let item of user.todos) {
+    if (item.id === todo.id) {
+      item.completed = false;
+    }
+  }
+  localStorage.setItem("users", JSON.stringify(users));
+
+  renderTodoCards(user.todos, false);
+};
+
+const compareStatus = (a) => {
+  if (a.completed.toString() === "true") {
+    return 1;
+  }
+  if (a.completed.toString() === "false") {
+    return -1;
+  }
+  return 0;
+};
+
+// sorting todos
+
+todoSortingSelect.addEventListener("change", (e) => {
+  filterAndSortTodos();
+});
+
+const saveTodoToArchive = (todo) => {
+  // getting current user
+  users = JSON.parse(localStorage.getItem("users"));
+  let loggedInUser = +localStorage.getItem("loggedInUser");
+  let user = users.find((user) => user.id === loggedInUser);
+
+  // matching todo
+  let todoToArchive = user.todos.find((item) => item.id === todo.id);
+
+  let indexOfTodo = user.todos.indexOf(todoToArchive);
+  // removing todo from main todo array
+  user.todos.splice(indexOfTodo, 1);
+
+  // adding todo to archived todos array
+  user.archivedTodos.push(todoToArchive);
+
+  // updating local storage
+  localStorage.setItem("users", JSON.stringify(users));
+
+  renderTodoCards(user.todos, false);
+
+  // close modal
+  destroyModal();
+};
+
+const verifyArchiving = (todo) => {
+  let proceedBtn = document.createElement("button");
+  proceedBtn.classList.add("modalBtn");
+  proceedBtn.innerText = "Archive";
+
+  proceedBtn.addEventListener("click", () => {
+    saveTodoToArchive(todo);
+  });
+
+  let actionButtons = document.createElement("div");
+  actionButtons.classList.add("flex", "actionButtons");
+  actionButtons.append(proceedBtn);
+
+  let archivingContent = document.createElement("div");
+  archivingContent.classList.add("flex", "flex-column");
+  archivingContent.id = "archiveTodoModal";
+
+  archivingContent.innerHTML = `<h2>Are you sure you want to archive this task?</h2>
+  <p>${todo.title}</p>`;
+
+  archivingContent.append(actionButtons);
+
+  modal.append(archivingContent);
+
+  createModal();
+};
+
+const resetTodoFilterAndSorting = () => {
+  todoStatusSelect.querySelector("[value='']").selected = true;
+  todoSortingSelect.querySelector("[value='']").selected = true;
+  todoCheckboxes.querySelectorAll("[name='category']").forEach((checkbox) => {
+    checkbox.checked = false;
+  });
+};
+
+toggleUserActions();
+toggleContent();
