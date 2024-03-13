@@ -865,6 +865,10 @@ nav .wrapper {
   margin: 0.5rem;
 }
 
+#happeningsUpcoming li p{
+  background-color: var(--color-1);
+}
+
 #happeningsContainer li{
   margin:0.5rem;
   cursor: pointer;
@@ -959,6 +963,19 @@ nav .wrapper {
 
 /* Mobile */
 @media screen and (max-width: 780px) {
+  #userDetails{
+    width: 80%;
+    font-size: 1rem;
+  }
+
+  button#register{
+    font-size: 0.8rem;
+  }
+
+  button#logIn{
+    font-size: 0.8rem;
+  }
+
   #content{
     width: 80vw;
   }
