@@ -1417,7 +1417,7 @@ todosFilterSelect.addEventListener("change", () => {
   filterAndSortTodos();
 });
 
-let categoryCheckboxes = document.querySelectorAll("[name='category']");
+let categoryCheckboxes = todoCheckboxes.querySelectorAll("[name='category']");
 
 categoryCheckboxes.forEach((checkbox) => {
   checkbox.addEventListener("change", () => {
