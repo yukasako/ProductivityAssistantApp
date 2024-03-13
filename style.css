@@ -752,7 +752,7 @@ nav .wrapper {
 
 #timerModal {
   align-items: center;
-  /* padding-inline: 2rem; */
+  padding-inline: 2rem;
 }
 
 #timerModal button:not(:disabled):hover {
@@ -814,6 +814,7 @@ nav .wrapper {
   justify-content: end;
   align-items: center;
   gap: 0.3rem;
+  padding-top: 1rem;
   font-size: 1.2rem;
 }
 
