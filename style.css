@@ -124,6 +124,7 @@ nav .wrapper {
   height: 100%;
   line-height: 3rem;
   font-size: 2rem;
+  font-weight:bold;
 }
 
 .btnGroup {
