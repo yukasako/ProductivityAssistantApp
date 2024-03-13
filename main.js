@@ -269,7 +269,7 @@ const registerUser = () => {
         loggedIn: false,
         habits: [],
         todos: [],
-        happenings:[],
+        happenings: [],
         archivedTodos: [],
       };
       users.push(newUser);
