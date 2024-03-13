@@ -111,6 +111,4 @@ location.addEventListener("change", () => {
 });
 
 // When logged in
-if (localStorage.getItem("loggedInUser")) {
-  getWeatherData(59.3293, 18.0685);
-}
+getWeatherData(59.3293, 18.0685);
