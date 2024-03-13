@@ -1,19 +1,5 @@
 
-let userNo = JSON.parse(localStorage.getItem("loggedInUser"));
-let userList = JSON.parse(localStorage.getItem("users"));
-let userObjIndex = userList.findIndex(obj => obj.id === userNo);
-let userObj = userList[userObjIndex];
-let userHappenings = userObj.happenings;
 
-//Happening template
-const happening = {
-  text: null,
-  date: null,
-  time: null,
-  end: null,
-};
-
-//Create The Basic HTML Skeleton
 
 
 //Append Happenings To Screen
