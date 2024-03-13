@@ -1,3 +1,8 @@
-border-radius på blå knappt modal
-fixa span för requirements
-fixa slut tid
+fixa append
+fixa delete
+
+let userNo = JSON.parse(localStorage.getItem("loggedInUser"));
+let userList = JSON.parse(localStorage.getItem("users"));
+let userObjIndex = userList.findIndex(obj => obj.id === userNo);
+let userObj = userList[userObjIndex];
+let userHappenings = userObj.happenings;
