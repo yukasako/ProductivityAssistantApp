@@ -14,55 +14,7 @@ const happening = {
 };
 
 //Create The Basic HTML Skeleton
-let createHappeningArticles = () =>{
-    const article = document.createElement('article');
-    article.id = 'happeningsContent';
-    
-    const heading = document.createElement('h2');
-    heading.textContent = 'Events';
-    
-    const container = document.createElement('div');
-    container.id = 'happeningsContainer';
-    
-    const showOld = document.createElement("i");
-    showOld.classList.add("fa-solid", "fa-angle-down");
-    container.appendChild(showOld);
-    
-    showOld.addEventListener("click", ()=>{
-        passedDiv.classList.toggle("displayNone");
-        showOld.classList.toggle("fa-angle-up");
-    })
-    
-    const passedDiv = document.createElement('ul');
-    passedDiv.id = 'happeningsPassed';
-    passedDiv.classList.add("displayNone");
-    
-    const upcomingDiv = document.createElement('ul');
-    upcomingDiv.id = 'happeningsUpcoming';
-    
-    const addHappeningBtn = document.createElement('button');
-    addHappeningBtn.type = 'button';
-    addHappeningBtn.id = 'addHappening';
-    
-    const addHappeningSpan = document.createElement('span');
-    addHappeningSpan.innerText = "New Event";
-    addHappeningBtn.appendChild(addHappeningSpan);
-    
-    const addHappeningIcon = document.createElement("i");
-    addHappeningIcon.classList.add("fa-solid", "fa-plus");
-    addHappeningIcon.setAttribute("aria-hidden", "true");
-    addHappeningBtn.appendChild(addHappeningIcon);
-    
-    container.appendChild(passedDiv);
-    container.appendChild(upcomingDiv);
-    container.appendChild(addHappeningBtn);
-    
-    article.appendChild(heading);
-    article.appendChild(container);
-    
-    document.getElementById("content").appendChild(article);
-}
-createHappeningArticles();
+
 
 //Append Happenings To Screen
 let appendHappenings = () => {
@@ -333,11 +285,11 @@ happeningAddBtn.addEventListener("click", ()=>{
 
         localStorage.setItem("users", JSON.stringify(userListC));
 
-        appendHappenings();
+        
         destroyModal();
+        appendHappenings();
       } 
   })
 })
 
 appendHappenings();
-deleteHappening();
