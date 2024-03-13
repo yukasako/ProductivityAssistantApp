@@ -1877,7 +1877,7 @@ let deleteHappening = ()=>{
         userObjC.happenings = userHappeningsC;
         userListC[userObjIndexC] = userObjC;
         localStorage.setItem("users", JSON.stringify(userListC));
-
+        
         destroyModal();
       })
     })
@@ -2006,7 +2006,7 @@ happeningAddBtn.addEventListener("click", ()=>{
         }
       }
       return false;
-      
+
     });
 
     console.log(duplicateExists);
