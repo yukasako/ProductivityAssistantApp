@@ -1753,6 +1753,10 @@ let createHappeningArticles = () =>{
   article.appendChild(container);
   
   document.getElementById("content").appendChild(article);
+
+  appendHappenings();
+  deleteHappening();
+  submitHappening();
 }
 
 let userNo = JSON.parse(localStorage.getItem("loggedInUser"));
@@ -1768,6 +1772,43 @@ const happening = {
   time: null,
   end: null,
 };
+
+//Delete Happening Function
+let deleteHappening = ()=>{
+  const happeningLis = document.getElementById("happeningsContainer").querySelectorAll("li");
+  happeningLis.forEach((e)=>{
+    e.addEventListener("click", ()=>{
+      createModal();
+      //Add Delete Button & h2
+      const deleteHappeningH2 = document.createElement("h2");
+      deleteHappeningH2.innerText = "Delete Event";
+      document.getElementById("modal").appendChild(deleteHappeningH2);
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.innerText = "Delete";
+      deleteBtn.setAttribute("type", "button");
+      deleteBtn.setAttribute("id", "happeningDeleteBtn");
+      document.getElementById("modal").appendChild(deleteBtn);
+
+      document.getElementById("happeningDeleteBtn").addEventListener("click", ()=>{
+        let userNoC = JSON.parse(localStorage.getItem("loggedInUser"));
+        let userListC = JSON.parse(localStorage.getItem("users"));
+        let userObjIndexC = userListC.findIndex(obj => obj.id === userNoC);
+        let userObjC = userListC[userObjIndexC];
+        let userHappeningsC = userObjC.happenings;
+        const searchDate = e.children[0].innerText;
+        const searchTime = e.children[1].innerText;
+        
+        userHappeningsC = userHappeningsC.filter(item => !(item.date === searchDate && item.time === searchTime));
+        userObjC.happenings = userHappeningsC;
+        userListC[userObjIndexC] = userObjC;
+        localStorage.setItem("users", JSON.stringify(userListC));
+
+        destroyModal();
+      })
+    })
+  })
+}
 
 //Append Happenings To Screen
 let appendHappenings = () => {
@@ -1865,47 +1906,6 @@ let appendHappenings = () => {
   })
 };
 
-//Delete Happening Function
-let deleteHappening = ()=>{
-  const happeningLis = document.getElementById("happeningsContainer").querySelectorAll("li");
-  happeningLis.forEach((e)=>{
-    e.addEventListener("click", ()=>{
-      createModal();
-      //Add Delete Button & h2
-      const deleteHappeningH2 = document.createElement("h2");
-      deleteHappeningH2.innerText = "Delete Event";
-      document.getElementById("modal").appendChild(deleteHappeningH2);
-
-      const deleteBtn = document.createElement("button");
-      deleteBtn.innerText = "Delete";
-      deleteBtn.setAttribute("type", "button");
-      deleteBtn.setAttribute("id", "happeningDeleteBtn");
-      document.getElementById("modal").appendChild(deleteBtn);
-
-
-
-        document.getElementById("happeningDeleteBtn").addEventListener("click", ()=>{
-          let userNoC = JSON.parse(localStorage.getItem("loggedInUser"));
-          let userListC = JSON.parse(localStorage.getItem("users"));
-          let userObjIndexC = userListC.findIndex(obj => obj.id === userNoC);
-          let userObjC = userListC[userObjIndexC];
-          let userHappeningsC = userObjC.happenings;
-
-          const searchDate = e.children[0].innerText;
-          const searchTime = e.children[1].innerText;
-          
-          userHappeningsC = userHappeningsC.filter(item => !(item.date === searchDate && item.time === searchTime));
-
-          userObjC.happenings = userHappeningsC;
-          userListC[userObjIndexC] = userObjC;
-
-          localStorage.setItem("users", JSON.stringify(userListC));
-          destroyModal();
-        })
-    })
-  })
-}
-
 //Create Happening Modal
 const addHappeningModal = ()=> {
   const form = document.createElement('form');
@@ -1980,6 +1980,70 @@ const addHappeningModal = ()=> {
   modal.appendChild(form);
 }
 
+//Open Modal and submit happening
+let submitHappening = ()=>{
+  const happeningAddBtn = document.getElementById("addHappening");
+happeningAddBtn.addEventListener("click", ()=>{
+  createModal();
+  addHappeningModal();
+  const submitHappeningBtn = document.querySelector("#happeningAddBtn");
+  let happeningsArr = userHappenings || [];
+
+  //Submit click event
+  submitHappeningBtn.addEventListener("click", ()=>{
+    const searchDate = document.getElementById("happeningDate").value;
+    const searchTime = parseInt(document.getElementById("happeningTime").value.replace(":", ""));
+    const searchEnd = parseInt(document.getElementById("happeningEnd").value.replace(":", ""));
+    const searchText = document.getElementById("happeningText").value;
+    
+    const duplicateExists = happeningsArr.some((e) => {
+      const time = parseInt(e.time.replace(":", ""));
+      const end = parseInt(e.end.replace(":", ""));
+    
+      if (e.date === searchDate) {
+        if (time <= searchTime && end >= searchEnd) {
+          return true;
+        }
+      }
+      return false;
+    });
+
+    console.log(duplicateExists);
+    
+    const warningSpan = document.getElementById("createHappeningForm").children[1];
+    
+    if (duplicateExists) {
+      warningSpan.innerText = "Event already exists on selected date and time";
+    }
+
+    if (duplicateExists) {
+      warningSpan.innerText = "Event already exist on select date and time";
+    } 
+
+    else if(searchDate === "" || searchTime === "" || searchEnd === "" || searchText === ""){
+      warningSpan.innerText = "All fields are requried";
+    }
+      
+    else {
+        happening.date = document.getElementById("happeningDate").value;
+        happening.time = document.getElementById("happeningTime").value;
+        happening.end = document.getElementById("happeningEnd").value;
+        happening.text = document.getElementById("happeningText").value;
+        //Push to local storage
+        let userNoC = JSON.parse(localStorage.getItem("loggedInUser"));
+        let userListC = JSON.parse(localStorage.getItem("users"));
+        let userObjC = userListC.find(obj => obj.id === userNoC);
+        let userHappeningsC = userObjC.happenings;
+
+        userHappeningsC.push(happening);
+
+        localStorage.setItem("users", JSON.stringify(userListC));
+
+        destroyModal();
+      } 
+  })
+})
+}
 
 
 
