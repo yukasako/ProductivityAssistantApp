@@ -33,7 +33,6 @@ import("/todo.js");
 import("/habit.js");
 import("/weather.js");
 import("/timer.js");
-import("/calendar.js");
 
 // globala variabler i main
 const main = document.querySelector("main");
@@ -1705,7 +1704,8 @@ const verifyArchiving = (todo) => {
   createModal();
 };
 
-//Calendar
+//CALENDAR
+//Calendar Creation
 let createHappeningArticles = () =>{
   const article = document.createElement('article');
   article.id = 'happeningsContent';
@@ -1757,6 +1757,80 @@ let createHappeningArticles = () =>{
   appendHappenings();
   deleteHappening();
   submitHappening();
+}
+
+//Create Happening Modal
+const addHappeningModal = ()=> {
+  const form = document.createElement('form');
+  form.id = 'createHappeningForm';
+
+  const happeningH2 = document.createElement("h2");
+  happeningH2.innerText = "New Event";
+  form.appendChild(happeningH2);
+
+  const happeningWarning = document.createElement("span");
+  form.appendChild(happeningWarning);
+
+  const dateWrapper = document.createElement("div");
+  dateWrapper.setAttribute("id", "dateWrapper");
+  form.appendChild(dateWrapper);
+
+  const timeWrapper = document.createElement("div");
+  timeWrapper.setAttribute("id", "timeWrapper");
+  form.appendChild(timeWrapper);
+
+  const descriptionWrapper = document.createElement("div");
+  descriptionWrapper.setAttribute("id", "descriptionWrapper");
+  form.appendChild(descriptionWrapper);
+
+
+  const dateLabel = document.createElement('label');
+  dateLabel.setAttribute('for', 'happeningDate');
+  dateLabel.textContent = 'Date';
+  dateWrapper.appendChild(dateLabel);
+  const dateInput = document.createElement('input');
+  dateInput.setAttribute('type', 'date');
+  dateInput.id = 'happeningDate';
+  dateInput.name = 'date';
+  dateWrapper.appendChild(dateInput);
+
+  const timeLabel = document.createElement('label');
+  timeLabel.setAttribute('for', 'happeningTime');
+  timeLabel.textContent = 'Start';
+  timeWrapper.appendChild(timeLabel);
+  const timeInput = document.createElement('input');
+  timeInput.setAttribute('type', 'time');
+  timeInput.id = 'happeningTime';
+  timeInput.name = 'time';
+  timeWrapper.appendChild(timeInput);
+
+  const timeEndLabel = document.createElement('label');
+  timeEndLabel.setAttribute('for', 'happeningEnd');
+  timeEndLabel.textContent = 'End';
+  timeWrapper.appendChild(timeEndLabel);
+  const timeEndInput = document.createElement('input');
+  timeEndInput.setAttribute('type', 'time');
+  timeEndInput.id = 'happeningEnd';
+  timeEndInput.name = 'end';
+  timeWrapper.appendChild(timeEndInput);
+
+  const descriptionLabel = document.createElement('label');
+  descriptionLabel.setAttribute('for', 'happeningText');
+  descriptionLabel.textContent = 'Event';
+  descriptionWrapper.appendChild(descriptionLabel);
+  const descriptionInput = document.createElement('textarea');
+  descriptionInput.id = 'happeningText';
+  descriptionInput.name = 'description';
+  descriptionInput.maxLength = '250'; 
+  descriptionWrapper.appendChild(descriptionInput);
+
+  const submitButton = document.createElement('button');
+  submitButton.setAttribute('type', 'button');
+  submitButton.id = 'happeningAddBtn';
+  submitButton.textContent = 'Save';
+  form.appendChild(submitButton);
+
+  modal.appendChild(form);
 }
 
 let userNo = JSON.parse(localStorage.getItem("loggedInUser"));
@@ -1905,80 +1979,6 @@ let appendHappenings = () => {
     document.getElementById("happeningsUpcoming").appendChild(happening);
   })
 };
-
-//Create Happening Modal
-const addHappeningModal = ()=> {
-  const form = document.createElement('form');
-  form.id = 'createHappeningForm';
-
-  const happeningH2 = document.createElement("h2");
-  happeningH2.innerText = "New Event";
-  form.appendChild(happeningH2);
-
-  const happeningWarning = document.createElement("span");
-  form.appendChild(happeningWarning);
-
-  const dateWrapper = document.createElement("div");
-  dateWrapper.setAttribute("id", "dateWrapper");
-  form.appendChild(dateWrapper);
-
-  const timeWrapper = document.createElement("div");
-  timeWrapper.setAttribute("id", "timeWrapper");
-  form.appendChild(timeWrapper);
-
-  const descriptionWrapper = document.createElement("div");
-  descriptionWrapper.setAttribute("id", "descriptionWrapper");
-  form.appendChild(descriptionWrapper);
-
-
-  const dateLabel = document.createElement('label');
-  dateLabel.setAttribute('for', 'happeningDate');
-  dateLabel.textContent = 'Date';
-  dateWrapper.appendChild(dateLabel);
-  const dateInput = document.createElement('input');
-  dateInput.setAttribute('type', 'date');
-  dateInput.id = 'happeningDate';
-  dateInput.name = 'date';
-  dateWrapper.appendChild(dateInput);
-
-  const timeLabel = document.createElement('label');
-  timeLabel.setAttribute('for', 'happeningTime');
-  timeLabel.textContent = 'Start';
-  timeWrapper.appendChild(timeLabel);
-  const timeInput = document.createElement('input');
-  timeInput.setAttribute('type', 'time');
-  timeInput.id = 'happeningTime';
-  timeInput.name = 'time';
-  timeWrapper.appendChild(timeInput);
-
-  const timeEndLabel = document.createElement('label');
-  timeEndLabel.setAttribute('for', 'happeningEnd');
-  timeEndLabel.textContent = 'End';
-  timeWrapper.appendChild(timeEndLabel);
-  const timeEndInput = document.createElement('input');
-  timeEndInput.setAttribute('type', 'time');
-  timeEndInput.id = 'happeningEnd';
-  timeEndInput.name = 'end';
-  timeWrapper.appendChild(timeEndInput);
-
-  const descriptionLabel = document.createElement('label');
-  descriptionLabel.setAttribute('for', 'happeningText');
-  descriptionLabel.textContent = 'Event';
-  descriptionWrapper.appendChild(descriptionLabel);
-  const descriptionInput = document.createElement('textarea');
-  descriptionInput.id = 'happeningText';
-  descriptionInput.name = 'description';
-  descriptionInput.maxLength = '250'; 
-  descriptionWrapper.appendChild(descriptionInput);
-
-  const submitButton = document.createElement('button');
-  submitButton.setAttribute('type', 'button');
-  submitButton.id = 'happeningAddBtn';
-  submitButton.textContent = 'Save';
-  form.appendChild(submitButton);
-
-  modal.appendChild(form);
-}
 
 //Open Modal and submit happening
 let submitHappening = ()=>{
