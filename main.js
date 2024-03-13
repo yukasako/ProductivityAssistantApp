@@ -69,8 +69,6 @@ let todoCategories = [
 
 let emptyArr = [];
 
-
-
 //Retrieve quote and create greeting
 let quote;
 const getQuote = async () => {
