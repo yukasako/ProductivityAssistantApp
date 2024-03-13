@@ -92,7 +92,6 @@ const getQuote = async () => {
 };
 getQuote();
 
-
 let highlights = document.createElement("article");
 highlights.id = "highlights";
 let content = document.createElement("div");
@@ -270,7 +269,7 @@ const registerUser = () => {
         loggedIn: false,
         habits: [],
         todos: [],
-        happenings:[],
+        happenings: [],
         archivedTodos: [],
       };
       users.push(newUser);
@@ -398,8 +397,6 @@ const toggleContent = async () => {
 
     appScreen.append(highlights, content);
 
-    
-
     //cycle from login screen -> loadin screen -> app screen
     if (JSON.parse(localStorage.getItem("shouldQuote")) === true) {
       loginScreen.classList.add("displayNone");
@@ -422,9 +419,7 @@ const toggleContent = async () => {
     completeRatio(false);
 
     //Append Todos
-    
-    
-
+    renderTodoCards(emptyArr, true);
   } else {
     appScreen.innerHTML = "";
     //Cycle back to login screen
@@ -432,9 +427,6 @@ const toggleContent = async () => {
     loginScreen.classList.remove("displayNone");
   }
 };
-
-toggleUserActions();
-toggleContent();
 
 //Create a Modal or Destroy Modal Functions
 const modal = document.createElement("article");
@@ -528,7 +520,6 @@ const getToday = () => {
 
   return today;
 };
-
 
 // Chart
 let completeRatio = (toggle) => {
@@ -1717,3 +1708,6 @@ const resetTodoFilterAndSorting = () => {
     checkbox.checked = false;
   });
 };
+
+toggleUserActions();
+toggleContent();
