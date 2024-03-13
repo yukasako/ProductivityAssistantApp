@@ -2,101 +2,7 @@
 
 
 
-//Append Happenings To Screen
-let appendHappenings = () => {
-    document.getElementById("happeningsPassed").innerHTML = "";
-    document.getElementById("happeningsUpcoming").innerHTML = "";
-  
-    let userHappeningsC = userObj.happenings;
-  
-    const happenings = userHappeningsC;
-    const passedHappenings = [];
-    const upcomingHappenings = [];
-  
-    // Sort the array based on time and date
-    happenings.sort((a, b) => {
-      // Compare dates
-      const dateComparison = new Date(a.date) - new Date(b.date);
-      if (dateComparison !== 0) {
-          return dateComparison;
-      }
-  
-      // If dates are equal, compare times
-      const timeA = a.time.split(':');
-      const timeB = b.time.split(':');
-      const timeComparison = new Date(0, 0, 0, timeA[0], timeA[1]) - new Date(0, 0, 0, timeB[0], timeB[1]);
-      return timeComparison;
-    });
-  
-    //Separate old and new
-    //Get today
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-  
-    //Split passed and upcoming
-    happenings.forEach(function(obj) {
-      var dateParts = obj.date.split('-');
-      var year = parseInt(dateParts[0], 10);
-      var month = parseInt(dateParts[1], 10) - 1;
-      var day = parseInt(dateParts[2], 10);
-      
-      var objDate = new Date(year, month, day);
-      
-      if (objDate < today) {
-          passedHappenings.push(obj);
-      } else {
-          upcomingHappenings.push(obj);
-      }
-    });
-  
-    //Append Happenings 
-    passedHappenings.forEach((e)=>{
-      const happening = document.createElement("li");
-      const time = document.createElement("span");
-      const divide = document.createElement("span");
-      const end = document.createElement("span");
-      const date = document.createElement("span");
-      const text = document.createElement("p");
-    
-      date.innerText = e.date;
-      time.innerText = e.time;
-      end.innerText = e.end;
-      divide.innerText = "-";
-      text.innerText = e.text;
-  
-      happening.appendChild(date);
-      happening.appendChild(time);
-      happening.appendChild(divide);
-      happening.appendChild(end);
-      happening.appendChild(text);
-  
-      
-      document.getElementById("happeningsPassed").appendChild(happening);
-    })
-  
-    upcomingHappenings.forEach((e)=>{
-      const happening = document.createElement("li");
-      const time = document.createElement("span");
-      const divide = document.createElement("span");
-      const end = document.createElement("span");
-      const date = document.createElement("span");
-      const text = document.createElement("p");
-  
-      date.innerText = e.date;
-      time.innerText = e.time;
-      end.innerText = e.end;
-      divide.innerText = "-";
-      text.innerText = e.text;
-  
-      happening.appendChild(date);
-      happening.appendChild(time);
-      happening.appendChild(divide);
-      happening.appendChild(end);
-      happening.appendChild(text);
-  
-      document.getElementById("happeningsUpcoming").appendChild(happening);
-    })
-};
+
 
 //Delete Happening Function
 let deleteHappening = ()=>{
@@ -277,5 +183,3 @@ happeningAddBtn.addEventListener("click", ()=>{
       } 
   })
 })
-
-appendHappenings();
