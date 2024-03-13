@@ -193,7 +193,10 @@ let appendHappenings = () => {
   document.getElementById("happeningsPassed").innerHTML = "";
   document.getElementById("happeningsUpcoming").innerHTML = "";
 
-  const happenings = JSON.parse(localStorage.getItem('happeningsArr'));
+
+  let userHappeningsC = userObj.happenings;
+
+  const happenings = userHappeningsC;
   const passedHappenings = [];
   const upcomingHappenings = [];
 
@@ -374,7 +377,6 @@ happeningAddBtn.addEventListener("click", ()=>{
     const searchTime = parseInt(document.getElementById("happeningTime").value.replace(":", ""));
     const searchEnd = parseInt(document.getElementById("happeningEnd").value.replace(":", ""));
     const searchText = document.getElementById("happeningText").value;
-
     
     const duplicateExists = happeningsArr.some((e) => {
       const time = parseInt(e.time.replace(":", ""));
@@ -415,21 +417,10 @@ happeningAddBtn.addEventListener("click", ()=>{
         let userObjC = userListC.find(obj => obj.id === userNoC);
         let userHappeningsC = userObjC.happenings;
 
-
         userHappeningsC.push(happening);
 
         localStorage.setItem("users", JSON.stringify(userListC));
 
-        
-
-
-
-        
-        
-        
-
-
-    
         appendHappenings();
         destroyModal();
       } 
