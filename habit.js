@@ -551,5 +551,7 @@ const resetHabitFilterAndSorting = () => {
   habitsSortSelect.querySelector("[value='']").selected = true;
 };
 
-renderHabitCards(emptyArr, true);
-completeRatio(false);
+if (localStorage.getItem("loggedInUser")) {
+  renderHabitCards(emptyArr, true);
+  completeRatio(false);
+}
