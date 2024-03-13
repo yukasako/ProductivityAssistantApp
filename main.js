@@ -2001,11 +2001,12 @@ happeningAddBtn.addEventListener("click", ()=>{
       const end = parseInt(e.end.replace(":", ""));
     
       if (e.date === searchDate) {
-        if (time <= searchTime && end >= searchEnd) {
-          return true;
+        if ((time >= searchTime || time <= searchEnd) || (end >= searchTime || end <= searchEnd)) {
+            return true;
         }
       }
       return false;
+      
     });
 
     console.log(duplicateExists);
