@@ -47,6 +47,7 @@ let passwordInput = document.querySelector("#password");
 let registerBtn = document.querySelector("#register");
 let loginBtn = document.querySelector("#logIn");
 let logOutBtn = document.querySelector("#logOut");
+logOutBtn.classList.add("displayNone");
 let logInRegisterContent = document.querySelector("#userDetails");
 let userDetailsMsg = logInRegisterContent.querySelector(".statusMsg");
 
@@ -418,11 +419,14 @@ const toggleContent = async () => {
     renderHabitCards(emptyArr, true);
     completeRatio(false);
 
-    //Append Calendar
-    createHappeningArticles();
-
     //Append Todos
     renderTodoCards(emptyArr, true);
+
+    //Append Calendar
+    createHappeningArticles();
+    appendHappenings();
+    submitHappening();
+
   } else {
     appScreen.innerHTML = "";
     //Cycle back to login screen
@@ -1706,6 +1710,19 @@ const verifyArchiving = (todo) => {
 
 //CALENDAR
 //Calendar Creation
+
+
+
+
+const resetTodoFilterAndSorting = () => {
+  todoStatusSelect.querySelector("[value='']").selected = true;
+  todoSortingSelect.querySelector("[value='']").selected = true;
+  todoCheckboxes.querySelectorAll("[name='category']").forEach((checkbox) => {
+    checkbox.checked = false;
+  });
+};
+
+
 let createHappeningArticles = () =>{
   const article = document.createElement('article');
   article.id = 'happeningsContent';
@@ -1753,10 +1770,6 @@ let createHappeningArticles = () =>{
   article.appendChild(container);
   
   document.getElementById("content").appendChild(article);
-
-  appendHappenings();
-  deleteHappening();
-  submitHappening();
 }
 
 //Create Happening Modal
@@ -1878,6 +1891,7 @@ let deleteHappening = ()=>{
         userListC[userObjIndexC] = userObjC;
         localStorage.setItem("users", JSON.stringify(userListC));
         
+        appendHappenings();
         destroyModal();
       })
     })
@@ -1978,6 +1992,7 @@ let appendHappenings = () => {
 
     document.getElementById("happeningsUpcoming").appendChild(happening);
   })
+  deleteHappening();
 };
 
 //Open Modal and submit happening
@@ -2045,39 +2060,6 @@ happeningAddBtn.addEventListener("click", ()=>{
   })
 })
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const resetTodoFilterAndSorting = () => {
-  todoStatusSelect.querySelector("[value='']").selected = true;
-  todoSortingSelect.querySelector("[value='']").selected = true;
-  todoCheckboxes.querySelectorAll("[name='category']").forEach((checkbox) => {
-    checkbox.checked = false;
-  });
-};
 
 toggleUserActions();
 toggleContent();
