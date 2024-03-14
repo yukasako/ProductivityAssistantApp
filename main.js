@@ -47,6 +47,7 @@ let passwordInput = document.querySelector("#password");
 let registerBtn = document.querySelector("#register");
 let loginBtn = document.querySelector("#logIn");
 let logOutBtn = document.querySelector("#logOut");
+logOutBtn.classList.add("displayNone");
 let logInRegisterContent = document.querySelector("#userDetails");
 let userDetailsMsg = logInRegisterContent.querySelector(".statusMsg");
 
