@@ -124,6 +124,7 @@ nav .wrapper {
   height: 100%;
   line-height: 3rem;
   font-size: 2rem;
+  font-weight:bold;
 }
 
 .btnGroup {
@@ -457,7 +458,7 @@ nav .wrapper {
 }
 
 #modal {
-  width: 33%;
+  width: 40%;
   background-color: var(--color-1);
   position: relative;
   border-radius: 0.5rem;
@@ -759,9 +760,13 @@ nav .wrapper {
 }
 
 .timerOptions {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
   gap: 0.5rem;
-  padding: 1rem;
+  padding-top: 1rem;
 }
+
 .timerOptionBtn {
   font-size: 1.1rem;
   border-radius: 0.5rem;
@@ -809,6 +814,7 @@ nav .wrapper {
   justify-content: end;
   align-items: center;
   gap: 0.3rem;
+  padding-top: 1rem;
   font-size: 1.2rem;
 }
 
@@ -858,6 +864,10 @@ nav .wrapper {
 #happeningsUpcoming{
   width:100%;
   margin: 0.5rem;
+}
+
+#happeningsUpcoming li p{
+  background-color: var(--color-1);
 }
 
 #happeningsContainer li{
@@ -952,9 +962,52 @@ nav .wrapper {
   margin-left:0.5rem;
 }
 
-@media screen and (max-width: 1024px) {
+/* Mobile */
+@media screen and (max-width: 780px) {
+  #userDetails{
+    width: 80%;
+    font-size: 1rem;
+  }
+
+  button#register{
+    font-size: 0.8rem;
+  }
+
+  button#logIn{
+    font-size: 0.8rem;
+  }
+
   #content{
-    min-width: 480px;
+    width: 80vw;
+  }
+
+  nav {
+    justify-content: center;
+  }
+
+  /* Logo and title */
+  nav .wrapper.flex.flex-row{
+    display: none;
+  }
+
+  #location{
+    display: none;
+  }
+
+  .todosFilters div:first-child{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  #modal {
+    width: 80vw;
+  }
+}
+
+/* Tablet */
+@media screen and (max-width: 1024px) {
+  #logo{
+    display: none;
   }
 
   .habitsContent {
